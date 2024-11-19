@@ -1,7 +1,13 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
+import { FaUsers,FaStore } from "react-icons/fa6";
+import { TfiLayoutSliderAlt } from "react-icons/tfi";
+import { MdMessage,MdPrivacyTip } from "react-icons/md";
+import { FaFileAlt } from "react-icons/fa";
+
 import {
   cilBell,
+  cilUser,
   cilCalculator,
   cilChartPie,
   cilCursor,
@@ -11,6 +17,7 @@ import {
   cilPencil,
   cilPuzzle,
   cilSpeedometer,
+  cilSitemap,
   cilStar,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
@@ -23,8 +30,208 @@ const _nav = [
     icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
   },
   {
+    component: CNavItem,
+    name: 'User',
+    to: '/',
+    icon :<FaUsers   className="nav-icon"/>,
+  },
+  {
+    component: CNavItem,
+    name: 'Pandit',
+    to: '/',
+    icon :<FaUsers   className="nav-icon"/>,
+  },
+  {
+    component: CNavGroup,
+    name: ' Pooja',
+    to: 'javascript:void(0)',
+    icon:<CIcon icon={cilSitemap} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Pooja Category',
+        to: '/pooja/pooja-category',
+      },
+      {
+        component: CNavItem,
+        name: 'Pooja List',
+        to: '/pooja/pooja-list',
+      },
+      {
+        component: CNavItem,
+        name: 'Booking List',
+        to: '/pooja/pooja-booking',
+      }],
+  },
+  {
+    component: CNavGroup,
+    name: 'Pooja Archana',
+    to: '/',
+    icon:<CIcon icon={cilSitemap} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Pooja Archana Category',
+        to: '/',
+      },
+      {
+        component: CNavItem,
+        name: 'Pooja Archana',
+        to: '/',
+      }],
+  },
+  {
+    component: CNavGroup,
+    name: 'Bhavya Ayojan',
+    to: '/',
+    icon:<CIcon icon={cilSitemap} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Add Ayojan',
+        to: '/',
+      },
+      {
+        component: CNavItem,
+        name: 'Booking List',
+        to: '/',
+      }],
+  },
+  {
+    component: CNavGroup,
+    name: 'Bhajan Mandal',
+    to: '/',
+    icon:<CIcon icon={cilSitemap} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Add Mandal',
+        to: '/',
+      },
+      {
+        component: CNavItem,
+        name: 'Booking List',
+        to: '/',
+      }],
+  },
+  {
+    component: CNavGroup,
+    name: 'Virtual Service',
+    to: '/',
+    icon:<CIcon icon={cilSitemap} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Virtual Service',
+        to: '/',
+      },
+      {
+        component: CNavItem,
+        name: 'Virtual Service Request',
+        to: '/',
+      }],
+  },
+  {
+    component: CNavGroup,
+    name: 'Daily Pandit',
+    to: '/',
+    icon:<CIcon icon={cilSitemap} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Add Pandit',
+        to: '/',
+      },
+      {
+        component: CNavItem,
+        name: 'Subscription Details',
+        to: '/',
+      },
+      {
+        component: CNavItem,
+        name: 'Daily Pandit Booking',
+        to: '/',
+      },
+    ],
+  },
+  {
+    component:CNavGroup,
+    name:'Dharmik Darshan',
+    to:'/',
+    icon : <FaStore className="nav-icon"/>,
+  },
+  {
+    component:CNavGroup,
+    name: 'E-Commerce',
+    to:'/',
+    icon: <FaStore className="nav-icon"/>,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Product Category',
+        to: '/',
+      },
+      {
+        component: CNavItem,
+        name: 'Products',
+        to: '/',
+      },
+      {
+        component: CNavItem,
+        name: 'Order',
+        to: '/',
+      },
+
+    ],
+  },
+  {
     component: CNavTitle,
-    name: 'Theme',
+    name: 'Frontend Setting',
+  },
+  {
+    component:CNavGroup,
+    name:'Slider',
+    to:'/',
+    icon: <TfiLayoutSliderAlt className="nav-icon"/>,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Slider Category',
+        to: '/',
+      },
+      {
+        component: CNavItem,
+        name: 'Add Slider',
+        to: '/',
+      }],
+  },
+  {
+    component:CNavItem,
+    name:'Enqueries',
+    to:'/',
+    icon: <MdMessage className="nav-icon"/>,
+  },
+  {
+    component:CNavItem,
+    name:'About Us',
+    to:'/',
+    icon:<FaFileAlt className="nav-icon"/>,
+  },
+  {
+    component:CNavItem,
+    name:'Terms and Conditions',
+    to:'/',
+    icon:<FaFileAlt className="nav-icon"/>,
+  },
+  {
+    component:CNavItem,
+    name:'Privacy and Policy',
+    to:'/',
+    icon:<MdPrivacyTip className="nav-icon"/>,
+  },
+  {
+    component: CNavTitle,
+    name: 'Components',
   },
   {
     component: CNavItem,
@@ -37,10 +244,6 @@ const _nav = [
     name: 'Typography',
     to: '/theme/typography',
     icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavTitle,
-    name: 'Components',
   },
   {
     component: CNavGroup,

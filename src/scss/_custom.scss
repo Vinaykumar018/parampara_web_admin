@@ -1,1 +1,18 @@
 // Here you can add other styles
+.sidebar-nav .nav-icon {
+    display: flex;
+    flex: 0 0 var(--cui-sidebar-nav-link-icon-width);
+    align-items: center;
+    justify-content: center;
+    height: var(--cui-sidebar-nav-link-icon-height);
+    margin-right: var(--cui-sidebar-nav-link-icon-margin);
+    font-size: var(--cui-sidebar-nav-link-icon-font-size);
+    color: var(--cui-sidebar-nav-link-icon-color);
+    text-align: center;
+    pointer-events: none;
+    fill: currentcolor;
+    transition: inherit;
+}
+.sidebar-nav svg.nav-icon {
+    overflow: hidden;
+}

@@ -1,6 +1,25 @@
+import { element } from 'prop-types';
 import React from 'react'
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
+// Parmpara Admin Routes
+const PoojaCategory=React.lazy(()=>import('./views/Pooja/PoojaCategory'));
+const Pooja=React.lazy(()=>import('./views/Pooja/Pooja'));
+const PoojaBooking=React.lazy(()=>import('./views/Pooja/BookingList'));
+
+
+
+// Parampara Admin ROutes
+
+
+
+
+
+
+
+
+
+
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
 
@@ -54,6 +73,12 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
+  // Parampara Start
+  { path : '/pooja/pooja-category',name: 'Pooja Category', element: PoojaCategory },
+  { path : '/pooja/pooja-list',name: 'Pooja List', element: Pooja },
+  { path : '/pooja/pooja-booking',name: 'Pooja Booking', element: PoojaBooking },
+
+  // Parampara End
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', element: Colors },
   { path: '/theme/typography', name: 'Typography', element: Typography },
