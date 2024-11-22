@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import classNames from 'classnames'
-
+// import DataTable from 'react-data-table-component'
+import CountriesData from './CountriesData'
 import {
   CAvatar,
   CButton,
@@ -53,6 +54,12 @@ import avatar6 from 'src/assets/images/avatars/6.jpg'
 import WidgetsBrand from '../widgets/WidgetsBrand'
 import WidgetsDropdown from '../widgets/WidgetsDropdown'
 import MainChart from './MainChart'
+// import CountriesTables from './CountriesTables'
+import axios from 'axios'
+import UsersData from './UsersData'
+import VendorsData from './VendorsData'
+import CommissionList from './ComissionList'
+import UsersForm from './UsersForm'
 
 const Dashboard = () => {
   const progressExample = [
@@ -175,11 +182,89 @@ const Dashboard = () => {
       activity: 'Last week',
     },
   ]
+// const[countries,setCountries]=useState([])
+// const getCountries=async()=>{
+//   try{
+//     const response=await axios.get('https://restcountries.com/v3.1/all')
+//     setCountries(response.data)
+//     console.log(response.data)
+//   }catch(error){
+//     console.log(error)
 
+//   }
+// }
+// useEffect(()=>{
+//   getCountries();
+// },[])
+// const columns=[{
+//   name:"Country Name",selector:(row)=>row.name,
+// },{
+//   name:"Country Native Name",
+//   selector:(row)=> row.nativeName,
+// }, {
+//   name: "Country Capital",
+//   selector: (row) => row.capital,
+// },
+// {
+//   name: "Country Flag",
+//   selector: (row) => <img width={50} height={50} src={row.flag}></img>,
+// },
+// ]
   return (
     <>
-      <WidgetsDropdown className="mb-4" />
-      <CCard className="mb-4">
+      <div className="container-fluid">
+      {/* Row 1 - Widgets Section */}
+      <div className="row mb-4">
+        <div className="col-12">
+          <WidgetsDropdown className="mb-4" />
+        </div>
+      </div>
+      <div className="row mb-4">
+        {/* Users Data in col-md-6 and col-sm-12 */}
+        <div className="col-md-6 col-sm-12">
+        <UsersForm /> 
+        </div>
+        
+        {/* Users Form in col-md-6 and col-sm-12 */}
+        <div className="col-md-6 col-sm-12">
+        <UsersData />
+        </div>
+      </div>
+
+      {/* Row 2 - Countries Section */}
+      <div className="row mb-4">
+        <div className="col-12">
+          <CountriesData />
+        </div>
+      </div>
+
+      {/* Row 3 - Vendors Data Section */}
+      <div className="row mb-4">
+        <div className="col-12">
+          <VendorsData />
+        </div>
+      </div>
+
+      {/* Row 4 - Users Data and Users Form Section */}
+     
+
+      {/* Row 5 - Commission List Section */}
+      <div className="row mb-4">
+        <div className="col-12">
+          <CommissionList />
+        </div>
+      </div>
+
+      {/* Additional rows for other sections can follow the same pattern */}
+      {/* Example for another section */}
+      {/* <div className="row mb-4">
+        <div className="col-12">
+          {/* Other components */}
+        </div>
+ 
+   
+     
+      {/* <CCard className="mb-4">
         <CCardBody>
           <CRow>
             <CCol sm={5}>
@@ -232,9 +317,9 @@ const Dashboard = () => {
             ))}
           </CRow>
         </CCardFooter>
-      </CCard>
-      <WidgetsBrand className="mb-4" withCharts />
-      <CRow>
+      </CCard> */}
+      {/* <WidgetsBrand className="mb-4" withCharts /> */}
+      {/* <CRow>
         <CCol xs>
           <CCard className="mb-4">
             <CCardHeader>Traffic {' & '} Sales</CCardHeader>
@@ -379,7 +464,7 @@ const Dashboard = () => {
             </CCardBody>
           </CCard>
         </CCol>
-      </CRow>
+      </CRow> */}
     </>
   )
 }

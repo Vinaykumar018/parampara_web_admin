@@ -11,7 +11,7 @@ import {
     CRow,
   } from '@coreui/react'
   
-const PoojaCategroy = () => {
+const PoojaCategory = () => {
     return(
         <>
         <CRow>
@@ -54,4 +54,4 @@ const PoojaCategroy = () => {
         </>
     );
 }
-export default PoojaCategroy;
+export default PoojaCategory;

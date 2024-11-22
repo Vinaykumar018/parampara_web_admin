@@ -32,20 +32,20 @@ const _nav = [
   {
     component: CNavItem,
     name: 'User',
-    to: '/',
-    icon :<FaUsers   className="nav-icon"/>,
+    to: '/user',
+    icon: <FaUsers className="nav-icon" />,
   },
   {
     component: CNavItem,
     name: 'Pandit',
-    to: '/',
-    icon :<FaUsers   className="nav-icon"/>,
+    to: '/pandit',
+    icon: <FaUsers className="nav-icon" />,
   },
   {
     component: CNavGroup,
-    name: ' Pooja',
+    name: 'Pooja',
     to: 'javascript:void(0)',
-    icon:<CIcon icon={cilSitemap} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilSitemap} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
@@ -60,130 +60,142 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Booking List',
-        to: '/pooja/pooja-booking',
-      }],
+        to: '/pooja/booking-list',
+      },
+    ],
   },
   {
     component: CNavGroup,
     name: 'Pooja Archana',
     to: '/',
-    icon:<CIcon icon={cilSitemap} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilSitemap} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
         name: 'Pooja Archana Category',
-        to: '/',
+        to: '/pooja-archana-category',
       },
       {
         component: CNavItem,
         name: 'Pooja Archana',
-        to: '/',
-      }],
+        to: '/pooja-archana',
+      },
+    ],
   },
   {
     component: CNavGroup,
     name: 'Bhavya Ayojan',
     to: '/',
-    icon:<CIcon icon={cilSitemap} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilSitemap} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
         name: 'Add Ayojan',
-        to: '/',
+        to: '/add-bhavya-ayojan',
       },
       {
         component: CNavItem,
         name: 'Booking List',
-        to: '/',
-      }],
+        to: '/booking-list-bhavya-ayojan',
+      },
+    ],
   },
   {
     component: CNavGroup,
     name: 'Bhajan Mandal',
     to: '/',
-    icon:<CIcon icon={cilSitemap} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilSitemap} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
         name: 'Add Mandal',
-        to: '/',
+        to: '/add-bhajan-mandal',
       },
       {
         component: CNavItem,
         name: 'Booking List',
-        to: '/',
-      }],
+        to: '/list-bhajan-mandal',
+      },
+    ],
   },
   {
     component: CNavGroup,
     name: 'Virtual Service',
     to: '/',
-    icon:<CIcon icon={cilSitemap} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilSitemap} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
         name: 'Virtual Service',
-        to: '/',
+        to: '/virtual-services',
       },
       {
         component: CNavItem,
         name: 'Virtual Service Request',
-        to: '/',
-      }],
+        to: '/virtual-services-request',
+      },
+    ],
   },
   {
     component: CNavGroup,
     name: 'Daily Pandit',
     to: '/',
-    icon:<CIcon icon={cilSitemap} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilSitemap} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
         name: 'Add Pandit',
-        to: '/',
+        to: '/add-daily-pandit',
       },
       {
         component: CNavItem,
         name: 'Subscription Details',
-        to: '/',
+        to: '/subscription-details',
       },
       {
         component: CNavItem,
         name: 'Daily Pandit Booking',
-        to: '/',
+        to: '/daily-pandit',
       },
     ],
   },
   {
-    component:CNavGroup,
-    name:'Dharmik Darshan',
-    to:'/',
-    icon : <FaStore className="nav-icon"/>,
-  },
-  {
-    component:CNavGroup,
+    component: CNavGroup,
     name: 'E-Commerce',
-    to:'/',
-    icon: <FaStore className="nav-icon"/>,
+    to: '/',
+    icon: <FaStore className="nav-icon" />,
     items: [
       {
         component: CNavItem,
         name: 'Product Category',
-        to: '/',
+        to: '/product-category',
       },
       {
         component: CNavItem,
         name: 'Products',
-        to: '/',
+        to: '/product',
       },
       {
         component: CNavItem,
         name: 'Order',
-        to: '/',
+        to: '/order',
       },
-
     ],
   },
+  {
+    component: CNavGroup,
+    name: 'Enquiries List',
+    to: '/enquiries',
+    icon: <CIcon icon={cilSitemap} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Enquiries List',
+        to: '/enquiries',
+      },
+    ],
+  },
+  
   {
     component: CNavTitle,
     name: 'Frontend Setting',
@@ -197,12 +209,12 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Slider Category',
-        to: '/',
+        to: '/slider/cateogry',
       },
       {
         component: CNavItem,
         name: 'Add Slider',
-        to: '/',
+        to: '/slider',
       }],
   },
   {

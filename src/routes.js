@@ -1,19 +1,60 @@
 import { element } from 'prop-types';
 import React from 'react'
+import EnquiriesList from './views/enquries/EnquiriesList';
 
-const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 // Parmpara Admin Routes
+const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'));
+
+
+//users
+
+const Users=React.lazy(()=>import('./views/users/Users'));
+// Pandit routes
+const Pandit=React.lazy(()=>import('./views/pandit/Pandit'));
+//Pooja routes
+const PoojaList=React.lazy(()=>import('./views/Pooja/PoojaList'));
 const PoojaCategory=React.lazy(()=>import('./views/Pooja/PoojaCategory'));
-const Pooja=React.lazy(()=>import('./views/Pooja/Pooja'));
-const PoojaBooking=React.lazy(()=>import('./views/Pooja/BookingList'));
+const PoojaBookingList=React.lazy(()=>import('./views/Pooja/BookingList'))
 
 
+//pooja archana routes
+const PoojaArchana=React.lazy(()=>import('./views/PoojaArchana/PoojaArchana'));
+const PoojaArchanaCategory=React.lazy(()=>import('./views/PoojaArchana/PoojaArchanaCategory'));
 
-// Parampara Admin ROutes
+//bHAVYA AYOJAN
+
+const addBhavyaAyojan=React.lazy(()=>import('./views/BhavyAyojan/AddAyojan'));
+const BookingListBhavyaAyojan=React.lazy(()=>import('./views/BhavyAyojan/BookingListBhavyaAyojan'));
+
+//bhajan mandal
+const addBhajanMandal=React.lazy(()=>import('./views/BhajanMandal/AddMandal'));
+const listBhajanMandal=React.lazy(()=>import('./views/BhajanMandal/BookingListBhajanMandal'));
+
+//virtua services
+
+const virtualServices=React.lazy(()=>import('./views/VirtualServices/VirtualServices'))
+
+const VirtualServicesRequest=React.lazy(()=>import('./views/VirtualServices/VirtualServicesRequest'))
+
+//daily Pandit
+
+const dailyPandit=React.lazy(()=>import('./views/dailyPandit/DailyPandit'))
+const addDailyPandit=React.lazy(()=>import('./views/dailyPandit/AddPandit'))
+const SubscriptionDetails=React.lazy(()=>import('./views/dailyPandit/SubscriptionDetails'))
+
+//ecommerce
+const proudct=React.lazy(()=>import('./views/eCommerce/Product'))
+const ProductCategory=React.lazy(()=>import('./views/eCommerce/ProductCategory'))
+const Order=React.lazy(()=>import('./views/eCommerce/Order'))
 
 
+//enquires
+const Enqueries=React.lazy(()=>import('./views/enquries/EnquiriesList'))
 
 
+//slider 
+const Slider=React.lazy(()=>import('./views/slider/slider'));
+const AddsliderCateogry=React.lazy(()=>import('./views/slider/AddsliderCateogry'));
 
 
 
@@ -74,9 +115,55 @@ const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   // Parampara Start
-  { path : '/pooja/pooja-category',name: 'Pooja Category', element: PoojaCategory },
-  { path : '/pooja/pooja-list',name: 'Pooja List', element: Pooja },
-  { path : '/pooja/pooja-booking',name: 'Pooja Booking', element: PoojaBooking },
+  //user
+  { path: '/user', name: 'User', element: Users},
+
+  //pandit
+
+  { path: '/pandit', name: 'Pandit', element:Pandit},
+ 
+
+  //only pooja 
+  { path: '/pooja/booking-list', name: 'Booking List', element:PoojaBookingList},
+  { path: '/pooja/pooja-list', name: 'Pooja List', element:  PoojaList },
+  { path: '/pooja/pooja-category', name: 'Pooja Category', element: PoojaCategory },
+
+
+   //pooja archana
+  { path: '/pooja-archana', name: 'Pooja Archana', element: PoojaArchana },
+  { path: '/pooja-archana-category', name: 'Pooja Archana Category', element: PoojaArchanaCategory },
+
+  //bhavya ayojan
+  { path: '/add-bhavya-ayojan', name: 'Add Bhavya Ayojan', element: addBhavyaAyojan },
+  { path: '/booking-list-bhavya-ayojan', name: 'Booking List Bhavya Ayojan', element: BookingListBhavyaAyojan },
+
+  //bhajan mandal
+  { path: '/add-bhajan-mandal', name: 'Add Bhajan Mandal', element: addBhajanMandal },
+  { path: '/list-bhajan-mandal', name: 'List Bhajan Mandal', element: listBhajanMandal },
+
+  //virtual services
+  { path: '/virtual-services', name: 'Virtual Services', element: virtualServices },
+  { path: '/virtual-services-request', name: 'Virtual Services Request', element: VirtualServicesRequest },
+
+  //daily pandit
+  { path: '/daily-pandit', name: 'Daily Pandit', element: dailyPandit },
+  { path: '/add-daily-pandit', name: 'Add Daily Pandit', element: addDailyPandit },
+  { path: '/subscription-details', name: 'Subscription Details', element: SubscriptionDetails },
+
+  //ecommerce
+  { path: '/product', name: 'Product', element: proudct },
+  { path: '/product-category', name: 'Product Category', element: ProductCategory },
+  { path: '/order', name: 'Order', element: Order },
+
+  //enquires
+
+  { path: '/enquiries', name: 'Enquiries List', element: Enqueries},
+
+  //slider
+
+  {path:'/slider',name:"Slider",element: Slider},
+   {path:'/slider/cateogry',name:"Slider Category",element:AddsliderCateogry},
+  
 
   // Parampara End
   { path: '/theme', name: 'Theme', element: Colors, exact: true },

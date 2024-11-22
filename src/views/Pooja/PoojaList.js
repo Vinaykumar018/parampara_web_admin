@@ -16,7 +16,7 @@ const PoojaList = () => {
         <>
             <CRow>
                 <CCol>
-                    
+                    hi from pooja list side
                 </CCol>
             </CRow>
         </>

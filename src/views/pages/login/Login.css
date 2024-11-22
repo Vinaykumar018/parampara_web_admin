@@ -1,0 +1,87 @@
+/* General Styles */
+.login-page-container {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin-right: 20px;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9;
+  /* filter: brightness(0.3); Darker background */
+}
+
+.card-container {
+  max-width: 400px;
+  width: 100%;
+  /* Default margin-right removed for smaller screens */
+}
+
+/* Apply margin-right for medium and larger screen sizes */
+@media (min-width: 768px) {
+  .card-container {
+    margin-right: 51px;
+  }
+}
+
+.card-container {
+  max-width: 400px;
+  width: 100%;
+  margin-right: 51px;
+}
+
+
+.card {
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.6); /* Dark background with opacity */
+}
+
+.card-body {
+  padding: 30px;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 500;
+}
+
+.text-muted {
+  font-size: 1rem;
+  color: #ccc; /* Light grey text */
+}
+
+.input-group-text {
+  display: flex;
+  align-items: center;
+  padding: 0.375rem 0.75rem;
+  height: calc(1.5em + 0.75rem + 2px);
+  background-color: #333; /* Dark background for input icon */
+}
+
+.input-group-text svg {
+  height: 1em;
+  width: 1em;
+  fill: #fff; /* White color for icons */
+}
+
+button {
+  font-size: 1.1rem;
+  background-color: #5A2D6B; /* Brinjal color for button */
+  border: none;
+}
+
+button:hover {
+  background-color: #8A3B6A; /* Lighter brinjal shade on hover */
+}
+
+@media (max-width: 768px) {
+  .card-container {
+    /* padding: 20px; */
+  }
+}
