@@ -1,142 +1,130 @@
-import React from 'react';
-import { useState } from 'react';
-import GetTable from '../dashboard/GetTable';
+import React, { useState, useEffect } from "react";
+import GetTable from "../dashboard/GetTable";
 
+const SliderList = () => {
+  const [categoryData, setCategoryData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [formData, setFormData] = useState({ name: "", image: "", category: "" });
 
-const AddsliderCateogry= () => {
-    const [showForm, setShowForm] = useState(false);
+  const apiUrl = "https://parampara-admin.vercel.app/api/slider";
 
-    const toggleForm = () => {
-      setShowForm((prev) => !prev);
+  // Fetch category data
+  useEffect(() => {
+    const fetchCategoryData = async () => {
+      try {
+        const response = await fetch(`${apiUrl}/all-category`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNoaXZhbnNodSIsImlhdCI6MTczMjE2NTMzOX0.YDu6P4alpQB5QL-74z1jO4LGfEwZA_n_Y29o512FrM8`,
+          },
+        });
+        const result = await response.json();
+        if (result.status === 1) {
+          setCategoryData(result.data);
+        }
+      } catch (error) {
+        console.error("Error fetching category data:", error);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    const usersData = [
-        { name: "Shivanshu", phone: "1234567890", email: "batham.shivanshu31@gmail.com" },
-        { name: "Chandni", phone: "9644554331", email: "chandniverma4478557@gmail.com" },
-        { name: "Chandni", phone: "6388482208", email: "chandniverma4478557@gmail.com" },
-        { name: "Rachit Tripathi", phone: "8601599299", email: "rachit.tripathi.75@gmail.com" },
-        { name: "Vinay Kumar", phone: "9336713280", email: "kumarvinay15381@gmail.com" },
-      ];
-    
-      // Table columns
-      const userColumns = [
-        { name: "Name", selector: (row) => row.name, sortable: true },
-        { name: "Phone", selector: (row) => row.phone },
-        { name: "Email", selector: (row) => row.email },
-      ];
-    
-    return (
-        <div className="container-fluid">
+    fetchCategoryData();
+  }, []);
 
-              {/* Add User Button */}
-              
-      <div className="text-end my-4">
-        <button className="btn btn-primary btn-sm" onClick={toggleForm}>
-          {showForm ? "Add User" : "Add User"}
-        </button>
-      </div>
+  // Handle form submission to add a new category
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-       {/* Conditionally Render Form */}
-       {showForm && (
-  <section>
-    <div className="row justify-content-center">
-      <div className="col-md-12">
-        <div className="card shadow-lg mb-4">
-          <div className="card-header bg-primary text-white">
-            <h4 className="text-uppercase text-center">Add User</h4>
-          </div>
-          <div className="card-body">
-            {/* Form Fields */}
-            <div className="row">
-              <div className="col-md-6 mb-3">
-                <label className="form-label">User Name</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Enter Name Of User"
-                />
-              </div>
-              <div className="col-md-6 mb-3">
-                <label className="form-label">Mobile</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Enter Mobile Of User"
-                />
-              </div>
-            
-            </div>
+    const formDataToSend = new FormData();
+    formDataToSend.append("name", formData.name);
+    formDataToSend.append("image", formData.image);
+    formDataToSend.append("category", formData.category);
 
-            <div className="row">
-              <div className="col-md-6 mb-3">
-                <label className="form-label">Email</label>
-                <input
-                  type="email"
-                  className="form-control"
-                  placeholder="Enter Email Of User"
-                />
-              </div>
-              <div className="col-md-6 mb-3">
-                <label className="form-label">Address</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Enter Address"
-                />
-              </div>
-            </div>
+    try {
+      const response = await fetch(`${apiUrl}/create-category`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNoaXZhbnNodSIsImlhdCI6MTczMjE2NTMzOX0.YDu6P4alpQB5QL-74z1jO4LGfEwZA_n_Y29o512FrM8`,
+        },
+        body: formDataToSend, // Send the FormData object with the image
+      });
+      const result = await response.json();
+      console.log(result);
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    }
+  };
 
-            <div className="row">
-              <div className="col-md-6 mb-3">
-                <label className="form-label">Password</label>
-                <input
-                  type="password"
-                  className="form-control"
-                  placeholder="Enter Password Of User"
-                />
-              </div>
-              <div className="col-md-6 mb-3">
-                <label className="form-label">User Image</label>
-                <input type="file" className="form-control" />
-              </div>
-            </div>
+  // Table columns for Categories
+  const columns = [
+    { name: "ID", selector: (row) => row._id },
+    { name: "Name", selector: (row) => row.name },
+    {
+      name: "Image",
+      selector: (row) =>
+        row.image ? (
+          <img
+            src={`${row.image}`} // Adjusted to display uploaded image URL
+            alt={row.name}
+            width={50}
+            height={30}
+          />
+        ) : (
+          "N/A"
+        ),
+    },
+    { name: "Created At", selector: (row) => new Date(row.created_at).toLocaleString() },
+  ];
 
-            {/* Submit Button */}
-            <div className="text-center">
-              <button type="submit" className="btn btn-primary btn-sm px-5">
-                Submit
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+  return (
+    <div>
+      {/* Form for Adding New Category */}
+      <form onSubmit={handleSubmit} style={{ marginBottom: "20px" }}>
+        <h3>Add New Category</h3>
+        <input
+          type="text"
+          placeholder="Category Name"
+          value={formData.name}
+          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+          required
+        />
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => {
+            const file = e.target.files[0];
+            if (file) {
+              setFormData({ ...formData, image: file });
+            }
+          }}
+          required
+        />
+        <input
+          type="text"
+          placeholder="Category"
+          value={formData.category}
+          onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+          required
+        />
+        <button type="submit">Add Category</button>
+      </form>
+
+      {/* Loading Indicator or Table */}
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <GetTable
+          data={categoryData} // Pass fetched category data
+          columns={columns}
+          title="Category List"
+        />
+      )}
     </div>
-  </section>)}
-
-  <GetTable data={usersData} columns={userColumns} title="User Contact Information" />
-</div>
-
-    );
+  );
 };
 
-const styles = {
-    container: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-        backgroundColor: '#f8f9fa',
-        color: '#333',
-    },
-    heading: {
-        fontSize: '2rem',
-        marginBottom: '1rem',
-    },
-    message: {
-        fontSize: '1.2rem',
-        color: '#555',
-    },
-};
+export default SliderList;
 
-export default AddsliderCateogry;
+

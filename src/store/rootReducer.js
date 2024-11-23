@@ -8,6 +8,7 @@ import authReducer from '../slices/authSlice';
 import userReducer from '../slices/userSlice'; // Adjust path as necessary
 import sidebarReducer from '../slices/sidebarSlice';
 
+import sliderReducer from "../slices/sliderSlice";
 // Legacy reducer
 const initialState = {
   sidebarShow: true,
@@ -33,6 +34,8 @@ const rootReducer = combineReducers({
   auth: authReducer,
   users: userReducer,
   sidebar: sidebarReducer,
+  slider: sliderReducer,
+
 });
 
 // Create a single store using Redux Toolkit
