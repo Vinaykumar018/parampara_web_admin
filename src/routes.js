@@ -98,6 +98,7 @@ const Validation = React.lazy(() => import('./views/forms/validation/Validation'
 
 const Charts = React.lazy(() => import('./views/charts/Charts'))
 
+const UpdatePoojaList=React.lazy(()=>import ('./views/Pooja/UpdatePoojaList'))
 // Icons
 const CoreUIIcons = React.lazy(() => import('./views/icons/coreui-icons/CoreUIIcons'))
 const Flags = React.lazy(() => import('./views/icons/flags/Flags'))
@@ -126,6 +127,7 @@ const routes = [
   //only pooja 
   { path: '/pooja/booking-list', name: 'Booking List', element:PoojaBookingList},
   { path: '/pooja/pooja-list', name: 'Pooja List', element:  PoojaList },
+  { path: '/pooja/pooja-update-list', name: 'Pooja Update List', element:  UpdatePoojaList },
   { path: '/pooja/pooja-category', name: 'Pooja Category', element: PoojaCategory },
 
 

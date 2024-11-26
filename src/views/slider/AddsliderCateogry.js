@@ -7,7 +7,8 @@ const SliderList = () => {
   const [formData, setFormData] = useState({ name: "", image: "", category: "" });
 
   const apiUrl = "https://parampara-admin.vercel.app/api/slider";
-
+  const [showForm, setShowForm] = useState(false);
+ 
   // Fetch category data
   useEffect(() => {
     const fetchCategoryData = async () => {
@@ -80,38 +81,74 @@ const SliderList = () => {
 
   return (
     <div>
-      {/* Form for Adding New Category */}
-      <form onSubmit={handleSubmit} style={{ marginBottom: "20px" }}>
-        <h3>Add New Category</h3>
-        <input
-          type="text"
-          placeholder="Category Name"
-          value={formData.name}
-          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-          required
-        />
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => {
-            const file = e.target.files[0];
-            if (file) {
-              setFormData({ ...formData, image: file });
-            }
-          }}
-          required
-        />
-        <input
-          type="text"
-          placeholder="Category"
-          value={formData.category}
-          onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-          required
-        />
-        <button type="submit">Add Category</button>
-      </form>
 
-      {/* Loading Indicator or Table */}
+<div className="container-fluid">
+      <div className="text-end my-4">
+        <button
+          className="btn btn-primary btn-sm"
+          onClick={() => setShowForm((prev) => !prev)}
+        >
+          {showForm ? "Add Slider Category" : "Add Slider Category"}
+        </button>
+      </div>
+
+      {showForm && (
+        <section>
+          <div className="row justify-content-center">
+            <div className="col-md-10 col-lg-8">
+              <div className="card shadow-lg mb-4">
+                <div className="card-header bg-primary text-white">
+                  <h4 className="text-uppercase text-center">Add New Slider Category</h4>
+                </div>
+                <div className="card-body">
+                  <form onSubmit={handleSubmit}>
+                    {/* Name Input */}
+                    <div className="mb-3">
+                      <label className="form-label">Category Name</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Enter Slider Cateogory Name"
+                        value={formData.name}
+                        onChange={(e) =>
+                          setFormData({ ...formData, name: e.target.value })
+                        }
+                        required
+                      />
+                    </div>
+
+                    {/* Image Input */}
+                    <div className="mb-3">
+                      <label className="form-label">Cateogry Image</label>
+                      <input
+                        type="file"
+                        className="form-control"
+                        accept="image/*"
+                        onChange={(e) => {
+                          const file = e.target.files[0];
+                          if (file) {
+                            setFormData({ ...formData, image: file });
+                          }
+                        }}
+                        required
+                      />
+                    </div>
+
+                 
+                    <div className="text-center">
+                      <button type="submit" className="btn btn-primary">
+                        Add Category
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+    </div>
+     
       {loading ? (
         <p>Loading...</p>
       ) : (
