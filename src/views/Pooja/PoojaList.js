@@ -7,6 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import './poojaList.css';
 
+import { useNavigate } from "react-router-dom";
 const PoojaList = () => {
   // State for Pooja data and form data
   const [poojaData, setPoojaData] = useState([]);
@@ -22,7 +23,7 @@ const PoojaList = () => {
     long_discription: RichTextEditor.createEmptyValue(),
   });
   const [imagePreview, setImagePreview] = useState(null);
-
+  const navigate = useNavigate(); // useNavigate hook
   // Fetch Pooja data from API
   useEffect(() => {
     const fetchPoojaData = async () => {
@@ -102,8 +103,7 @@ const PoojaList = () => {
   };
 
   const handleEdit = (row) => {
-    console.log(row)
-    // You can pre-populate the form with the selected row's data for editing
+    // Set form data for editing
     setFormData({
       pooja_name: row.pooja_name,
       pooja_category: row.pooja_category,
@@ -114,8 +114,11 @@ const PoojaList = () => {
       short_discription: row.short_discription,
       long_discription: RichTextEditor.createValueFromString(row.long_discription, 'html'),
     });
-    // Optionally, you could also scroll to the form or trigger a modal to indicate editing
+  
+    // Navigate to the update page and pass the pooja ID in the URL
+    navigate(`/pooja/pooja-update-list/${row}`);  // Assuming `row.id` holds the unique ID of the pooja
   };
+  
   
   const handleDelete = async (id) => {
     try {
@@ -303,6 +306,7 @@ const PoojaList = () => {
         {loading ? <p>Loading...</p> : <GetTable columns={columns} data={poojaData} />}
       </div>
       <ToastContainer />
+      
     </section>
   );
 };

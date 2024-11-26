@@ -127,7 +127,7 @@ const routes = [
   //only pooja 
   { path: '/pooja/booking-list', name: 'Booking List', element:PoojaBookingList},
   { path: '/pooja/pooja-list', name: 'Pooja List', element:  PoojaList },
-  { path: '/pooja/pooja-update-list', name: 'Pooja Update List', element:  UpdatePoojaList },
+  { path: '/pooja/pooja-update-list/:id', name: 'Pooja Update List', element:  UpdatePoojaList },
   { path: '/pooja/pooja-category', name: 'Pooja Category', element: PoojaCategory },
 
 
