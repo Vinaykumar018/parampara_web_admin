@@ -228,3 +228,6 @@ const GetTable = ({ data, columns, title }) => {
 };
 
 export default GetTable;
+
+
+
