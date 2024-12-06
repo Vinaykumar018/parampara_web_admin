@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { fetchPoojaData, deletePooja } from '../Services/poojaApiService';
 import { useNavigate } from "react-router-dom";
+import { CSpinner} from '@coreui/react'
 
 const PoojaList = () => {
   const [poojaData, setPoojaData] = useState([]);
@@ -61,6 +62,7 @@ const PoojaList = () => {
   };
 
   const columns = [
+    { name: "S No.", selector: (row,index)=> index+1 },
     { name: "ID", selector: (row) => row._id },
     { name: "Pooja Name", selector: (row) => row.pooja_name },
     { name: "Category", selector: (row) => row.pooja_category },
@@ -108,7 +110,23 @@ const PoojaList = () => {
     <section>
       <div className="container py-5">
         <PoojaForm />
-        {loading ? <p>Loading...</p> : <GetTable columns={columns} data={poojaData} />}
+        <div className="card shadow-lg mb-4 border-0">
+        <div class="card-header bg-dark text-white py-2">
+          <div className="d-flex align-items-center justify-content-between">
+            <h6 className="mb-0">Pooja Category</h6>
+            <div>
+              <a href="javascript:void(0)" className="btn btn-success text-light btn-sm">Add Pooja</a>
+            </div>
+          </div> 
+        </div>
+        {loading ? (
+        <div className="justify-content-center d-flex p-5"> 
+            <CSpinner color="primary" />
+          </div>
+        ) : ( 
+          <GetTable columns={columns} data={poojaData} />
+        )}
+        </div>
       </div>
       <ConfirmDeleteModal
         show={showModal}

@@ -32,13 +32,6 @@ const Users = () => {
 
   return (
     <div className="container-fluid">
-      {/* Add User Button */}
-      <div className="text-end my-4">
-        <button className="btn btn-primary btn-sm" onClick={toggleForm}>
-          {showForm ? 'Hide Form' : 'Add User'}
-        </button>
-      </div>
-
       {/* Conditionally Render Form */}
       {showForm && (
         <section>

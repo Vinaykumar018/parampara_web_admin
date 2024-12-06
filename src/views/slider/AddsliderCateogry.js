@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { CButton, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle, CSpinner,
+} from '@coreui/react'
 import GetTable from "../dashboard/GetTable";
-
 const SliderList = () => {
   const [categoryData, setCategoryData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({ name: "", image: "", category: "" });
-
   const apiUrl = "https://parampara-admin.vercel.app/api/slider";
-  const [showForm, setShowForm] = useState(false);
- 
-  // Fetch category data
   useEffect(() => {
     const fetchCategoryData = async () => {
       try {
@@ -30,19 +27,14 @@ const SliderList = () => {
         setLoading(false);
       }
     };
-
     fetchCategoryData();
   }, []);
-
-  // Handle form submission to add a new category
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const formDataToSend = new FormData();
     formDataToSend.append("name", formData.name);
     formDataToSend.append("image", formData.image);
     formDataToSend.append("category", formData.category);
-
     try {
       const response = await fetch(`${apiUrl}/create-category`, {
         method: "POST",
@@ -57,9 +49,8 @@ const SliderList = () => {
       console.error("Error uploading image:", error);
     }
   };
-
-  // Table columns for Categories
   const columns = [
+    { name: "S No.", selector: (row,index)=>index+1 },
     { name: "ID", selector: (row) => row._id },
     { name: "Name", selector: (row) => row.name },
     {
@@ -76,81 +67,75 @@ const SliderList = () => {
           "N/A"
         ),
     },
+    { name: "Status", selector:(row)=> row.status},
     { name: "Created At", selector: (row) => new Date(row.created_at).toLocaleString() },
+    { name: "Action", selector:(row)=>(
+      <div>
+        <CButton color="danger text-light">Delete</CButton>
+        <CButton color="info text-light">Edit</CButton>
+      </div>
+    )},
   ];
-
+  const VerticallyCentered = () => {
+    const [visible, setVisible] = useState(false)
+    return (
+      <>
+        <CButton color="primary" onClick={() => setVisible(!visible)}>
+          Add Category
+        </CButton>
+        <CModal alignment="center" visible={visible} onClose={() => setVisible(false)}>
+          <CModalHeader>
+            <CModalTitle>Add Category</CModalTitle>
+          </CModalHeader>
+          <form onSubmit={handleSubmit}>
+            <CModalBody>
+             {/* Name Input */}
+              <div className="mb-3">
+                <label className="form-label">Category Name</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Enter Slider Cateogory Name"
+                  value={formData.name}
+                  onChange={(e) =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }  required/>
+              </div>
+              <div className="mb-3">
+                <label className="form-label">Cateogry Image</label>
+                  <input type="file" className="form-control" accept="image/*"
+                   onChange={(e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                    setFormData({ ...formData, image: file });
+                   }
+                  }}  required/>
+              </div>
+            </CModalBody>
+            <CModalFooter>
+              <CButton color="danger" type="reset" onClick={() => setVisible(false)}>
+                Close
+              </CButton>
+              <CButton color="primary" type="submit">Save</CButton>
+            </CModalFooter>
+          </form>
+        </CModal>
+      </>
+    )
+  }
   return (
     <div>
-
-<div className="container-fluid">
-      <div className="text-end my-4">
-        <button
-          className="btn btn-primary btn-sm"
-          onClick={() => setShowForm((prev) => !prev)}
-        >
-          {showForm ? "Add Slider Category" : "Add Slider Category"}
-        </button>
+    <div className="card shadow-lg mb-4 border-0">
+      <div class="card-header bg-dark text-white py-2">
+        <div className="d-flex align-items-center justify-content-between">
+          <h6 className="mb-0">Slider Category</h6>
+          <div>{VerticallyCentered()}</div>
+        </div> 
       </div>
-
-      {showForm && (
-        <section>
-          <div className="row justify-content-center">
-            <div className="col-md-10 col-lg-8">
-              <div className="card shadow-lg mb-4">
-                <div className="card-header bg-primary text-white">
-                  <h4 className="text-uppercase text-center">Add New Slider Category</h4>
-                </div>
-                <div className="card-body">
-                  <form onSubmit={handleSubmit}>
-                    {/* Name Input */}
-                    <div className="mb-3">
-                      <label className="form-label">Category Name</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Enter Slider Cateogory Name"
-                        value={formData.name}
-                        onChange={(e) =>
-                          setFormData({ ...formData, name: e.target.value })
-                        }
-                        required
-                      />
-                    </div>
-
-                    {/* Image Input */}
-                    <div className="mb-3">
-                      <label className="form-label">Cateogry Image</label>
-                      <input
-                        type="file"
-                        className="form-control"
-                        accept="image/*"
-                        onChange={(e) => {
-                          const file = e.target.files[0];
-                          if (file) {
-                            setFormData({ ...formData, image: file });
-                          }
-                        }}
-                        required
-                      />
-                    </div>
-
-                 
-                    <div className="text-center">
-                      <button type="submit" className="btn btn-primary">
-                        Add Category
-                      </button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
-    </div>
-     
       {loading ? (
-        <p>Loading...</p>
+          <div className="justify-content-center d-flex p-5"> 
+              <CSpinner color="primary" />
+          </div>
       ) : (
         <GetTable
           data={categoryData} // Pass fetched category data
@@ -158,6 +143,7 @@ const SliderList = () => {
           title="Category List"
         />
       )}
+      </div>
     </div>
   );
 };

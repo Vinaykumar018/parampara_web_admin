@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { CButton, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle, CSpinner,
+} from '@coreui/react'
+
 import { createCategory } from "../Services/poojaApiService";
 
 const PoojaCategoryForm = ({ onCategoryAdded }) => {
@@ -36,19 +39,19 @@ const PoojaCategoryForm = ({ onCategoryAdded }) => {
       alert("Failed to create category. Please try again.");
     }
   };
-
+  const [visible, setVisible] = useState(false)
   return (
-    <div className="row justify-content-center">
-  <div className="col-12">
-    <div className="card shadow-lg mb-4 border-0">
-      <div className="card-header text-center bg-dark text-white">
-        <h4 className="text-uppercase font-weight-bold">Add New Category</h4>
-      </div>
-      <div className="card-body bg-light">
-        <form onSubmit={handleSubmit}>
-          <div className="row">
-            {/* Category Name */}
-            <div className="col-md-6 mb-3">
+    <>
+        <CButton color="primary" onClick={() => setVisible(!visible)}>
+          Add Category
+        </CButton>
+        <CModal alignment="center" visible={visible} onClose={() => setVisible(false)}>
+          <CModalHeader>
+            <CModalTitle>Add Category</CModalTitle>
+          </CModalHeader>
+          <form onSubmit={handleSubmit}>
+            <CModalBody>
+            <div className="mb-3">
               <label className="form-label">Category Name</label>
               <input
                 type="text"
@@ -61,9 +64,7 @@ const PoojaCategoryForm = ({ onCategoryAdded }) => {
                 required
               />
             </div>
-
-            {/* Category Image */}
-            <div className="col-md-6 mb-3">
+            <div className="mb-3">
               <label className="form-label">Category Image</label>
               <input
                 type="file"
@@ -74,14 +75,11 @@ const PoojaCategoryForm = ({ onCategoryAdded }) => {
                 }
                 required
               />
-            </div>
-
-            {/* Short Description */}
-            <div className="col-md-8 mb-3">
+              <div className="mb-3">
               <label className="form-label">Short Description</label>
               <textarea
                 className="form-control"
-                rows="2"
+                rows="4"
                 placeholder="Enter Short Description"
                 value={formData.short_discription}
                 onChange={(e) =>
@@ -90,35 +88,18 @@ const PoojaCategoryForm = ({ onCategoryAdded }) => {
                 required
               />
             </div>
-
-            {/* Long Description */}
-            <div className="col-12 mb-3">
-              <label className="form-label">Long Description</label>
-              <textarea
-                className="form-control"
-                rows="4"
-                placeholder="Enter Long Description"
-                value={formData.long_discription}
-                onChange={(e) =>
-                  setFormData({ ...formData, long_discription: e.target.value })
-                }
-                required
-              />
             </div>
-
-            {/* Submit Button */}
-            <div className="col-12 text-center">
-              <button type="submit" className="me-2 btn btn-dark btn-lg">
-                Add Category
-              </button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
+            </CModalBody>
+            <CModalFooter>
+              <CButton color="danger text-white" type="reset" onClick={() => setVisible(false)}>
+                  Close
+              </CButton>
+              <CButton color="success text-white" type="submit">Save</CButton>
+            </CModalFooter>
+          </form>
+          
+        </CModal>
+      </>
   );
 };
 
