@@ -202,3 +202,45 @@ const ConfirmDeleteModal = ({ show, onClose, onConfirm }) => {
 };
 
 export default PoojaList;
+
+// import React, { useState } from 'react';
+
+// const PoojaList = () => {
+//   // State to hold the array of input fields
+  // const [inputFields, setInputFields] = useState([]);
+
+//   // Function to handle adding a new input field
+  const handleAddInput = () => {
+    setInputFields([...inputFields, '']);
+  };
+
+//   // Function to handle input change
+  // const handleInputBTNadd = (index, value) => {
+  //   const newInputFields = [...inputFields];
+  //   newInputFields[index] = value;
+  //   setInputFields(newInputFields);
+  // };
+
+//   return (
+    // <div>
+    //   <h3>Dynamic Input Fields</h3>
+    //   {inputFields.map((inputValue, index) => (
+    //     <div key={index} className="mb-3">
+    //       <label className="form-label">Samgri {index + 1}</label>
+    //       <input
+    //         type="text"
+    //         className="form-control"
+    //         value={inputValue}
+    //         onChange={(e) => handleInputBTNadd(index, e.target.value)}
+    //       />
+    //     </div>
+    //   ))}
+    //   <button className="btn btn-primary mt-2" onClick={handleAddInput}>
+    //    add more
+    //   </button>
+    // </div>
+//   );
+// };
+
+// export default PoojaList;
+

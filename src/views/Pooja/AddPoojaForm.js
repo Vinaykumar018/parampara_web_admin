@@ -1,10 +1,11 @@
+
+
 import React, { useState } from "react";
 import RichTextEditor from "react-rte";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { createPooja } from '../Services/poojaApiService'; // Make sure this import path is correct
+import { createPooja } from '../Services/poojaApiService'; // Ensure this import path is correct
 import { useNavigate } from "react-router-dom";
-
 
 const PoojaForm = () => {
   const [isSamagriChecked, setIsSamagriChecked] = useState(false);
@@ -19,7 +20,8 @@ const PoojaForm = () => {
     long_discription: RichTextEditor.createEmptyValue(),
     samagriName: "",
     samagriPrice: "",
-    samagri_discription: ""
+    samagri_discription: "",
+    samagridynamicFields: [] // Array to hold dynamic input fields data
   });
   const [imagePreview, setImagePreview] = useState(null);
   const navigate = useNavigate();
@@ -46,27 +48,47 @@ const PoojaForm = () => {
     setFormData((prevData) => ({ ...prevData, [fieldName]: value }));
   };
 
+  // Function to add a new dynamic field with proper initialization
+// Function to add a new dynamic field with an incremented name
+const addDynamicField = () => {
+  const nextFieldIndex = formData.samagridynamicFields.length + 1;
+  setFormData((prevData) => ({
+    ...prevData,
+    samagridynamicFields: [
+      ...prevData.samagridynamicFields,
+      { [`samagri${nextFieldIndex}`]: "" }, // Only one input field per click
+    ],
+  }));
+};
+
+// Function to handle changes in the input field
+const handleDynamicFieldChange = (index, value) => {
+  const newFields = [...formData.samagridynamicFields];
+  newFields[index][`samagri${index + 1}`] = value;
+  setFormData((prevData) => ({
+    ...prevData,
+    samagridynamicFields: newFields,
+  }));
+};
+
+
+
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Create a FormData object for submission
     const data = new FormData();
     Object.keys(formData).forEach((key) => {
-      data.append(
-        key,
-        key === "short_discription" || key === "long_discription"
-          ? formData[key].toString("html")
-          : formData[key]
-      );
+      if (key === "long_discription" || key === "short_discription") {
+        data.append(key, formData[key].toString("html"));
+      } else {
+        data.append(key, formData[key]);
+      }
     });
-    console.log(data)
+   
 
     try {
       await createPooja(data);
       toast.success("Pooja created successfully!");
-
-      // Reset form after successful submission
       setFormData({
         pooja_name: "",
         pooja_category: "",
@@ -78,7 +100,8 @@ const PoojaForm = () => {
         long_discription: RichTextEditor.createEmptyValue(),
         samagriName: "",
         samagriPrice: "",
-        samagri_discription: ""
+        samagri_discription: "",
+        samagridynamicFields: []
       });
       setImagePreview(null);
     } catch (error) {
@@ -87,15 +110,15 @@ const PoojaForm = () => {
     }
   };
 
-    const handleCheckboxChange = (e) => {
+  // Handle checkbox change for samagri status
+  const handleCheckboxChange = (e) => {
     const checked = e.target.checked;
     setIsSamagriChecked(checked);
     setFormData((prevData) => ({
       ...prevData,
-      pooja_Samegristatus: checked ? "1" : "0",
+      pooja_Samegristatus: checked ? "1" : "0"
     }));
   };
-
 
   return (
     <div className="card-body bg-light">
@@ -223,30 +246,13 @@ const PoojaForm = () => {
                   <div className="col-md-6 mb-3">
                     <label className="form-label">Samagri Status</label>
                     <div className="form-check">
-                      {/* <input
-                       onChange={handleCheckboxChange}
+                      <input
                         type="checkbox"
                         className="form-check-input"
                         id="pooja_Samegristatus"
-                        name="pooja_Samegristatus"
-                        checked={formData.pooja_Samegristatus === '1'}
-                        onChange={(e) => {
-                          setFormData((prevData) => ({
-                            ...prevData,
-                            pooja_Samegristatus: e.target.checked ? '1' : '0',
-                          }));
-                          setIsSamagriChecked(e.target.checked);
-                        }}
-
-                      /> */}
-
-<input
-              type="checkbox"
-              className="form-check-input"
-              id="pooja_Samegristatus"
-              checked={isSamagriChecked}
-              onChange={handleCheckboxChange}
-            />
+                        checked={isSamagriChecked}
+                        onChange={handleCheckboxChange}
+                      />
                       <label className="form-check-label" htmlFor="pooja_Samegristatus">
                         Include Samagri
                       </label>
@@ -256,61 +262,87 @@ const PoojaForm = () => {
                   {/* Conditionally Render Samagri Fields */}
                   {isSamagriChecked && (
                     <>
-                      {/* Samagri Name */}
                       <div className="row">
-                      <div className="col-md-6 mb-3">
-                        <label className="form-label">Samagri Name</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          name="samagriName"
-                          placeholder="Enter Samagri Name"
-                          value={formData.samagriName}
-                          onChange={handleInputChange}
-                        />
-                      </div>
+                        <div className="col-md-6 mb-3">
+                          <label className="form-label">Samagri Name</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            name="samagriName"
+                            placeholder="Enter Samagri Name"
+                            value={formData.samagriName}
+                            onChange={handleInputChange}
+                            required
+                          />
+                        </div>
 
-                      {/* Samagri Price */}
-                      <div className="col-md-6 mb-3">
-                        <label className="form-label">Samagri Price</label>
-                        <input
-                          type="number"
-                          className="form-control"
-                          name="samagriPrice"
-                          placeholder="Enter Samagri Price"
-                          value={formData.samagriPrice}
-                          onChange={handleInputChange}
-                        />
-                      </div>
+                        <div className="col-md-6 mb-3">
+                          <label className="form-label">Samagri Price</label>
+                          <input
+                            type="number"
+                            className="form-control"
+                            name="samagriPrice"
+                            placeholder="Enter Samagri Price"
+                            value={formData.samagriPrice}
+                            onChange={handleInputChange}
+                            required
+                          />
+                        </div>
 
-                      {/* Samagri Description */}
-                      <div className="col-md-12 mb-3">
-                        <label className="form-label">Samagri Description</label>
-                        <textarea
-                          className="form-control"
-                          rows="3"
-                          placeholder="Enter Samagri Description"
-                          name="samagri_discription"
-                          value={formData.samagri_discription}
-                          onChange={handleInputChange}
-                        />
+                        <div className="col-md-12 mb-3">
+                          <label className="form-label">Samagri Description</label>
+                          <textarea
+                            className="form-control"
+                            rows="3"
+                            placeholder="Enter Samagri Description"
+                            name="samagri_discription"
+                            value={formData.samagri_discription}
+                            onChange={handleInputChange}
+                            required
+                          />
+                        </div>
                       </div>
-                      </div>
+                      {/* Add More Fields Button */}
+                   
+
+                      {/* Render Dynamic Samagri Fields */}
+                      {/* Render Dynamic Samagri Fields */}
+                      {formData.samagridynamicFields.map((field, index) => {
+        const fieldName = `samagri${index + 1}`; // Dynamic field name
+
+        return (
+          <div key={index} className="mb-3">
+            <label className="form-label">Samagri {index + 1} - Name</label>
+            <input
+              type="text"
+              className="form-control"
+              placeholder={`Enter Samagri ${index + 1} Name`}
+              value={field[fieldName]}
+              onChange={(e) => handleDynamicFieldChange(index, e.target.value)}
+            />
+          </div>
+        );
+      })}
+
+{/* <button
+                        type="button"
+                        className="btn btn-outline-primary mb-3 btn-sm"
+                        onClick={addDynamicField}
+                      >
+                        add more
+                      </button> */}
+                        <div className="text-start">
+  <button type="button"  className="btn btn-outline-success mb-3 btn-sm" onClick={addDynamicField}>add more</button>
+  </div>
+
                     </>
-
                   )}
-
-                  {/* Submit Button */}
-                  <div className="col-md-12 mt-3">
-                    {/* <button type="submit" className="btn btn-primary w-100">
-                      Submit
-                    </button> */}
-
-<div className="text-end">
-  <button type="submit" className="me-2 btn btn-dark btn-sm">Add Pooja</button>
- </div>
-                  </div>
                 </div>
+
+                {/* Submit Button */}
+                <div className="text-end">
+  <button type="submit" className="me-2 btn btn-dark btn-sm">Add Pooja</button>
+  </div>
               </form>
             </div>
           </div>
@@ -322,3 +354,5 @@ const PoojaForm = () => {
 };
 
 export default PoojaForm;
+
+
