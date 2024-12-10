@@ -4,15 +4,22 @@ import GetTable from "../dashboard/GetTable";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { fetchPoojaData, deletePooja } from '../Services/poojaApiService';
-import { useNavigate } from "react-router-dom";
+
 import { CSpinner} from '@coreui/react'
 
+import { useNavigate } from 'react-router-dom';
 const PoojaList = () => {
+ 
+  const navigate = useNavigate();
+
+  const navigateToAddPooja = () => {
+    navigate('/pooja/add-pooja');
+  };
   const [poojaData, setPoojaData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [poojaToDelete, setPoojaToDelete] = useState(null);
-  const navigate = useNavigate();
+
 
   useEffect(() => {
     const getData = async () => {
@@ -63,7 +70,7 @@ const PoojaList = () => {
 
   const columns = [
     { name: "S No.", selector: (row,index)=> index+1 },
-    { name: "ID", selector: (row) => row._id },
+    // { name: "ID", selector: (row) => row._id },
     { name: "Pooja Name", selector: (row) => row.pooja_name },
     { name: "Category", selector: (row) => row.pooja_category },
     { name: "Price (With Samagri)", selector: (row) => row.price_withSamagri },
@@ -108,15 +115,24 @@ const PoojaList = () => {
 
   return (
     <section>
-      <div className="container py-5">
-        <PoojaForm />
+      <div className="container ">
+        {/* <PoojaForm /> */}
         <div className="card shadow-lg mb-4 border-0">
-        <div class="card-header bg-dark text-white py-2">
+        <div class="card-header bg-dark text-white">
           <div className="d-flex align-items-center justify-content-between">
-            <h6 className="mb-0">Pooja Category</h6>
-            <div>
+            <h6 className="mb-0">Pooja List</h6>
+            {/* <div>
               <a href="javascript:void(0)" className="btn btn-success text-light btn-sm">Add Pooja</a>
-            </div>
+            </div> */}
+              <div>
+      <a
+        href="javascript:void(0)"
+        className="btn btn-warning text-dark btn-sm"
+        onClick={navigateToAddPooja}
+      >
+        Add Pooja
+      </a>
+    </div>
           </div> 
         </div>
         {loading ? (

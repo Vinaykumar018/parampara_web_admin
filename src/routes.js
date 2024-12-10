@@ -4,6 +4,7 @@ import EnquiriesList from './views/enquries/EnquiriesList';
 
 // Parmpara Admin Routes
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'));
+const PoojaForm=React.lazy(()=>import ('./views/Pooja/AddPoojaForm'))
 
 
 //users
@@ -129,6 +130,7 @@ const routes = [
   { path: '/pooja/pooja-list', name: 'Pooja List', element:  PoojaList },
   { path: '/pooja/pooja-update-list/:id', name: 'Pooja Update List', element:  UpdatePoojaList },
   { path: '/pooja/pooja-category', name: 'Pooja Category', element: PoojaCategory },
+  { path: '/pooja/add-pooja', name: 'Add New Pooja', element: PoojaForm },
 
 
    //pooja archana

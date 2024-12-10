@@ -83,8 +83,8 @@ const PoojaForm = () => {
      <div className="row justify-content-center">
           <div className="col-12">
             <div className="card shadow-lg mb-4 border-0">
-              <div className="card-header text-center bg-dark text-white">
-                <h4 className="text-uppercase font-weight-bold">Add New Pooja</h4>
+              <div className="card-header text-left bg-dark text-white">
+                <h6 className="text-Capitalize">Add New Pooja</h6>
               </div>
               <div className="card-body bg-light">
                 <form onSubmit={handleSubmit}>
@@ -181,11 +181,25 @@ const PoojaForm = () => {
                     {/* Long Description */}
                     <div className="mb-3">
                       <label className="form-label">Long Description</label>
-                      <RichTextEditor
+                      {/* <RichTextEditor
                         editorStyle={{ minHeight: "120px", backgroundColor: "#f4f4f4", border: "1px solid #ccc", color: "#333" }}
                         value={formData.long_discription}
                         onChange={(value) => handleEditorChange(value, "long_discription")}
-                      />
+                        
+                      /> */}
+                      <RichTextEditor
+  editorStyle={{
+    minHeight: "120px",
+    backgroundColor: "#f4f4f4",
+    border: "1px solid #ccc",
+    color: "#333",
+    padding: "10px", // Add padding to make the empty area clickable
+    cursor: "pointer",  // Ensure a text cursor appears everywhere
+  }}
+  value={formData.long_discription}
+  onChange={(value) => handleEditorChange(value, "long_discription")}
+/>
+
                     </div>
                     <div className="col-md-6 mb-3">
   <label className="form-label">Samagri Status</label>
@@ -255,9 +269,10 @@ const PoojaForm = () => {
       </>
     )}
           
-                    <div className="d-flex justify-content-evenly">
-                               <button type="submit" className="me-2 btn btn-dark btn-lg">Add Pooja</button>
-                    </div>
+          <div className="text-end">
+  <button type="submit" className="me-2 btn btn-dark btn-sm">Add Pooja</button>
+</div>
+
                   </div>
                 </form>
               </div>

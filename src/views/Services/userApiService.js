@@ -1,6 +1,6 @@
 // userApiService.js
 
-// const BASE_URL = 'https://parampara-admin.vercel.app/api/user';
+const BASE_URL = 'https://parampara-admin.vercel.app/api/user';
 
 
 const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNoaXZhbnNodSIsImlhdCI6MTczMjE2NTMzOX0.YDu6P4alpQB5QL-74z1jO4LGfEwZA_n_Y29o512FrM8';
