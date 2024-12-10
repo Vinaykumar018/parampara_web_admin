@@ -53,8 +53,8 @@ const Enqueries=React.lazy(()=>import('./views/enquries/EnquiriesList'))
 
 
 //slider 
-const Slider=React.lazy(()=>import('./views/slider/slider'));
-const AddsliderCateogry=React.lazy(()=>import('./views/slider/AddsliderCateogry'));
+const Slider=React.lazy(()=>import('./views/slider/MainSliders'));
+const AddsliderCateogry=React.lazy(()=>import('./views/slider/SliderCategories'));
 
 
 

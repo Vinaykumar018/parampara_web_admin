@@ -213,7 +213,7 @@ const _nav = [
       },
       {
         component: CNavItem,
-        name: 'Add Slider',
+        name: 'Slider ',
         to: '/slider',
       }],
   },
