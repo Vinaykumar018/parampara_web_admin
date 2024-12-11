@@ -17,28 +17,7 @@ const UpdatePoojaList = () => {
   const [imagePreview, setImagePreview] = useState('');
   
   // Fetch data when the component mounts (using the `id`)
-  useEffect(() => {
-    const fetchPoojaData = async () => {
-      try {
-        const response = await fetch(`http://localhost:2000/pooja/${id}`);  // Update with your API endpoint
-        const data = await response.json();
-        setFormData({
-          pooja_name: data.pooja_name,
-          pooja_category: data.pooja_category,
-          price_withSamagri: data.price_withSamagri,
-          price_withoutSamagri: data.price_withoutSamagri,
-          pooja_image: data.pooja_image,
-          short_discription: data.short_discription,
-          long_discription: data.long_discription,
-        });
-        setImagePreview(data.pooja_image);  // Set the image preview if available
-      } catch (error) {
-        console.error("Error fetching pooja data:", error);
-      }
-    };
-
-    fetchPoojaData();
-  }, [id]);
+ 
 
   // Handle form data changes
   const handleInputChange = (e) => {
@@ -83,7 +62,7 @@ const UpdatePoojaList = () => {
     });
 
     try {
-      const response = await fetch(`http://localhost:2000/pooja/update/${id}`, {
+      const response = await fetch(`http://localhost:3000/pooja/update/${id}`, {
         method: 'PUT',
         body: updatedData,
       });
