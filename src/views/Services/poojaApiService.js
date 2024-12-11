@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // const BASE_URL = 'https://parampara-admin.vercel.app/api/pooja';
 // const BASE_URL='http://192.168.1.36:3000/api/pooja';
-const BASE_URL='http://localhost:3000/api/pooja'
+const BASE_URL='http://localhost:3005/api/pooja'
 const AUTH_TOKEN = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNoaXZhbnNodSIsImlhdCI6MTczMjE2NTMzOX0.YDu6P4alpQB5QL-74z1jO4LGfEwZA_n_Y29o512FrM8';
 
 // Function to fetch all pooja data
@@ -53,53 +53,6 @@ export const deletePooja = async (id) => {
 
 
 
-// columns.js
-export const columns = [
-  { name: "ID", selector: (row) => row._id },
-  { name: "Pooja Name", selector: (row) => row.pooja_name },
-  { name: "Category", selector: (row) => row.pooja_category },
-  { name: "Price (With Samagri)", selector: (row) => row.price_withSamagri },
-  { name: "Price (Without Samagri)", selector: (row) => row.price_withoutSamagri },
-  {
-    name: "Image",
-    selector: (row) =>
-      row.pooja_image ? (
-        <img
-          src={`http://192.168.1.38:3000${row.pooja_image}`}
-          alt={row.pooja_name}
-          className="img-thumbnail"
-          width={50}
-        />
-      ) : (
-        "N/A"
-      ),
-  },
-  { name: "Short Description", selector: (row) => row.short_discription },
-  { name: "Long Description", selector: (row) => row.long_discription },
-  { name: "Status", selector: (row) => row.status },
-  {
-    name: "Action",
-    selector: (row) => (
-      <div>
-        <button
-          onClick={() => handleEdit(row._id)} 
-          className="btn btn-primary btn-sm me-2"
-        >
-          Edit
-        </button>
-        <button
-          onClick={() => handleDelete(row._id)} 
-          className="btn btn-danger btn-sm"
-        >
-          Delete
-        </button>
-      </div>
-    ),
-    ignoreRowClick: true,
-    allowOverflow: true,
-    button: true,
-  },
-];
 
 
 export const fetchCategories = async () => {
@@ -151,18 +104,7 @@ export const deletePoojaCategory = async (id) => {
 };
 
 export const updatePoojaData = async (updatedData) => {
-  // try {
-  //   const response = await axios.get(`${BASE_URL}/category`, {
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization: AUTH_TOKEN,
-  //     },
-  //   });
-  //   return response.data;
-  // } catch (error) {
-  //   console.error("Error fetching categories:", error);
-  //   throw error;
-  // }
+
   try {
     const response = await axios.put(`${BASE_URL}/update/${id}`, updatedData, {
       headers: {
@@ -179,6 +121,7 @@ export const updatePoojaData = async (updatedData) => {
 
 
 export const UpdatePoojaCategory = async (id, updatedData) => {
+  console.log(id,updatedData)
   try {
     const response = await axios.put(`${BASE_URL}/category/update-category/${id}`, updatedData, {
       headers: {

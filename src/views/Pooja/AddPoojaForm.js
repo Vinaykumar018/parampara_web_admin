@@ -1,5 +1,3 @@
-
-
 import React, { useState } from "react";
 import RichTextEditor from "react-rte";
 import { ToastContainer, toast } from "react-toastify";
@@ -18,9 +16,6 @@ const PoojaForm = () => {
     pooja_image: null,
     short_discription: "",
     long_discription: RichTextEditor.createEmptyValue(),
-    samagriName: "",
-    samagriPrice: "",
-    samagri_discription: "",
     samagridynamicFields: [] // Array to hold dynamic input fields data
   });
   const [imagePreview, setImagePreview] = useState(null);
@@ -39,8 +34,10 @@ const PoojaForm = () => {
       const reader = new FileReader();
       reader.onloadend = () => setImagePreview(reader.result);
       reader.readAsDataURL(file);
+      setFormData((prevData) => ({ ...prevData, pooja_image: file }));
+    } else {
+      toast.error('Invalid file type. Please select an image.');
     }
-    setFormData((prevData) => ({ ...prevData, pooja_image: file }));
   };
 
   // Handle rich text editor changes
@@ -48,30 +45,27 @@ const PoojaForm = () => {
     setFormData((prevData) => ({ ...prevData, [fieldName]: value }));
   };
 
-  // Function to add a new dynamic field with proper initialization
-// Function to add a new dynamic field with an incremented name
-const addDynamicField = () => {
-  const nextFieldIndex = formData.samagridynamicFields.length + 1;
-  setFormData((prevData) => ({
-    ...prevData,
-    samagridynamicFields: [
-      ...prevData.samagridynamicFields,
-      { [`samagri${nextFieldIndex}`]: "" }, // Only one input field per click
-    ],
-  }));
-};
+  // Function to add a new dynamic field
+  const addDynamicField = () => {
+    setFormData((prevData) => ({
+      ...prevData,
+      samagridynamicFields: [
+        ...prevData.samagridynamicFields,
+        { samagriName: "", samagriPrice: "", samagriDescription: "" }
+      ],
+    }));
+  };
 
-// Function to handle changes in the input field
-const handleDynamicFieldChange = (index, value) => {
-  const newFields = [...formData.samagridynamicFields];
-  newFields[index][`samagri${index + 1}`] = value;
-  setFormData((prevData) => ({
-    ...prevData,
-    samagridynamicFields: newFields,
-  }));
-};
-
-
+  // Function to handle changes in the dynamic input fields
+  const handleDynamicFieldChange = (index, fieldName) => (e) => {
+    const { value } = e.target;
+    const newFields = [...formData.samagridynamicFields];
+    newFields[index][fieldName] = value;
+    setFormData((prevData) => ({
+      ...prevData,
+      samagridynamicFields: newFields,
+    }));
+  };
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -84,7 +78,11 @@ const handleDynamicFieldChange = (index, value) => {
         data.append(key, formData[key]);
       }
     });
-   
+
+    if (isSamagriChecked) {
+      // Convert dynamic samagri data to JSON string and append it
+      data.append('samagriData', JSON.stringify(formData.samagridynamicFields));
+    }
 
     try {
       await createPooja(data);
@@ -98,9 +96,6 @@ const handleDynamicFieldChange = (index, value) => {
         pooja_image: null,
         short_discription: "",
         long_discription: RichTextEditor.createEmptyValue(),
-        samagriName: "",
-        samagriPrice: "",
-        samagri_discription: "",
         samagridynamicFields: []
       });
       setImagePreview(null);
@@ -249,100 +244,59 @@ const handleDynamicFieldChange = (index, value) => {
                       <input
                         type="checkbox"
                         className="form-check-input"
-                        id="pooja_Samegristatus"
                         checked={isSamagriChecked}
                         onChange={handleCheckboxChange}
                       />
-                      <label className="form-check-label" htmlFor="pooja_Samegristatus">
-                        Include Samagri
-                      </label>
+                      <label className="form-check-label">Include Samagri</label>
                     </div>
                   </div>
 
-                  {/* Conditionally Render Samagri Fields */}
-                  {isSamagriChecked && (
-                    <>
-                      <div className="row">
-                        <div className="col-md-6 mb-3">
-                          <label className="form-label">Samagri Name</label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            name="samagriName"
-                            placeholder="Enter Samagri Name"
-                            value={formData.samagriName}
-                            onChange={handleInputChange}
-                            required
-                          />
-                        </div>
-
-                        <div className="col-md-6 mb-3">
-                          <label className="form-label">Samagri Price</label>
-                          <input
-                            type="number"
-                            className="form-control"
-                            name="samagriPrice"
-                            placeholder="Enter Samagri Price"
-                            value={formData.samagriPrice}
-                            onChange={handleInputChange}
-                            required
-                          />
-                        </div>
-
-                        <div className="col-md-12 mb-3">
-                          <label className="form-label">Samagri Description</label>
-                          <textarea
-                            className="form-control"
-                            rows="3"
-                            placeholder="Enter Samagri Description"
-                            name="samagri_discription"
-                            value={formData.samagri_discription}
-                            onChange={handleInputChange}
-                            required
-                          />
-                        </div>
+                  {/* Dynamic Samagri Fields */}
+                  {isSamagriChecked && formData.samagridynamicFields.map((field, index) => (
+                    <div key={index} className="mb-3 row">
+                      <div className="col-md-4">
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Samagri Name"
+                          value={field.samagriName}
+                          onChange={handleDynamicFieldChange(index, 'samagriName')}
+                        />
                       </div>
-                      {/* Add More Fields Button */}
-                   
+                      <div className="col-md-4">
+                        <input
+                          type="number"
+                          className="form-control"
+                          placeholder="Price"
+                          value={field.samagriPrice}
+                          onChange={handleDynamicFieldChange(index, 'samagriPrice')}
+                        />
+                      </div>
+                      <div className="col-md-4">
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Description"
+                          value={field.samagriDescription}
+                          onChange={handleDynamicFieldChange(index, 'samagriDescription')}
+                        />
+                      </div>
+                    </div>
+                  ))}
 
-                      {/* Render Dynamic Samagri Fields */}
-                      {/* Render Dynamic Samagri Fields */}
-                      {formData.samagridynamicFields.map((field, index) => {
-        const fieldName = `samagri${index + 1}`; // Dynamic field name
-
-        return (
-          <div key={index} className="mb-3">
-            <label className="form-label">Samagri {index + 1} - Name</label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder={`Enter Samagri ${index + 1} Name`}
-              value={field[fieldName]}
-              onChange={(e) => handleDynamicFieldChange(index, e.target.value)}
-            />
-          </div>
-        );
-      })}
-
-{/* <button
-                        type="button"
-                        className="btn btn-outline-primary mb-3 btn-sm"
-                        onClick={addDynamicField}
-                      >
-                        add more
-                      </button> */}
-                        <div className="text-start">
-  <button type="button"  className="btn btn-outline-success mb-3 btn-sm" onClick={addDynamicField}>add more</button>
-  </div>
-
-                    </>
+                  {/* Add More Samagri Fields */}
+                  {isSamagriChecked && (
+                    <div className="col-12 mb-3">
+                      <button type="button" className="btn btn-primary" onClick={addDynamicField}>
+                        Add More Fields
+                      </button>
+                    </div>
                   )}
-                </div>
 
-                {/* Submit Button */}
-                <div className="text-end">
-  <button type="submit" className="me-2 btn btn-dark btn-sm">Add Pooja</button>
-  </div>
+                  <div className="text-end mb-3">
+                    <button type="submit" className="me-2 btn btn-dark btn-sm">Add Pooja</button>
+                  </div>
+                </div>
               </form>
             </div>
           </div>
@@ -354,5 +308,3 @@ const handleDynamicFieldChange = (index, value) => {
 };
 
 export default PoojaForm;
-
-

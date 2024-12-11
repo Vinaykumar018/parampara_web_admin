@@ -41,10 +41,11 @@ const PoojaCategory = () => {
 
   // Function to handle response from the child
   const handleResponse = (response) => {
-    
+    console.log(responseMessage)
     setResponseMessage(response); 
     if(responseMessage){
-      loadCategories ()
+      
+      loadCategories()
     }// Store the response in state
   };
   const handleFormSubmit = async (formData) => {
@@ -126,7 +127,8 @@ const PoojaCategory = () => {
       pooja_image
     });
   
-    setEditModalVisible(true); // Show the modal
+    setEditModalVisible(true);
+   // Show the modal
   };
   
 

@@ -13,6 +13,7 @@ const PoojaList = () => {
   const navigate = useNavigate();
 
   const navigateToAddPooja = () => {
+    
     navigate('/pooja/add-pooja');
   };
   const [poojaData, setPoojaData] = useState([]);
@@ -40,6 +41,7 @@ const PoojaList = () => {
   }, []);
 
   const handleEdit = (id) => {
+    
     navigate(`/pooja/pooja-update-list/${id}`);
   };
 

@@ -17,6 +17,27 @@ const UpdatePoojaCategoryForm = ({ handleEditFormSubmit,initialData = {}, onClos
   });
 
 
+  // const handleSubmit = async(e) => {
+  //   e.preventDefault();
+  //   console.log(initialData.id )
+  //   try {
+  //     const response = await UpdatePoojaCategory(formData.id, formData);
+  //     if (response.status === 1) {
+  //       toast.success('pooja category updated successfully');
+  //       sendResponse(true);
+  //     } else {
+  //       toast.error('Failed to update Pooja category data');
+  //     }
+      
+  //   } catch (error) {
+     
+  //     console.error('Error updating pooja:', error);
+  //   }
+  //   onClose()
+   
+    
+  // };
+
   const handleSubmit = async(e) => {
     e.preventDefault();
     console.log(initialData.id )

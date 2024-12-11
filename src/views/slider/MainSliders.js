@@ -51,6 +51,7 @@ const Slider = () => {
       form.append("name", formData.name);
       form.append("image", formData.image);
       form.append("category", formData.category);
+      form.append("images", formData.images);
 
       const result = await createSlider(form);
       if (result.status === 1) {
