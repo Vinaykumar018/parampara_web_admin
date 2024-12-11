@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import { CButton, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle } from "@coreui/react";
-import { UpdatePoojaCategory } from "../Services/poojaApiService";
+import { UpdatePoojaCategory } from "../../Services/poojaApiService";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 

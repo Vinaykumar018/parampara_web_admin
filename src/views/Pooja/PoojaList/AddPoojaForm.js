@@ -2,13 +2,15 @@ import React, { useState } from "react";
 import RichTextEditor from "react-rte";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { createPooja } from '../Services/poojaApiService'; // Ensure this import path is correct
+import { createPooja, fetchCategories } from '../../Services/poojaApiService'; // Ensure this import path is correct
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const PoojaForm = () => {
   const [isSamagriChecked, setIsSamagriChecked] = useState(false);
   const [formData, setFormData] = useState({
     pooja_name: "",
+    pooja_slug: '',
     pooja_category: "",
     pooja_Samegristatus: "0",
     price_withSamagri: "",
@@ -24,9 +26,23 @@ const PoojaForm = () => {
   // Handle form input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
+
+    // Update the formData state
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+      // Generate slug for pooja_name dynamically
+      pooja_slug: name === 'pooja_name' ? generateSlug(value) : prevData.pooja_slug,
+    }));
   };
 
+  const generateSlug = (value) => {
+    return value
+      .toLowerCase() // Convert to lowercase
+      .replace(/[^a-z0-9\s-]/g, '') // Remove invalid characters
+      .trim() // Trim whitespace
+      .replace(/\s+/g, '-'); // Replace spaces with hyphens
+  };
   // Handle image file selection and preview
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -115,6 +131,25 @@ const PoojaForm = () => {
     }));
   };
 
+  const [categoryData, setCategoryData] = useState([]);
+  const loadCategories = async () => {
+    
+    try {
+      const result = await fetchCategories();
+      if (result.status === 1) {
+        setCategoryData(result.data);
+      }
+    } catch (error) {
+      console.error("Error loading categories:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadCategories();
+  }, []);
+
   return (
     <div className="card-body bg-light">
       <div className="row justify-content-center">
@@ -140,9 +175,21 @@ const PoojaForm = () => {
                     />
                   </div>
 
+                  <div className="col-md-6 mb-3">
+        <label className="form-label">Pooja Slug</label>
+        <input
+          type="text"
+          className="form-control"
+          name="pooja_slug"
+          placeholder="Slug will be generated automatically"
+          value={formData.pooja_slug}
+          readOnly
+        />
+      </div>
+
                   {/* Pooja Category */}
                   <div className="col-md-6 mb-3">
-                    <label className="form-label">Pooja Category</label>
+                    {/* <label className="form-label">Pooja Category</label>
                     <input
                       type="text"
                       className="form-control"
@@ -151,7 +198,25 @@ const PoojaForm = () => {
                       value={formData.pooja_category}
                       onChange={handleInputChange}
                       required
-                    />
+                    /> */}
+                    <label className="form-label">Choose Category</label>
+
+                    <select
+                className="form-control form-select"
+                placeholder="Enter Pooja Category"
+                value={formData.pooja_category}
+                onChange={handleInputChange}
+                required
+              >
+                <option value="" disabled>Select Category</option>
+                {categoryData.map((category) => (
+                
+                  <option key={category._id} value={category.category}>
+                    {category.category}
+                  </option>
+                ))}
+                  {console.log(categoryData)}
+              </select>
                   </div>
 
                   {/* Price With Samagri */}
@@ -308,3 +373,22 @@ const PoojaForm = () => {
 };
 
 export default PoojaForm;
+
+
+
+{/* <div className="mb-3">
+              <label className="form-label">Choose Category</label>
+              <select
+                className="form-control form-select"
+                value={formData.category}
+                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                required
+              >
+                <option value="" disabled>Select Category</option>
+                {categories.map((category) => (
+                  <option key={category._id} value={category.name}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+            </div> */}

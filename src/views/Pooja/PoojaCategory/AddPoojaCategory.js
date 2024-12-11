@@ -1,10 +1,14 @@
+
+
+
+
+
+
+
 // import React, { useState } from "react";
-// import { CButton, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle, CSpinner,
-// } from '@coreui/react'
+// import { CButton, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle } from "@coreui/react";
 
-// import { createCategory } from "../Services/poojaApiService";
-
-// const PoojaCategoryForm = ({ onCategoryAdded }) => {
+// const PoojaCategoryForm = ({ onSubmit }) => {
 //   const [formData, setFormData] = useState({
 //     category: "",
 //     pooja_image: null,
@@ -14,45 +18,38 @@
 
 //   const handleSubmit = async (e) => {
 //     e.preventDefault();
-//     if (!formData.category || !formData.pooja_image || !formData.short_discription || !formData.long_discription) {
-//       alert("Please fill in all fields and select an image.");
-//       return;
-//     }
+   
+//     onSubmit(formData);
 
-//     const data = new FormData();
-//     data.append("category", formData.category);
-//     data.append("pooja_image", formData.pooja_image);
-//     data.append("short_discription", formData.short_discription);
-//     data.append("long_discription", formData.long_discription);
-
-//     try {
-//       await createCategory(data);
-//       alert("Category created successfully!");
-//       setFormData({
-//         category: "",
-//         pooja_image: null,
-//         short_discription: "",
-//         long_discription: "",
-//       });
-//      // Notify parent to refresh the category list
-//     } catch (error) {
-//       alert("Failed to create category. Please try again.");
-//     }
+//     // Reset form data
+//     setFormData({
+//       category: "",
+//       pooja_image: null,
+//       short_discription: "",
+//       long_discription: "",
+//       category_slug: '', 
+//     });
 //   };
-//   const [visible, setVisible] = useState(false)
+
+//   const [visible, setVisible] = useState(false);
+
 //   return (
 //     <>
-//         <CButton color="warning" className="text-dark" size="sm" onClick={() => setVisible(!visible)}>
-//   Add Category
-// </CButton>
+//       <CButton
+//         color="warning"
+//         className="text-dark"
+//         size="sm"
+//         onClick={() => setVisible(!visible)}
+//       >
+//         Add Category
+//       </CButton>
 
-
-//         <CModal alignment="center" visible={visible} onClose={() => setVisible(false)}>
-//           <CModalHeader>
-//             <CModalTitle>Add Category</CModalTitle>
-//           </CModalHeader>
-//           <form onSubmit={handleSubmit}>
-//             <CModalBody>
+//       <CModal alignment="center" visible={visible} onClose={() => setVisible(false)}>
+//         <CModalHeader>
+//           <CModalTitle>Add Category</CModalTitle>
+//         </CModalHeader>
+//         <form onSubmit={handleSubmit}>
+//           <CModalBody>
 //             <div className="mb-3">
 //               <label className="form-label">Category Name</label>
 //               <input
@@ -60,9 +57,7 @@
 //                 className="form-control"
 //                 placeholder="Enter Category Name"
 //                 value={formData.category}
-//                 onChange={(e) =>
-//                   setFormData({ ...formData, category: e.target.value })
-//                 }
+//                 onChange={(e) => setFormData({ ...formData, category: e.target.value })}
 //                 required
 //               />
 //             </div>
@@ -72,12 +67,22 @@
 //                 type="file"
 //                 className="form-control"
 //                 accept="image/*"
-//                 onChange={(e) =>
-//                   setFormData({ ...formData, pooja_image: e.target.files[0] })
-//                 }
+
+//                 onChange={(e) => {
+//                   const file = e.target.files[0];
+//                   if (file) {
+//                     setFormData({ ...formData, pooja_image: file });
+                   
+//                   }
+//                 }}
+//                 // onChange={(e) =>
+//                 //   setFormData({ ...formData, image: file });
+//                 //   // setFormData({ ...formData, pooja_image: e.target.files[0] })
+//                 // }
 //                 required
 //               />
-//               <div className="mb-3">
+//             </div>
+//             <div className="mb-3">
 //               <label className="form-label">Short Description</label>
 //               <textarea
 //                 className="form-control"
@@ -90,18 +95,18 @@
 //                 required
 //               />
 //             </div>
-//             </div>
-//             </CModalBody>
-//             <CModalFooter>
-//               <CButton color="danger text-white" type="reset" onClick={() => setVisible(false)}>
-//                   Close
-//               </CButton>
-//               <CButton color="success text-white" type="submit">Save</CButton>
-//             </CModalFooter>
-//           </form>
-          
-//         </CModal>
-//       </>
+//           </CModalBody>
+//           <CModalFooter>
+//             <CButton color="danger text-white" type="reset" onClick={() => setVisible(false)}>
+//               Close
+//             </CButton>
+//             <CButton color="success text-white" type="submit">
+//               Save
+//             </CButton>
+//           </CModalFooter>
+//         </form>
+//       </CModal>
+//     </>
 //   );
 // };
 
@@ -109,12 +114,15 @@
 
 
 
-
-
-
-
 import React, { useState } from "react";
-import { CButton, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle } from "@coreui/react";
+import {
+  CButton,
+  CModal,
+  CModalBody,
+  CModalFooter,
+  CModalHeader,
+  CModalTitle,
+} from "@coreui/react";
 
 const PoojaCategoryForm = ({ onSubmit }) => {
   const [formData, setFormData] = useState({
@@ -122,27 +130,32 @@ const PoojaCategoryForm = ({ onSubmit }) => {
     pooja_image: null,
     short_discription: "",
     long_discription: "",
+    category_slug: "", // Add a slug field
   });
 
-  const handleSubmit = async (e) => {
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+
+    // Handle input changes dynamically
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+      // Generate slug for the category dynamically
+      category_slug: name === "category" ? generateSlug(value) : prevData.category_slug,
+    }));
+  };
+
+  // Utility function to generate slug
+  const generateSlug = (value) => {
+    return value
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .trim()
+      .replace(/\s+/g, "-");
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    // if (
-    //   !formData.category ||
-    //   !formData.pooja_image ||
-    //   !formData.short_discription ||
-    //   !formData.long_discription
-    // ) {
-    //   alert("Please fill in all fields and select an image.");
-    //   return;
-    // }
-
-    // const data = new FormData();
-    // data.append("category", formData.category);
-    // data.append("pooja_image", formData.pooja_image);
-    // data.append("short_discription", formData.short_discription);
-    // data.append("long_discription", formData.long_discription);
-
-    // Call the onSubmit handler passed as a prop
     onSubmit(formData);
 
     // Reset form data
@@ -151,6 +164,7 @@ const PoojaCategoryForm = ({ onSubmit }) => {
       pooja_image: null,
       short_discription: "",
       long_discription: "",
+      category_slug: "",
     });
   };
 
@@ -178,10 +192,22 @@ const PoojaCategoryForm = ({ onSubmit }) => {
               <input
                 type="text"
                 className="form-control"
+                name="category"
                 placeholder="Enter Category Name"
                 value={formData.category}
-                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                onChange={handleInputChange}
                 required
+              />
+            </div>
+            <div className="mb-3">
+              <label className="form-label">Category Slug</label>
+              <input
+                type="text"
+                className="form-control"
+                name="category_slug"
+                placeholder="Slug will be generated automatically"
+                value={formData.category_slug}
+                readOnly
               />
             </div>
             <div className="mb-3">
@@ -190,18 +216,12 @@ const PoojaCategoryForm = ({ onSubmit }) => {
                 type="file"
                 className="form-control"
                 accept="image/*"
-
                 onChange={(e) => {
                   const file = e.target.files[0];
                   if (file) {
-                    setFormData({ ...formData, pooja_image: file });
-                   
+                    setFormData((prevData) => ({ ...prevData, pooja_image: file }));
                   }
                 }}
-                // onChange={(e) =>
-                //   setFormData({ ...formData, image: file });
-                //   // setFormData({ ...formData, pooja_image: e.target.files[0] })
-                // }
                 required
               />
             </div>
@@ -210,11 +230,10 @@ const PoojaCategoryForm = ({ onSubmit }) => {
               <textarea
                 className="form-control"
                 rows="4"
+                name="short_discription"
                 placeholder="Enter Short Description"
                 value={formData.short_discription}
-                onChange={(e) =>
-                  setFormData({ ...formData, short_discription: e.target.value })
-                }
+                onChange={handleInputChange}
                 required
               />
             </div>
@@ -234,5 +253,6 @@ const PoojaCategoryForm = ({ onSubmit }) => {
 };
 
 export default PoojaCategoryForm;
+
 
 

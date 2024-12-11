@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import PoojaForm from "./AddPoojaForm";
-import GetTable from "../dashboard/GetTable";
+import GetTable from "../../dashboard/GetTable";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { fetchPoojaData, deletePooja } from '../Services/poojaApiService';
+ import { fetchPoojaData, deletePooja } from '../../Services/poojaApiService';
+
 
 import { CSpinner} from '@coreui/react'
 

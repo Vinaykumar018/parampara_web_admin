@@ -3,7 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import RichTextEditor from 'react-rte'; 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { UpdatePoojaCategory } from '../Services/poojaApiService';
+// import { UpdatePoojaCategory } from '../../Services/poojaApiService';
+import { UpdatePoojaCategory } from '../../Services/poojaApiService';
+
 
 const UpdatePoojaList = () => {
   const [isSamagriChecked, setIsSamagriChecked] = useState(false);

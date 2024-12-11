@@ -4,7 +4,7 @@ import EnquiriesList from './views/enquries/EnquiriesList';
 
 // Parmpara Admin Routes
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'));
-const PoojaForm=React.lazy(()=>import ('./views/Pooja/AddPoojaForm'))
+const PoojaForm=React.lazy(()=>import ('./views/Pooja/PoojaList/AddPoojaForm'))
 
 
 //users
@@ -13,8 +13,8 @@ const Users=React.lazy(()=>import('./views/users/Users'));
 // Pandit routes
 const Pandit=React.lazy(()=>import('./views/pandit/Pandit'));
 //Pooja routes
-const PoojaList=React.lazy(()=>import('./views/Pooja/PoojaList'));
-const PoojaCategory=React.lazy(()=>import('./views/Pooja/PoojaCategory'));
+const PoojaList=React.lazy(()=>import('./views/Pooja/PoojaList/PoojaList'));
+const PoojaCategory=React.lazy(()=>import('./views/Pooja/PoojaCategory/PoojaCategory'));
 const PoojaBookingList=React.lazy(()=>import('./views/Pooja/BookingList'))
 
 
@@ -99,7 +99,7 @@ const Validation = React.lazy(() => import('./views/forms/validation/Validation'
 
 const Charts = React.lazy(() => import('./views/charts/Charts'))
 
-const UpdatePoojaList=React.lazy(()=>import ('./views/Pooja/UpdatePoojaList'))
+const UpdatePoojaList=React.lazy(()=>import ('./views/Pooja/PoojaList/UpdatePoojaList'))
 // Icons
 const CoreUIIcons = React.lazy(() => import('./views/icons/coreui-icons/CoreUIIcons'))
 const Flags = React.lazy(() => import('./views/icons/flags/Flags'))

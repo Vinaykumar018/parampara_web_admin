@@ -1,8 +1,8 @@
 
 import React, { useState, useEffect } from "react";
-import { fetchCategories, createCategory, deletePoojaCategory } from "../Services/poojaApiService";
+import { fetchCategories, createCategory, deletePoojaCategory } from "../../Services/poojaApiService";
 import PoojaCategoryForm from "./AddPoojaCategory";
-import GetTable from "../dashboard/GetTable";
+import GetTable from "../../dashboard/GetTable";
 import { CButton, CSpinner } from "@coreui/react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -56,16 +56,20 @@ const PoojaCategory = () => {
     data.append("short_discription", formData.short_discription);
     data.append("long_discription", formData.long_discription);
       const result = await createCategory(data);
+      console.log(result)
       if (result.status === 1) {
-        alert("Category created successfully!");
+        console.log("toast should run")
+
+        toast.success("Category created successfully!");
         loadCategories();
       } else {
-        alert("Failed to create category.");
+        toast.error("Category can not be created!");
       }
     } catch (error) {
       console.error("Error creating category:", error);
       alert("An error occurred while creating the category.");
     }
+    setShowModal(false);
   };
 
   const columns = [
@@ -160,6 +164,7 @@ const PoojaCategory = () => {
  
   return (
     <section>
+       <ToastContainer />
       <div className="row justify-content-center">
         <div className="col-12">
           <div className="card shadow-lg mb-4 border-0">
@@ -241,6 +246,7 @@ const ConfirmDeleteModal = ({ show, onClose, onConfirm }) => {
               Delete
             </button>
           </div>
+         
         </div>
       </div>
     </div>
