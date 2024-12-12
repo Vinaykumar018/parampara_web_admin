@@ -119,7 +119,7 @@ const Login = () => {
           <div className="card-body">
             <form onSubmit={handleLogin}>
               <h1 className="text-white">Login</h1>
-              <p className="text-muted">Sign in to your account</p>
+              <p className="text-white">Sign in to your account</p>
 
               {/* Username Field */}
               <div className="input-group mb-3">
