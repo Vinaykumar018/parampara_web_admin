@@ -49,17 +49,7 @@ const SliderFormCategory = ({ onSubmit }) => {
                 required
               />
             </div>
-            <div className="mb-3">
-              <label className="form-label">Category Slug</label>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Enter Slider Category Name"
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                required
-              />
-            </div>
+            
             <div className="mb-3">
               <label className="form-label">Category Image</label>
               <input

@@ -27,7 +27,7 @@
 //       pooja_image: null,
 //       short_discription: "",
 //       long_discription: "",
-//       category_slug: '', 
+//       slug_url: '', 
 //     });
 //   };
 
@@ -130,7 +130,7 @@ const PoojaCategoryForm = ({ onSubmit }) => {
     pooja_image: null,
     short_discription: "",
     long_discription: "",
-    category_slug: "", // Add a slug field
+    slug_url: "", // Add a slug field
   });
 
   const handleInputChange = (e) => {
@@ -141,7 +141,7 @@ const PoojaCategoryForm = ({ onSubmit }) => {
       ...prevData,
       [name]: value,
       // Generate slug for the category dynamically
-      category_slug: name === "category" ? generateSlug(value) : prevData.category_slug,
+      slug_url: name === "category" ? generateSlug(value) : prevData.slug_url,
     }));
   };
 
@@ -155,8 +155,10 @@ const PoojaCategoryForm = ({ onSubmit }) => {
   };
 
   const handleSubmit = (e) => {
+    console.log(formData)
     e.preventDefault();
     onSubmit(formData);
+    setVisible(!visible)
 
     // Reset form data
     setFormData({
@@ -164,7 +166,7 @@ const PoojaCategoryForm = ({ onSubmit }) => {
       pooja_image: null,
       short_discription: "",
       long_discription: "",
-      category_slug: "",
+      slug_url: "",
     });
   };
 
@@ -204,9 +206,9 @@ const PoojaCategoryForm = ({ onSubmit }) => {
               <input
                 type="text"
                 className="form-control"
-                name="category_slug"
+                name="slug_url"
                 placeholder="Slug will be generated automatically"
-                value={formData.category_slug}
+                value={formData.slug_url}
                 readOnly
               />
             </div>

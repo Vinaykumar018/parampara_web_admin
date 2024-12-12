@@ -41,11 +41,13 @@ const PoojaCategory = () => {
 
   // Function to handle response from the child
   const handleResponse = (response) => {
-    console.log(responseMessage)
+    
     setResponseMessage(response); 
     if(responseMessage){
-      
+      console.log(responseMessage)
+     
       loadCategories()
+      
     }// Store the response in state
   };
   const handleFormSubmit = async (formData) => {
@@ -54,7 +56,8 @@ const PoojaCategory = () => {
     data.append("category", formData.category);
     data.append("pooja_image", formData.pooja_image);
     data.append("short_discription", formData.short_discription);
-    data.append("long_discription", formData.long_discription);
+    // data.append("long_discription", formData.long_discription);
+    data.append("slug_url", formData.slug_url);
       const result = await createCategory(data);
       console.log(result)
       if (result.status === 1) {
@@ -62,6 +65,7 @@ const PoojaCategory = () => {
 
         toast.success("Category created successfully!");
         loadCategories();
+        
       } else {
         toast.error("Category can not be created!");
       }
@@ -69,7 +73,7 @@ const PoojaCategory = () => {
       console.error("Error creating category:", error);
       alert("An error occurred while creating the category.");
     }
-    setShowModal(false);
+    
   };
 
   const columns = [

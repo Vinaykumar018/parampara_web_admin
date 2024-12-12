@@ -282,7 +282,7 @@ const SliderForm = ({ onSubmit }) => {
   
     onSubmit(formData);
 
-    setFormData({ name: "", image: "", images: [], category: "" });
+    setFormData({ name: "", image: "",  category: "" });
     setImagePreview(null);
     setImagePreviews([]);
     setVisible(false);
@@ -382,29 +382,7 @@ const SliderForm = ({ onSubmit }) => {
               )}
             </div>
 
-            {/* Multiple Images Field */}
-            <div className="mb-3">
-              <label className="form-label">Additional Images</label>
-              <input
-                type="file"
-                accept="image/*"
-                className="form-control"
-                onChange={handleMultipleImagesChange}
-                multiple
-              />
-              {imagePreviews.length > 0 && (
-                <div className="mt-3">
-                  {imagePreviews.map((preview, index) => (
-                    <img
-                      key={index}
-                      src={preview}
-                      alt={`Image Preview ${index + 1}`}
-                      style={{ maxWidth: '20%', height: 'auto', marginRight: '10px' }}
-                    />
-                  ))}
-                </div>
-              )}
-            </div>
+           
 
           </CModalBody>
           <CModalFooter>

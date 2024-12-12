@@ -10,7 +10,7 @@ const PoojaForm = () => {
   const [isSamagriChecked, setIsSamagriChecked] = useState(false);
   const [formData, setFormData] = useState({
     pooja_name: "",
-    pooja_slug: '',
+    slug_url: '',
     pooja_category: "",
     pooja_Samegristatus: "0",
     price_withSamagri: "",
@@ -32,7 +32,7 @@ const PoojaForm = () => {
       ...prevData,
       [name]: value,
       // Generate slug for pooja_name dynamically
-      pooja_slug: name === 'pooja_name' ? generateSlug(value) : prevData.pooja_slug,
+      slug_url: name === 'pooja_name' ? generateSlug(value) : prevData.slug_url,
     }));
   };
 
@@ -180,44 +180,37 @@ const PoojaForm = () => {
         <input
           type="text"
           className="form-control"
-          name="pooja_slug"
+          name="slug_url"
           placeholder="Slug will be generated automatically"
-          value={formData.pooja_slug}
+          value={formData.slug_url}
           readOnly
         />
       </div>
 
                   {/* Pooja Category */}
-                  <div className="col-md-6 mb-3">
-                    {/* <label className="form-label">Pooja Category</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="pooja_category"
-                      placeholder="Enter Pooja Category"
-                      value={formData.pooja_category}
-                      onChange={handleInputChange}
-                      required
-                    /> */}
-                    <label className="form-label">Choose Category</label>
+                  {/* Pooja Category */}
+<div className="col-md-6 mb-3">
+  <label className="form-label">Choose Category</label>
+  <select
+    className="form-control form-select"
+    placeholder="Enter Pooja Category"
+    name="pooja_category"
+    value={formData.pooja_category}
+    onChange={(e) => setFormData((prevData) => ({
+      ...prevData,
+      pooja_category: e.target.value, // Update the pooja_category field
+    }))}
+    required
+  >
+    <option value="" disabled>Select Category</option>
+    {categoryData.map((category) => (
+      <option key={category._id} value={category._id}>
+        {category.category}
+      </option>
+    ))}
+  </select>
+</div>
 
-                    <select
-                className="form-control form-select"
-                placeholder="Enter Pooja Category"
-                value={formData.pooja_category}
-                onChange={handleInputChange}
-                required
-              >
-                <option value="" disabled>Select Category</option>
-                {categoryData.map((category) => (
-                
-                  <option key={category._id} value={category.category}>
-                    {category.category}
-                  </option>
-                ))}
-                  {console.log(categoryData)}
-              </select>
-                  </div>
 
                   {/* Price With Samagri */}
                   <div className="col-md-6 mb-3">

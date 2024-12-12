@@ -1,60 +1,44 @@
 
+
+
 import React, { useState } from "react";
 import { CButton, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle } from "@coreui/react";
 import { UpdatePoojaCategory } from "../../Services/poojaApiService";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-
-const UpdatePoojaCategoryForm = ({ handleEditFormSubmit,initialData = {}, onClose,sendResponse }) => {
-  
+const UpdatePoojaCategoryForm = ({ handleEditFormSubmit, initialData = {}, onClose, sendResponse }) => {
   const [formData, setFormData] = useState({
     id: initialData.id || "",
     category: initialData.category || "",
-    pooja_image:initialData.pooja_image,
+    pooja_image: null,
     short_discription: initialData.short_discription || "",
     long_discription: initialData.long_discription || "",
   });
 
-
-  // const handleSubmit = async(e) => {
-  //   e.preventDefault();
-  //   console.log(initialData.id )
-  //   try {
-  //     const response = await UpdatePoojaCategory(formData.id, formData);
-  //     if (response.status === 1) {
-  //       toast.success('pooja category updated successfully');
-  //       sendResponse(true);
-  //     } else {
-  //       toast.error('Failed to update Pooja category data');
-  //     }
-      
-  //   } catch (error) {
-     
-  //     console.error('Error updating pooja:', error);
-  //   }
-  //   onClose()
-   
-    
-  // };
-
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(initialData.id )
+
     try {
-      const response = await UpdatePoojaCategory(formData.id, formData);
+      const data = new FormData();
+      data.append("id", formData.id);
+      data.append("category", formData.category);
+      data.append("pooja_image", formData.pooja_image); // Binary image
+      data.append("short_discription", formData.short_discription);
+      data.append("long_discription", formData.long_discription);
+
+      const response = await UpdatePoojaCategory(formData.id, data);
       if (response.status === 1) {
-        toast.success('pooja category updated successfully');
-        sendResponse(true);
+         toast.success("Pooja category updated successfully");
+        await sendResponse(true);
+        // toast.success("Pooja category updated successfully");
+       
       } else {
-        toast.error('Failed to update Pooja category data');
+        toast.error("Failed to update Pooja category data");
       }
-      
     } catch (error) {
-     
-      console.error('Error updating pooja:', error);
+      console.error("Error updating pooja:", error);
     }
-   
     onClose();
   };
 
@@ -63,7 +47,7 @@ const UpdatePoojaCategoryForm = ({ handleEditFormSubmit,initialData = {}, onClos
       <CModalHeader>
         <CModalTitle>Update Category</CModalTitle>
       </CModalHeader>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} encType="multipart/form-data">
         <CModalBody>
           <div className="mb-3">
             <label className="form-label">Category Name</label>
@@ -76,33 +60,32 @@ const UpdatePoojaCategoryForm = ({ handleEditFormSubmit,initialData = {}, onClos
             />
           </div>
           <div className="mb-3">
-  <label className="form-label">Category Image</label>
-  <input
-    type="file"
-    className="form-control"
-    accept="image/*"
-    onChange={(e) => {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          setFormData({ ...formData, pooja_image: reader.result });
-        };
-        reader.readAsDataURL(file);
-      }
-    }}
-  />
-  {formData.pooja_image && (
-    <div className="mt-3">
-      {/* <label className="form-label">Image Preview:</label> */}
-      <img
-        src={typeof formData.pooja_image === "string" ? formData.pooja_image : ""}
-        alt="Preview"
-        style={{ width: "80%", maxHeight: "100px", objectFit: "cover" }}
-      />
-    </div>
-  )}
-</div>
+            <label className="form-label">Category Image</label>
+            <input
+              type="file"
+              className="form-control"
+              accept="image/*"
+              onChange={(e) => {
+                const file = e.target.files[0];
+                if (file) {
+                  setFormData({ ...formData, pooja_image: file }); // Set binary file
+                }
+              }}
+            />
+            {formData.pooja_image && (
+              <div className="mt-3">
+                <img
+                  src={
+                    formData.pooja_image instanceof File
+                      ? URL.createObjectURL(formData.pooja_image)
+                      : ""
+                  }
+                  alt="Preview"
+                  style={{ width: "80%", maxHeight: "100px", objectFit: "cover" }}
+                />
+              </div>
+            )}
+          </div>
           <div className="mb-3">
             <label className="form-label">Short Description</label>
             <textarea
