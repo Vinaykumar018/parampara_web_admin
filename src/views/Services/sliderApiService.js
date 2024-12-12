@@ -46,3 +46,45 @@ export const getCategories = async () => {
     throw error;
   }
 };
+
+export const deleteSlider = async (id) => {
+  try {
+    
+    
+    const response = await axios.delete(`${apiUrl}/delete/${id}`, { headers });
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting slider:", error);
+    throw error;
+  }
+};
+
+export const deleteSliderCategory = async (id) => {
+  try {
+    
+    
+    const response = await axios.delete(`${apiUrl}/category/delete/${id}`, { headers });
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting slider:", error);
+    throw error;
+  }
+};
+
+
+
+export const UpdateSliderCategory = async (id, updatedData) => {
+  console.log(id,updatedData)
+  try {
+    const response = await axios.put(`${BASE_URL}/slider/category/update-category/${id}`, updatedData, {
+      headers: {
+        Authorization: AUTH_TOKEN,
+       
+      },
+    });
+    return response.data; // Return the response data for further use
+  } catch (error) {
+    console.error('Error updating Pooja:', error);
+    throw error; // Rethrow the error to handle it in the calling component
+  }
+};
