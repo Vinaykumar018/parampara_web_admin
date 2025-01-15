@@ -4,12 +4,19 @@ import GetTable from "../../dashboard/GetTable";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
  import { fetchPoojaData, deletePooja } from '../../Services/poojaApiService';
+ import axios from "axios";
+
 
 
 import { CSpinner} from '@coreui/react'
+import { useContext } from "react";
+import { AppContext } from "../../../context/AppContext";
 
 import { useNavigate } from 'react-router-dom';
 const PoojaList = () => {
+
+
+  const {contextPoojaData,setContextPoojaData} = useContext(AppContext);
  
   const navigate = useNavigate();
 
@@ -29,6 +36,7 @@ const PoojaList = () => {
         const data = await fetchPoojaData();
         if (data.status === 1) {
           setPoojaData(data.data);
+          setContextPoojaData(data.data)
         } else {
           toast.error('Failed to fetch Pooja data');
         }
@@ -57,6 +65,7 @@ const PoojaList = () => {
       if (response.status === 1) {
         toast.success("Pooja deleted successfully!");
         setPoojaData(poojaData.filter((item) => item._id !== poojaToDelete));
+        setContextPoojaData(poojaData.filter((item) => item._id !== poojaToDelete));
         setShowModal(false);
       } else {
         toast.error("Failed to delete Pooja.");
@@ -72,26 +81,30 @@ const PoojaList = () => {
   };
 
   const columns = [
-    { name: "S No.", selector: (row,index)=> index+1 },
-    // { name: "ID", selector: (row) => row._id },
-    { name: "Pooja Name", selector: (row) => row.pooja_name },
-    { name: "Category", selector: (row) => row.pooja_category },
-    { name: "Price (With Samagri)", selector: (row) => row.price_withSamagri },
-    { name: "Price (Without Samagri)", selector: (row) => row.price_withoutSamagri },
+    { name: "S No.", selector: (row, index) => index + 1, width: "80px" },
+    // { name: "ID", selector: (row) => row._id, width: "100px" },
+    { name: "Pooja Name", selector: (row) => row.pooja_name, width: "150px" },
+    { name: "Category", selector: (row) => row.pooja_category, width: "100px" },
+    { name: "Price (With Samagri)", selector: (row) => row.price_withSamagri, width: "100px" },
+    { name: "Price (Without Samagri)", selector: (row) => row.price_withoutSamagri, width: "100px" },
     {
       name: "Image",
-      selector: (row) => row.pooja_image ? (
-        <img
-          src={`http://192.168.1.38:3000${row.pooja_image}`}
-          alt={row.pooja_name}
-          className="img-thumbnail"
-          width={50}
-        />
-      ) : "N/A",
+      selector: (row) =>
+        row.pooja_image ? (
+          <img
+            src={`http://192.168.1.38:3000${row.pooja_image}`}
+            alt={row.pooja_name}
+            className="img-thumbnail"
+            width={50}
+          />
+        ) : (
+          "N/A"
+        ),
+      width: "100px",
     },
-    { name: "Short Description", selector: (row) => row.short_discription },
-    { name: "Long Description", selector: (row) => row.long_discription },
-    { name: "Status", selector: (row) => row.status },
+    { name: "Short Description", selector: (row) => row.short_discription, width: "200px" },
+    { name: "Long Description", selector: (row) => row.long_discription, width: "400px" },
+    { name: "Status", selector: (row) => row.status, width: "100px" },
     {
       name: "Action",
       selector: (row) => (
@@ -113,8 +126,11 @@ const PoojaList = () => {
       ignoreRowClick: true,
       allowOverflow: true,
       button: true,
+      width: "150px",
     },
   ];
+  
+  
 
   return (
     <section>

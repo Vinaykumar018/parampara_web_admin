@@ -6,6 +6,25 @@ const BASE_URL=`${import.meta.env.VITE_BASE_URL}/pooja`;
 // const BASE_URL='http://localhost:3005/api/pooja'
 const AUTH_TOKEN = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNoaXZhbnNodSIsImlhdCI6MTczMjE2NTMzOX0.YDu6P4alpQB5QL-74z1jO4LGfEwZA_n_Y29o512FrM8';
 
+
+export const updatePoojaData = async (id,updatedData) => {
+ 
+
+  try {
+    const response = await axios.put(`${BASE_URL}/update/${id}`, updatedData, {
+      headers: {
+        Authorization: AUTH_TOKEN,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data; // Return response data to the calling component
+  } catch (error) {
+    console.error('Error updating Pooja:', error);
+    throw error; // Propagate error to the calling component
+  }
+};
+
+
 // Function to fetch all pooja data
 export const fetchPoojaData = async () => {
   try {
@@ -20,6 +39,9 @@ export const fetchPoojaData = async () => {
     throw error;
   }
 };
+
+
+
 
 // Function to create a new pooja
 export const createPooja = async (data) => {
@@ -103,21 +125,6 @@ export const deletePoojaCategory = async (id) => {
   }
 };
 
-export const updatePoojaData = async (updatedData) => {
-
-  try {
-    const response = await axios.put(`${BASE_URL}/update/${id}`, updatedData, {
-      headers: {
-        Authorization: AUTH_TOKEN,
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-    return response.data; // Return response data to the calling component
-  } catch (error) {
-    console.error('Error updating Pooja:', error);
-    throw error; // Propagate error to the calling component
-  }
-};
 
 
 export const UpdatePoojaCategory = async (id, updatedData) => {

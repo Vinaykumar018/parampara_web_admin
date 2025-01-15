@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 const PoojaForm = () => {
+
   const [isSamagriChecked, setIsSamagriChecked] = useState(false);
   const [formData, setFormData] = useState({
     pooja_name: "",
@@ -18,11 +19,15 @@ const PoojaForm = () => {
     pooja_image: null,
     short_discription: "",
     long_discription: RichTextEditor.createEmptyValue(),
-    samagridynamicFields: [] // Array to hold dynamic input fields data
+    samagridynamicFields: [],
+    samagriName: "",
+    samagriPrice: "",
+    samagriDescription: "",
+    
   });
   const [imagePreview, setImagePreview] = useState(null);
   const navigate = useNavigate();
-
+ 
   // Handle form input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -102,7 +107,13 @@ const PoojaForm = () => {
 
     try {
       await createPooja(data);
-      toast.success("Pooja created successfully!");
+       toast.success("Pooja created successfully!");
+                 
+                     // Delay the navigation for 3000ms (3 seconds)
+                     setTimeout(() => {
+                      navigate("/pooja/pooja-list");
+                  }, 1000);
+                  
       setFormData({
         pooja_name: "",
         pooja_category: "",
@@ -149,6 +160,7 @@ const PoojaForm = () => {
   useEffect(() => {
     loadCategories();
   }, []);
+  console.log(formData.samagridynamicFields)
 
   return (
     <div className="card-body bg-light">
@@ -309,6 +321,41 @@ const PoojaForm = () => {
                     </div>
                   </div>
 
+
+                   {isSamagriChecked && (
+        <div className="row">
+          <div className="col-md-4">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Samagri Name"
+              name="samagriName"
+              value={formData.samagriName}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="col-md-4">
+            <input
+              type="number"
+              className="form-control"
+              placeholder="Price"
+              name="samagriPrice"
+              value={formData.samagriPrice}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="col-md-4">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Description"
+              name="samagriDescription"
+              value={formData.samagriDescription}
+              onChange={handleInputChange}
+            />
+          </div>
+        </div>
+      )}
                   {/* Dynamic Samagri Fields */}
                   {isSamagriChecked && formData.samagridynamicFields.map((field, index) => (
                     <div key={index} className="mb-3 row">
@@ -344,8 +391,8 @@ const PoojaForm = () => {
 
                   {/* Add More Samagri Fields */}
                   {isSamagriChecked && (
-                    <div className="col-12 mb-3">
-                      <button type="button" className="btn btn-primary" onClick={addDynamicField}>
+                    <div className="col-12 mb-3 mt-4">
+                      <button type="button" className="btn btn-dark btn-sm" onClick={addDynamicField}>
                         Add More Fields
                       </button>
                     </div>

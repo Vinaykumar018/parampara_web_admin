@@ -2,16 +2,22 @@ import { element } from 'prop-types';
 import React from 'react'
 import EnquiriesList from './views/enquries/EnquiriesList';
 
+
 // Parmpara Admin Routes
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'));
 const PoojaForm=React.lazy(()=>import ('./views/Pooja/PoojaList/AddPoojaForm'))
+const UpdateUserForm=React.lazy(()=>import('./views/users/UpdateUserForm'))
 
 
 //users
 
 const Users=React.lazy(()=>import('./views/users/Users'));
+
+const AddUserForm=React.lazy(()=>import('./views/users/AddUserForm'))
 // Pandit routes
 const Pandit=React.lazy(()=>import('./views/pandit/Pandit'));
+const updatePandit=React.lazy(()=>import('./views/pandit/UpdatePandit'));
+// const updatePandit=React.lazy(()=>)
 //Pooja routes
 const PoojaList=React.lazy(()=>import('./views/Pooja/PoojaList/PoojaList'));
 const PoojaCategory=React.lazy(()=>import('./views/Pooja/PoojaCategory/PoojaCategory'));
@@ -42,6 +48,7 @@ const VirtualServicesRequest=React.lazy(()=>import('./views/VirtualServices/Virt
 const dailyPandit=React.lazy(()=>import('./views/dailyPandit/DailyPandit'))
 const addDailyPandit=React.lazy(()=>import('./views/dailyPandit/AddPandit'))
 const SubscriptionDetails=React.lazy(()=>import('./views/dailyPandit/SubscriptionDetails'))
+const AddPandit=React.lazy(()=>import('./views/pandit/AddPandit'))
 
 //ecommerce
 const proudct=React.lazy(()=>import('./views/eCommerce/Product'))
@@ -111,6 +118,7 @@ const Badges = React.lazy(() => import('./views/notifications/badges/Badges'))
 const Modals = React.lazy(() => import('./views/notifications/modals/Modals'))
 const Toasts = React.lazy(() => import('./views/notifications/toasts/Toasts'))
 
+
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
 const routes = [
@@ -119,10 +127,14 @@ const routes = [
   // Parampara Start
   //user
   { path: '/user', name: 'User', element: Users},
+  { path: '/add-user', name: 'Add user',element:AddUserForm },
+  { path: '/update-user/:id', name: 'Update user',element:UpdateUserForm },
 
   //pandit
 
   { path: '/pandit', name: 'Pandit', element:Pandit},
+  { path: '/pandit/update-pandit/:id', name: 'Pandit', element:updatePandit},
+  { path: '/add-pandit', name: 'Pandit', element:AddPandit},
  
 
   //only pooja 

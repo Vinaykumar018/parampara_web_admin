@@ -58,7 +58,7 @@
 
 import React, { Suspense, useEffect } from 'react';
 import { HashRouter, Route, Routes, Navigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+
 
 import { CSpinner, useColorModes } from '@coreui/react';
 import './scss/style.scss';
@@ -80,7 +80,7 @@ const ProtectedRoute = ({ element }) => {
 
 const App = () => {
   const { isColorModeSet, setColorMode } = useColorModes('coreui-free-react-admin-template-theme');
-  const storedTheme = useSelector((state) => state.theme);
+
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.href.split('?')[1]);
