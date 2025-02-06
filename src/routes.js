@@ -121,6 +121,12 @@ const Toasts = React.lazy(() => import('./views/notifications/toasts/Toasts'))
 
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
+
+//terms and conditions
+
+const PrivacyPolicy=React.lazy(()=>import('./views/pages/PrivacyAndPolicy/PrivacyAndPolicy'))
+const Terms=React.lazy(()=>import('./views/pages/TermsAndConditonPage/TermsAndConditionsPage'))
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
@@ -179,6 +185,9 @@ const routes = [
 
   {path:'/slider',name:"Slider",element: Slider},
    {path:'/slider/cateogry',name:"Slider Category",element:AddsliderCateogry},
+
+   {path:"/privacy",name:"Privacy Policy",element:PrivacyPolicy},
+   {path:"/terms",name:"Terms and Conditions",element:Terms},
   
 
   // Parampara End

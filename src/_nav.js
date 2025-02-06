@@ -232,13 +232,13 @@ const _nav = [
   {
     component:CNavItem,
     name:'Terms and Conditions',
-    to:'/',
+    to:'/Terms',
     icon:<FaFileAlt className="nav-icon"/>,
   },
   {
     component:CNavItem,
     name:'Privacy and Policy',
-    to:'/',
+    to:'/privacy',
     icon:<MdPrivacyTip className="nav-icon"/>,
   },
   {
