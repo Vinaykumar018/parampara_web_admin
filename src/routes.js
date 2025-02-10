@@ -33,9 +33,12 @@ const PoojaArchanaCategory=React.lazy(()=>import('./views/PoojaArchana/PoojaArch
 const addBhavyaAyojan=React.lazy(()=>import('./views/BhavyAyojan/AddAyojan'));
 const BookingListBhavyaAyojan=React.lazy(()=>import('./views/BhavyAyojan/BookingListBhavyaAyojan'));
 
-//bhajan mandal
+//bhajan mandal 
+const bhajanList= React.lazy(()=>import('./views/BhajanMandal/BhajanMandal'));
 const addBhajanMandal=React.lazy(()=>import('./views/BhajanMandal/AddMandal'));
-const listBhajanMandal=React.lazy(()=>import('./views/BhajanMandal/BookingListBhajanMandal'));
+const BookingListBhajanMandal=React.lazy(()=>import('./views/BhajanMandal/BookingListBhajanMandal'));
+const UpdateBhajanMandal=React.lazy(()=>import('./views/BhajanMandal/UpdateBhajanMandal'))
+const BhajanMandalCategory=React.lazy(()=>import('./views/BhajanMandal/BhajanMandalCategory'))
 
 //virtua services
 
@@ -160,8 +163,12 @@ const routes = [
   { path: '/booking-list-bhavya-ayojan', name: 'Booking List Bhavya Ayojan', element: BookingListBhavyaAyojan },
 
   //bhajan mandal
+  {path:"/bhajan-list", name: 'Bhajan List', element: bhajanList },
   { path: '/add-bhajan-mandal', name: 'Add Bhajan Mandal', element: addBhajanMandal },
-  { path: '/list-bhajan-mandal', name: 'List Bhajan Mandal', element: listBhajanMandal },
+  { path: '/booking-list-bhajan-mandal', name: 'Booking List Bhajan Mandal', element: BookingListBhajanMandal },
+  { path: '/update-bhajan-mandal/:id', name: 'Update Bhajan Mandal', element: UpdateBhajanMandal},
+  { path: '/bhajan-mandal-category', name: 'Bhajan Mandal Category', element: BhajanMandalCategory},
+  
 
   //virtual services
   { path: '/virtual-services', name: 'Virtual Services', element: virtualServices },

@@ -114,8 +114,18 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Booking List',
-        to: '/list-bhajan-mandal',
+        to: '/booking-list-bhajan-mandal',
       },
+      {
+        component:CNavItem,
+        name:'Bhajan List',
+        to:"/bhajan-list"
+      },
+      {
+        component:CNavItem,
+        name:'Bhajan Mandal Category',
+        to:"/bhajan-mandal-category"
+      }
     ],
   },
   {

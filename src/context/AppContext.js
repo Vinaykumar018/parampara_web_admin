@@ -8,11 +8,12 @@ const AppProvider = ({ children }) => {
   const [contextPanditData,setContextPanditData] = useState([]);
   const [contextPoojaData,setContextPoojaData] = useState([]);
   const [contextUserData,setContextUserData] = useState([]);
+  const [contextBhajanMandalData,setContextBhajanMandalData] = useState([]);
  
   return (
     <AppContext.Provider
       value={{
-        contextPanditData,setContextPanditData,contextPoojaData,setContextPoojaData,contextUserData,setContextUserData
+        contextPanditData,setContextPanditData,contextPoojaData,setContextPoojaData,contextUserData,setContextUserData,contextBhajanMandalData,setContextBhajanMandalData
       }}
     >
       {children}
