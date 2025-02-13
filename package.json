@@ -13,7 +13,8 @@
   "license": "MIT",
   "author": "The CoreUI Team (https://github.com/orgs/coreui/people)",
   "scripts": {
-    "preinstall": "npx npm@8 config set legacy-peer-deps true",
+    "preinstall": "npx npm@8 config set legacy-peer-deps true", 
+    "install": "npm install --legacy-peer-deps",
     "build": "vite build",
     "lint": "eslint \"src/**/*.js\"",
     "serve": "vite preview",
