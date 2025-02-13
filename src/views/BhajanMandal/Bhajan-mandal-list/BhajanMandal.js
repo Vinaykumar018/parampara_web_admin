@@ -7,6 +7,7 @@ import { CSpinner } from '@coreui/react';
 import { useContext } from "react";
 import { AppContext } from '../../../context/AppContext';
 import { useNavigate } from 'react-router-dom';
+import {UpdateBhajanStatus} from '../../Services/BhajanMandalApiService'
 
 const BhajanMandal = () => {
   const { contextBhajanMandalData, setContextBhajanMandalData } = useContext(AppContext);
@@ -21,7 +22,7 @@ const BhajanMandal = () => {
   const [showModal, setShowModal] = useState(false);
   const [bhajanMandalToDelete, setBhajanMandalToDelete] = useState(null);
 
-  useEffect(() => {
+
     const getData = async () => {
       try {
         const data = await fetchBhajanMandalData();
@@ -37,6 +38,9 @@ const BhajanMandal = () => {
         setLoading(false);
       }
     };
+
+
+    useEffect(() => {
     getData();
   }, []);
 
@@ -70,6 +74,30 @@ const BhajanMandal = () => {
     setShowModal(false);
   };
 
+
+
+  const updateStatus = async (id, status) => {
+    // Determine the new status using a ternary operator
+    const newStatus = status == 0 ? 1 : 0;
+    console.log('Current Status:', status);
+    console.log('New Status:', newStatus);
+  
+    try {
+      // Call the API function to update the status
+      await UpdateBhajanStatus(id, newStatus);
+  
+      console.log(
+        `Status successfully updated to ${newStatus == 1 ? 'Active' : 'Inactive'}`,
+      );
+  
+      // Refresh the data to reflect the status change
+      getData();
+    } catch (error) {
+      console.error('Error updating status:', error);
+      alert('Failed to update the status. Please try again.');
+    }
+  };
+
   const columns = [
     { name: "S No.", selector: (row, index) => index + 1, width: "80px" },
     { name: "Bhajan Name", selector: (row) => row.bhajan_name, width: "150px" },
@@ -94,19 +122,20 @@ const BhajanMandal = () => {
     { name: "Short Description", selector: (row) => row.short_discription, width: "200px" },
     { name: "Long Description", selector: (row) => row.long_discription, width: "400px" },
     {
-      name: "Status",
+      name: 'Status',
       selector: (row) => (
         <span
-          className={`badge ${row.status === "active" ? "bg-success" : "bg-danger"}`}
-          style={{ cursor: "pointer" }}
+          className={`badge ${row.status == 1 ? 'bg-success' : 'bg-danger'}`}
+          style={{ cursor: 'pointer' }}
           onClick={() => updateStatus(row._id, row.status)}
         >
-          {row.status === "1" ? "Active" : "Inactive"}
+          {row.status == 1 ? 'Active' : 'Inactive'}
+
+        
         </span>
       ),
       grow: 0.5,
       allowOverflow: true,
-      width: "100px",
     },
     {
       name: "Action",

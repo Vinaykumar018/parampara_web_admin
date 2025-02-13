@@ -136,3 +136,24 @@ export const deleteBhajanMandal = async (id) => {
     throw error;
   }
 };
+
+
+
+
+export const UpdateBhajanStatus = async ( bhajanStautusId , newStatus) => {
+  try {
+    const response = axios.put(`${BASE_URL}/bhajan-status/${bhajanStautusId}`, {
+     
+      "status":newStatus
+
+    }, {
+      headers: {
+        Authorization: AUTH_TOKEN,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error updating Status:', error);
+    throw error;
+  }
+};
