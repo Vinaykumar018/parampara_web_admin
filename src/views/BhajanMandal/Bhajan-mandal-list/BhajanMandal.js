@@ -1,47 +1,38 @@
 import React, { useState, useEffect } from "react";
-
-import GetTable from "../dashboard/GetTable";
+import GetTable from "../../dashboard/GetTable";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
- import { fetchPoojaData, deletePooja } from '../Services/poojaApiService';
- import axios from "axios";
-
-
-
-import { CSpinner} from '@coreui/react'
+import { deleteBhajanMandal, fetchBhajanMandalData } from '../../Services/BhajanMandalApiService';
+import { CSpinner } from '@coreui/react';
 import { useContext } from "react";
-import { AppContext } from '../../context/AppContext';
-
+import { AppContext } from '../../../context/AppContext';
 import { useNavigate } from 'react-router-dom';
+
 const BhajanMandal = () => {
-
-
-  const {contextBhajanMandalData,setContextBhajanMandalData} = useContext(AppContext);
- 
+  const { contextBhajanMandalData, setContextBhajanMandalData } = useContext(AppContext);
   const navigate = useNavigate();
 
-  const navigateToAddPooja = () => {
-    
+  const navigateToAddBhajanMandal = () => {
     navigate('/add-bhajan-mandal');
   };
-  const [poojaData, setPoojaData] = useState([]);
+
+  const [bhajanMandalData, setBhajanMandalData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const [poojaToDelete, setPoojaToDelete] = useState(null);
-
+  const [bhajanMandalToDelete, setBhajanMandalToDelete] = useState(null);
 
   useEffect(() => {
     const getData = async () => {
       try {
-        const data = await fetchPoojaData();
+        const data = await fetchBhajanMandalData();
         if (data.status === 1) {
-          setPoojaData(data.data);
-         setContextBhajanMandalData(data.data)
+          setBhajanMandalData(data.data);
+          setContextBhajanMandalData(data.data);
         } else {
-          toast.error('Failed to fetch Pooja data');
+          toast.error('Failed to fetch Bhajan Mandal data');
         }
       } catch (error) {
-        toast.error('Error fetching Pooja data');
+        toast.error('Error fetching Bhajan Mandal data');
       } finally {
         setLoading(false);
       }
@@ -50,30 +41,28 @@ const BhajanMandal = () => {
   }, []);
 
   const handleEdit = (id) => {
-    console.log(contextBhajanMandalData)
-    
     navigate(`/update-bhajan-mandal/${id}`);
   };
 
   const handleDelete = (id) => {
-    setPoojaToDelete(id);
+    setBhajanMandalToDelete(id);
     setShowModal(true);
   };
 
   const handleConfirmDelete = async () => {
     try {
-      const response = await deletePooja(poojaToDelete);
+      const response = await deleteBhajanMandal(bhajanMandalToDelete);
       if (response.status === 1) {
-        toast.success("Pooja deleted successfully!");
-        setPoojaData(poojaData.filter((item) => item._id !== poojaToDelete));
-        setContextPoojaData(poojaData.filter((item) => item._id !== poojaToDelete));
+        toast.success("Bhajan Mandal deleted successfully!");
+        setBhajanMandalData(bhajanMandalData.filter((item) => item._id !== bhajanMandalToDelete));
+        setContextBhajanMandalData(bhajanMandalData.filter((item) => item._id !== bhajanMandalToDelete));
         setShowModal(false);
       } else {
-        toast.error("Failed to delete Pooja.");
+        toast.error("Failed to delete Bhajan Mandal.");
       }
     } catch (error) {
-      toast.error("Error deleting Pooja. Please try again.");
-      console.error("Error deleting Pooja:", error);
+      toast.error("Error deleting Bhajan Mandal. Please try again.");
+      console.error("Error deleting Bhajan Mandal:", error);
     }
   };
 
@@ -83,18 +72,17 @@ const BhajanMandal = () => {
 
   const columns = [
     { name: "S No.", selector: (row, index) => index + 1, width: "80px" },
-    // { name: "ID", selector: (row) => row._id, width: "100px" },
-    { name: "Pooja Name", selector: (row) => row.pooja_name, width: "150px" },
-    { name: "Category", selector: (row) => row.pooja_category, width: "100px" },
-    { name: "Price (With Samagri)", selector: (row) => row.price_withSamagri, width: "100px" },
-    { name: "Price (Without Samagri)", selector: (row) => row.price_withoutSamagri, width: "100px" },
+    { name: "Bhajan Name", selector: (row) => row.bhajan_name, width: "150px" },
+    { name: "Category", selector: (row) => row.bhajan_category, width: "100px" },
+    { name: "Price", selector: (row) => row.bhajan_price, width: "100px" },
+    { name: "Members", selector: (row) => row.bhajan_member, width: "100px" },
     {
       name: "Image",
       selector: (row) =>
-        row.pooja_image ? (
+        row.bhajan_image ? (
           <img
-            src={`http://192.168.1.38:3000${row.pooja_image}`}
-            alt={row.pooja_name}
+            src={`http://34.131.70.24:3000${row.bhajan_image}`}
+            alt={row.bhajan_name}
             className="img-thumbnail"
             width={50}
           />
@@ -105,7 +93,21 @@ const BhajanMandal = () => {
     },
     { name: "Short Description", selector: (row) => row.short_discription, width: "200px" },
     { name: "Long Description", selector: (row) => row.long_discription, width: "400px" },
-    { name: "Status", selector: (row) => row.status, width: "100px" },
+    {
+      name: "Status",
+      selector: (row) => (
+        <span
+          className={`badge ${row.status === "active" ? "bg-success" : "bg-danger"}`}
+          style={{ cursor: "pointer" }}
+          onClick={() => updateStatus(row._id, row.status)}
+        >
+          {row.status === "1" ? "Active" : "Inactive"}
+        </span>
+      ),
+      grow: 0.5,
+      allowOverflow: true,
+      width: "100px",
+    },
     {
       name: "Action",
       selector: (row) => (
@@ -130,38 +132,32 @@ const BhajanMandal = () => {
       width: "150px",
     },
   ];
-  
-  
 
   return (
     <section>
       <div className="container ">
-        {/* <PoojaForm /> */}
         <div className="card shadow-lg mb-4 border-0">
-        <div class="card-header bg-dark text-white">
-          <div className="d-flex align-items-center justify-content-between">
-            <h6 className="mb-0">Bhajan List</h6>
-            {/* <div>
-              <a href="javascript:void(0)" className="btn btn-success text-light btn-sm">Add Pooja</a>
-            </div> */}
+          <div className="card-header bg-dark text-white">
+            <div className="d-flex align-items-center justify-content-between">
+              <h6 className="mb-0">Bhajan List</h6>
               <div>
-      <a
-        href="javascript:void(0)"
-        className="btn btn-warning text-dark btn-sm"
-        onClick={navigateToAddPooja}
-      >
-       Add Bhajan Mandal
-      </a>
-    </div>
-          </div> 
-        </div>
-        {loading ? (
-        <div className="justify-content-center d-flex p-5"> 
-            <CSpinner color="primary" />
+                <a
+                  href="javascript:void(0)"
+                  className="btn btn-warning text-dark btn-sm"
+                  onClick={navigateToAddBhajanMandal}
+                >
+                  Add Bhajan Mandal
+                </a>
+              </div>
+            </div>
           </div>
-        ) : ( 
-          <GetTable columns={columns} data={poojaData} />
-        )}
+          {loading ? (
+            <div className="justify-content-center d-flex p-5">
+              <CSpinner color="primary" />
+            </div>
+          ) : (
+            <GetTable columns={columns} data={bhajanMandalData} />
+          )}
         </div>
       </div>
       <ConfirmDeleteModal
@@ -195,7 +191,7 @@ const ConfirmDeleteModal = ({ show, onClose, onConfirm }) => {
             ></button>
           </div>
           <div className="modal-body text-center" style={{ fontSize: "1rem" }}>
-            <p style={{ fontWeight: "500" }}>Are you sure you want to delete this Pooja?</p>
+            <p style={{ fontWeight: "500" }}>Are you sure you want to delete this Bhajan Mandal?</p>
           </div>
           <div className="modal-footer d-flex justify-content-between">
             <button
