@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // const BASE_URL = 'https://parampara-admin.vercel.app/api/pooja';
 const BASE_URL = `${import.meta.env.VITE_BASE_URL}/bhajanMandal`;
-// const BASE_URL='http://localhost:3005/api/pooja'
+// const BASE_URL='http://localhost:3000/api/bhajanMandal';
 const AUTH_TOKEN =
   'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNoaXZhbnNodSIsImlhdCI6MTczMjE2NTMzOX0.YDu6P4alpQB5QL-74z1jO4LGfEwZA_n_Y29o512FrM8';
 

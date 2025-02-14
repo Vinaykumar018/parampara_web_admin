@@ -89,7 +89,7 @@ const BhajanMandalCategory = () => {
       selector: (row) =>
         row.bhajan_image ? (
           <img
-            src={`http://192.168.1.36:3000` + row.bhajan_image}
+            src={`http://34.131.70.24:3000/` + row.bhajan_image}
             alt={row.category}
             width={50}
             height={30}

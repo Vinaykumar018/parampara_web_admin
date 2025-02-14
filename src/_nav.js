@@ -49,17 +49,17 @@ const _nav = [
     items: [
       {
         component: CNavItem,
-        name: 'Pooja Category',
+        name: 'Category',
         to: '/pooja/pooja-category',
       },
       {
         component: CNavItem,
-        name: 'Pooja List',
+        name: 'Pooja',
         to: '/pooja/pooja-list',
       },
       {
         component: CNavItem,
-        name: 'Booking List',
+        name: 'Booking',
         to: '/pooja/booking-list',
       },
     ],
@@ -95,7 +95,7 @@ const _nav = [
       },
       {
         component: CNavItem,
-        name: 'Booking List',
+        name: 'Booking',
         to: '/booking-list-bhavya-ayojan',
       },
     ],
@@ -107,24 +107,24 @@ const _nav = [
     icon: <CIcon icon={cilSitemap} customClassName="nav-icon" />,
     items: [
       {
+        component:CNavItem,
+        name:'Category',
+        to:"/bhajan-mandal-category"
+      },
+      {
         component: CNavItem,
-        name: 'Add Mandal',
+        name: 'Add Mandali',
         to: '/add-bhajan-mandal',
       },
       {
-        component: CNavItem,
-        name: 'Booking List',
-        to: '/booking-list-bhajan-mandal',
-      },
-      {
         component:CNavItem,
-        name:'Bhajan List',
+        name:'Mandali',
         to:"/bhajan-list"
       },
       {
-        component:CNavItem,
-        name:'Bhajan Mandal Category',
-        to:"/bhajan-mandal-category"
+        component: CNavItem,
+        name: 'Booking',
+        to: '/booking-list-bhajan-mandal',
       }
     ],
   },

@@ -114,14 +114,14 @@ const AddBhajanMandal = () => {
         <div className="col-12">
           <div className="card shadow-lg mb-4 border-0">
             <div className="card-header text-left bg-dark text-white">
-              <h6 className="text-Capitalize">Add New Bhajan Mandal</h6>
+              <h6 className="text-Capitalize">Add Bhajan Mandali</h6>
             </div>
             <div className="card-body bg-light">
               <form onSubmit={handleSubmit}>
                 <div className="row">
                   {/* Bhajan Name */}
                   <div className="col-md-6 mb-3">
-                    <label className="form-label">Bhajan Name</label>
+                    <label className="form-label">Mandali Name</label>
                     <input
                       type="text"
                       className="form-control"
@@ -135,7 +135,7 @@ const AddBhajanMandal = () => {
 
                   {/* Bhajan Slug */}
                   <div className="col-md-6 mb-3">
-                    <label className="form-label">Bhajan Slug</label>
+                    <label className="form-label">Mandali Slug</label>
                     <input
                       type="text"
                       className="form-control"
@@ -197,7 +197,7 @@ const AddBhajanMandal = () => {
 
                   {/* Bhajan Image */}
                   <div className="col-md-6 mb-3">
-                    <label className="form-label">Bhajan Image</label>
+                    <label className="form-label">Mandali Photo</label>
                     <input
                       type="file"
                       className="form-control"
@@ -220,7 +220,7 @@ const AddBhajanMandal = () => {
                   )}
 
                   {/* Short Description */}
-                  <div className="col-md-8 mb-3">
+                  <div className="col-md-12 mb-3">
                     <label className="form-label">Short Description</label>
                     <textarea
                       className="form-control"
@@ -251,7 +251,7 @@ const AddBhajanMandal = () => {
                   </div>
 
                   <div className="text-end mb-3">
-                    <button type="submit" className="me-2 btn btn-dark btn-sm">Add Bhajan Mandal</button>
+                    <button type="submit" className="me-2 btn btn-success text-light btn-sm">Save</button>
                   </div>
                 </div>
               </form>
