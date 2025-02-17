@@ -101,7 +101,6 @@ const PreviewMandal = () => {
 
     fetchData();
   }, [id]);
-
   if (!bhajanData) {
     return (
       <div className="d-flex justify-content-center align-items-center vh-100">
@@ -115,10 +114,11 @@ const PreviewMandal = () => {
   return (
     <div className="container my-4">
       <ToastContainer />
+      
       {/* Bhajan Details Section */}
       <div className="card shadow-sm mb-4">
         <div className="card-header bg-dark text-white py-3">
-          <h6 className="mb-0">Bhajan Details</h6>
+          <h6 className="mb-0">{bhajanData.bhajan_name}</h6>
         </div>
         <div className="card-body p-3">
           <div className="row">
@@ -206,7 +206,6 @@ const PreviewMandal = () => {
                 src={`http://34.131.70.24:3000${bhajanData.bhajan_image}`}
                 alt={bhajanData.bhajan_name}
                 className="img-fluid rounded shadow-sm"
-                style={{ maxWidth: "100%", height: "auto", maxHeight: "450px" }}
               />
             </div>
           </div>
@@ -216,7 +215,7 @@ const PreviewMandal = () => {
       {/* Bhajan Mandal Videos Section */}
       <div className="card shadow-sm">
         <div className="card-header bg-dark text-white py-3">
-          <h6 className="mb-0">Bhajan Mandal Videos</h6>
+          <h6 className="mb-0">Mandali Videos</h6>
         </div>
         <div className="card-body p-3">
           <div className="table-responsive">

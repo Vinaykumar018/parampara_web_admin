@@ -9,6 +9,7 @@ import { AppContext } from '../../../context/AppContext';
 import { useNavigate } from 'react-router-dom';
 import {UpdateBhajanStatus} from '../../Services/BhajanMandalApiService'
 import AddBhajanVideoModal from './AddVideoBhajanModal'
+import ReadMoreText from "../../../components/ReadMoreText";
 const BhajanMandal = () => {
 
    
@@ -155,23 +156,11 @@ console.log(globalContextBhajanMandalCategoryData)
         ),
       width: "100px",
     },
-    { name: "Short Description", selector: (row) => (<div
-      dangerouslySetInnerHTML={{ __html: row.short_discription }}
-      style={{ maxWidth: "400px", overflowWrap: "break-word" }}
-    ></div>), width: "200px", wrap: true, // Prevents overflow
+    { name: "Short Description", selector: (row) => (
+    <>
+    <ReadMoreText text={row.short_discription}/>
+    </>), width: "300px", wrap: true, // Prevents overflow
       grow: 1.5 },
-      {
-        name: "Long Description",
-        selector: (row) => (
-          <div
-            dangerouslySetInnerHTML={{ __html: row.long_discription }}
-            style={{ maxWidth: "400px", overflowWrap: "break-word" }}
-          ></div>
-        ),
-        width: "400px",
-        wrap: true, // Prevents overflow
-        grow: 1.5 
-      },
     {
       name: "Status",
       selector: (row) => (
@@ -258,14 +247,14 @@ console.log(globalContextBhajanMandalCategoryData)
         <div className="card shadow-lg mb-4 border-0">
           <div className="card-header bg-dark text-white">
             <div className="d-flex align-items-center justify-content-between">
-              <h6 className="mb-0">Bhajan List</h6>
+              <h6 className="mb-0">Bhajan Mandali</h6>
               <div>
                 <a
                   href="javascript:void(0)"
                   className="btn btn-warning text-dark btn-sm"
                   onClick={navigateToAddBhajanMandal}
                 >
-                  Add Bhajan Mandal
+                  Add Mandali
                 </a>
               </div>
             </div>

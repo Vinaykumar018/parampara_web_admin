@@ -11,6 +11,7 @@ import { AppContext } from '../../../context/AppContext';
 import { useNavigate } from 'react-router-dom';
 import UpdateBhajanCategoryForm from './UpdateBhajanCategoryForm';
 import ViewBhajanMandalCategoryModal from './ViewBhajanMandalCategoryModal';
+import ReadMoreText from '../../../components/ReadMoreText';
 
 const BhajanMandalCategory = () => {
   const [categoryData, setCategoryData] = useState([]);
@@ -81,36 +82,39 @@ const BhajanMandalCategory = () => {
       grow: 0.3 // Adjusts space dynamically
     },
     { 
-      name: 'Bhajan Mandal Category', 
-      selector: (row) => row.category, 
+      name: 'Mandali Category', 
+      selector: (row) => 
+      (
+        <>
+        <img
+            src={`http://34.131.70.24:3000/` + row.bhajan_image}
+            alt={row.category}
+            // width={100}
+            height={100}
+          />
+          <p style={{textAlign:"center",fontWeight:"700",fontSize:"15px"}}>{row.category}</p>
+        </>
+      ), 
       wrap: true, // Ensures text wraps properly
       grow: 1 
     },
     {
-      name: 'Bhajan Mandal Category Image',
-      selector: (row) =>
-        row.bhajan_image ? (
-          <img
-            src={`http://34.131.70.24:3000/` + row.bhajan_image}
-            alt={row.category}
-            width={50}
-            height={30}
-          />
-        ) : (
-          'N/A'
-        ),
-      grow: 0.5, // Prevents excessive width usage
-      allowOverflow: true, // Prevents layout breaking
-    },
-    {
-      name: 'Bhajan Mandal Short Description',
-      selector: (row) => row.short_discription,
+      name: 'Short Description',
+      selector: (row) => (
+        <>
+          <ReadMoreText text={ row.short_discription}/>
+        </>
+      ),
       wrap: true, // Prevents overflow
       grow: 1.5, // Adjusts dynamically
     },
     {
-      name: 'Bhajan Mandal Long Description',
-      selector: (row) => row.long_discription,
+      name: 'Long Description',
+      selector: (row) =>(
+        <>
+        <ReadMoreText text={ row.long_discription}/>
+        </>
+      ),
       wrap: true,
       grow: 2,
     },
