@@ -10,7 +10,9 @@ import { useNavigate } from 'react-router-dom';
 import {UpdateBhajanStatus} from '../../Services/BhajanMandalApiService'
 import AddBhajanVideoModal from './AddVideoBhajanModal'
 const BhajanMandal = () => {
-  const { contextBhajanMandalData, setContextBhajanMandalData } = useContext(AppContext);
+
+   
+  const { contextBhajanMandalData, setContextBhajanMandalData,globalContextBhajanMandalCategoryData } = useContext(AppContext);
   const navigate = useNavigate();
 
   const navigateToAddBhajanMandal = () => {
@@ -24,6 +26,27 @@ const BhajanMandal = () => {
 
   const [videoModal, setVideoModal] = useState(false);
 
+
+
+   const loadCategories = async () => {
+      setLoading(true);
+      try {
+        const result = await fetchCategories();
+        if (result.status === 1) {
+          setCategoryData(result.data);
+        }
+      } catch (error) {
+        console.error('Error loading categories:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+     const [categoryData, setCategoryData] = useState([]);
+  
+    useEffect(() => {
+      loadCategories();
+    }, []);
+console.log(globalContextBhajanMandalCategoryData)
 
     const getData = async () => {
       try {
@@ -102,8 +125,19 @@ const BhajanMandal = () => {
 
   const columns = [
     { name: "S No.", selector: (row, index) => index + 1, width: "80px" },
-    { name: "Bhajan Name", selector: (row) => row.bhajan_name, width: "150px" },
-    { name: "Category", selector: (row) => row.bhajan_category, width: "100px" },
+    { name: "Bhajan Name", selector: (row) => row.bhajan_name, width: "200px" },
+    {
+      name: "Category",
+      selector: (row) => {
+        const category = globalContextBhajanMandalCategoryData.find(
+          (item) => item._id === row.bhajan_category
+        );
+        console.log(category ,"from bm")
+        return category ? category.category : "-"; // If a match is found, return the category name; else return "-"
+      },
+      width: "200px",
+    }
+    ,
     { name: "Price", selector: (row) => row.bhajan_price, width: "100px" },
     { name: "Members", selector: (row) => row.bhajan_member, width: "100px" },
     {
@@ -121,8 +155,23 @@ const BhajanMandal = () => {
         ),
       width: "100px",
     },
-    { name: "Short Description", selector: (row) => row.short_discription, width: "200px" },
-    { name: "Long Description", selector: (row) => row.long_discription, width: "400px" },
+    { name: "Short Description", selector: (row) => (<div
+      dangerouslySetInnerHTML={{ __html: row.short_discription }}
+      style={{ maxWidth: "400px", overflowWrap: "break-word" }}
+    ></div>), width: "200px", wrap: true, // Prevents overflow
+      grow: 1.5 },
+      {
+        name: "Long Description",
+        selector: (row) => (
+          <div
+            dangerouslySetInnerHTML={{ __html: row.long_discription }}
+            style={{ maxWidth: "400px", overflowWrap: "break-word" }}
+          ></div>
+        ),
+        width: "400px",
+        wrap: true, // Prevents overflow
+        grow: 1.5 
+      },
     {
       name: "Status",
       selector: (row) => (

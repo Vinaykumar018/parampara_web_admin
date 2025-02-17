@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import { getBhajanById, fetchVideos } from "../../Services/BhajanMandalApiService";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useContext } from 'react';
+import { AppContext } from '../../../context/AppContext';
 
 const PreviewMandal = () => {
   const { id } = useParams();
@@ -14,6 +16,8 @@ const PreviewMandal = () => {
   const token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNoaXZhbnNodSIsImlhdCI6MTczMjE2NTMzOX0.YDu6P4alpQB5QL-74z1jO4LGfEwZA_n_Y29o512FrM8';
   const BASE_URL = `${import.meta.env.VITE_BASE_URL}`;
 
+
+   const { globalContextBhajanMandalCategoryData } = useContext(AppContext);
   const handleEdit = (video) => {
     setCurrentVideo(video);
     setShowEditModal(true);
@@ -122,10 +126,18 @@ const PreviewMandal = () => {
             <div className="col-md-8">
               <table className="table table-striped table-borderless table-sm">
                 <tbody>
-                  <tr>
-                    <th className="text-muted small" style={{ width: "30%" }}>Bhajan Category</th>
-                    <td className="small">{bhajanData.bhajan_category}</td>
-                  </tr>
+                <tr>
+  <th className="text-muted small" style={{ width: "30%" }}>Bhajan Category</th>
+  <td className="small">
+    {(() => {
+      const category = globalContextBhajanMandalCategoryData.find(
+        (item) => item._id === bhajanData.bhajan_category
+      );
+      return category ? category.category : "-"; // Display category name if found, otherwise "-"
+    })()}
+  </td>
+</tr>
+
                   <tr>
                     <th className="text-muted small">Bhajan Members</th>
                     <td className="small">{bhajanData.bhajan_member}</td>

@@ -1,7 +1,10 @@
 import React from 'react';
-
+import { useContext } from "react";
+import { AppContext } from "../../../context/AppContext";
 const ViewPoojaModal = ({ show, onClose, rowData }) => {
   if (!show) return null;
+
+   const { globalContextPoojaCategoryData } = useContext(AppContext);
 
   return (
     <div
@@ -81,43 +84,84 @@ const ViewPoojaModal = ({ show, onClose, rowData }) => {
 
             {/* Details Section */}
             {[
-              { label: "Pooja Name", value: rowData?.pooja_name },
-              { label: "Category", value: rowData?.pooja_category },
-              { label: "Price (With Samagri)", value: rowData?.price_withSamagri },
-              { label: "Price (Without Samagri)", value: rowData?.price_withoutSamagri },
-              { label: "Short Description", value: rowData?.short_discription },
-              { label: "Long Description", value: rowData?.long_discription },
-              { label: "Status", value: rowData?.status },
-            ].map((item, index) => (
-              <div
-                key={index}
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  borderBottom: "1px solid #ddd",
-                  padding: "8px 0",
-                }}
-              >
-                <span
-                  style={{
-                    fontWeight: "bold",
-                    fontSize: "0.85rem", // Reduced font size
-                    color: "#555",
-                  }}
-                >
-                  {item.label}:
-                </span>
-                <span
-                  style={{
-                    fontSize: "0.8rem", // Reduced font size
-                    color: "#777",
-                  }}
-                >
-                  {item.value || "-"}
-                </span>
-              </div>
-            ))}
+  { label: "Pooja Name", value: rowData?.pooja_name },
+  { label: "Category", 
+    value: (() => {
+      const category = globalContextPoojaCategoryData.find(
+        (item) => item._id === rowData?.pooja_category // Assuming rowData.pooja_category contains the category ID
+      );
+      return category ? category.category : "-"; // If a match is found, return the category name; else return "-"
+    })()
+  }
+  ,
+  { label: "Price (With Samagri)", value: rowData?.price_withSamagri },
+  { label: "Price (Without Samagri)", value: rowData?.price_withoutSamagri },
+  { label: "Short Description", value: rowData?.short_discription, isHtml: true },
+  { label: "Long Description", value: rowData?.long_discription, isHtml: true },
+  {
+    label: "Status",
+    value: rowData?.status,
+    isBadge: true, // Add a flag to identify this as a badge field
+  },
+].map((item, index) => (
+  <div
+    key={index}
+    style={{
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      borderBottom: "1px solid #ddd",
+      padding: "8px 0",
+    }}
+  >
+    <span
+      style={{
+        fontWeight: "bold",
+        fontSize: "0.85rem",
+        color: "#555",
+      }}
+    >
+      {item.label}:
+    </span>
+    {item.isHtml ? (
+      <span
+        dangerouslySetInnerHTML={{
+          __html: item.value || "-",
+        }}
+        style={{
+          fontSize: "0.8rem",
+          color: "#777",
+          maxWidth: "300px",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "pre-wrap",
+        }}
+      ></span>
+    ) : item.isBadge ? (
+      <span
+        className={`badge ${item.value === "active" ? "bg-success" : "bg-danger"}`}
+        style={{
+          fontSize: "0.75rem",
+          padding: "0.2rem 0.5rem",
+          color: "#fff",
+        }}
+      >
+        {item.value === "active" ? "Active" : "Inactive"}
+      </span>
+    ) : (
+      <span
+        style={{
+          fontSize: "0.8rem",
+          color: "#777",
+        }}
+      >
+        {item.value || "-"}
+      </span>
+    )}
+  </div>
+))}
+
+
           </div>
           <div
             className="modal-footer"

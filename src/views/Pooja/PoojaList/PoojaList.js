@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import ViewPoojaModal from './ViewPoojaModal'; // Import the new modal
 
 const PoojaList = () => {
-  const { contextPoojaData, setContextPoojaData } = useContext(AppContext);
+  const { contextPoojaData, setContextPoojaData,globalContextPoojaCategoryData } = useContext(AppContext);
   const navigate = useNavigate();
 
   const navigateToAddPooja = () => {
@@ -82,9 +82,20 @@ const PoojaList = () => {
   const columns = [
     { name: "S No.", selector: (row, index) => index + 1, width: "80px" },
     { name: "Pooja Name", selector: (row) => row.pooja_name, width: "150px" },
-    { name: "Category", selector: (row) => row.pooja_category, width: "100px" },
-    { name: "Price (With Samagri)", selector: (row) => row.price_withSamagri, width: "100px" },
-    { name: "Price (Without Samagri)", selector: (row) => row.price_withoutSamagri, width: "100px" },
+    {
+      name: "Category",
+      selector: (row) => {
+        const category = globalContextPoojaCategoryData.find(
+          (item) => item._id === row.pooja_category // Assuming the field for pooja category is 'pooja_category'
+        );
+        console.log(category, "from pooja");
+        return category ? category.category : "-"; // If a match is found, return the category name; else return "-"
+      },
+      width: "200px",
+    }
+    ,
+    { name: "Price (With Samagri)", selector: (row) => row.price_withSamagri, width: "120px" },
+    { name: "Price (Without Samagri)", selector: (row) => row.price_withoutSamagri, width: "120px" },
     {
       name: "Image",
       selector: (row) =>
@@ -100,9 +111,57 @@ const PoojaList = () => {
         ),
       width: "100px",
     },
-    { name: "Short Description", selector: (row) => row.short_discription, width: "200px" },
-    { name: "Long Description", selector: (row) => row.long_discription, width: "400px" },
-    { name: "Status", selector: (row) => row.status, width: "100px" },
+    {
+      name: "Short Description",
+      selector: (row) => (
+        <div
+          dangerouslySetInnerHTML={{ __html: row.short_discription }}
+          style={{
+            maxHeight: "200px",
+            overflow: "hidden", // Hides overflow bar
+            textOverflow: "ellipsis",
+            overflowWrap: "break-word",
+          }}
+        ></div>
+      ),
+      width: "250px",
+      wrap: true,
+    },
+    {
+      name: "Long Description",
+      selector: (row) => (
+        <div
+          dangerouslySetInnerHTML={{ __html: row.long_discription }}
+          style={{
+            maxHeight: "300px",
+            overflow: "auto", // Enables scrolling
+            scrollbarWidth: "none", // Hides scrollbar for Firefox
+            msOverflowStyle: "none", // Hides scrollbar for IE/Edge
+          }}
+          className="no-scrollbar"
+        ></div>
+      ),
+      width: "400px",
+      wrap: true,
+    },
+    {
+      name: "Status",
+      selector: (row) => (
+        <span
+          className={`badge ${row.status == "active" ? "bg-success" : "bg-danger"}`}
+          style={{
+            cursor: "pointer",
+           
+          }}
+         
+        >
+          {row.status == "active" ? "Active" : "Inactive"}
+        </span>
+      ),
+      grow: 0.5,
+      allowOverflow: true,
+      width: "120px", // Proper width for the status column
+    },,
     {
       name: "Action",
       selector: (row) => (
@@ -130,9 +189,11 @@ const PoojaList = () => {
       ignoreRowClick: true,
       allowOverflow: true,
       button: true,
-      width: "150px",
+      width: "200px",
     },
   ];
+  
+  
 
   return (
     <section>

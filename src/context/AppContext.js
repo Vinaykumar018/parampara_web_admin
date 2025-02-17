@@ -9,11 +9,15 @@ const AppProvider = ({ children }) => {
   const [contextPoojaData,setContextPoojaData] = useState([]);
   const [contextUserData,setContextUserData] = useState([]);
   const [contextBhajanMandalData,setContextBhajanMandalData] = useState([]);
+  const [globalContextBhajanMandalCategoryData,setGlobalContextBhajanMandalCategoryData] = useState([]);
+  const [globalContextPoojaCategoryData,setGlobalContextPoojaCategoryData] = useState([]);
+
  
   return (
     <AppContext.Provider
       value={{
-        contextPanditData,setContextPanditData,contextPoojaData,setContextPoojaData,contextUserData,setContextUserData,contextBhajanMandalData,setContextBhajanMandalData
+        contextPanditData,setContextPanditData,contextPoojaData,setContextPoojaData,contextUserData,setContextUserData,contextBhajanMandalData,setContextBhajanMandalData,globalContextBhajanMandalCategoryData,setGlobalContextBhajanMandalCategoryData,
+        globalContextPoojaCategoryData,setGlobalContextPoojaCategoryData
       }}
     >
       {children}

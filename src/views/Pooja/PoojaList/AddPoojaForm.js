@@ -1,13 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import RichTextEditor from "react-rte";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { createPooja, fetchCategories } from '../../Services/poojaApiService'; // Ensure this import path is correct
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 
 const PoojaForm = () => {
-
   const [isSamagriChecked, setIsSamagriChecked] = useState(false);
   const [formData, setFormData] = useState({
     pooja_name: "",
@@ -23,31 +21,30 @@ const PoojaForm = () => {
     samagriName: "",
     samagriPrice: "",
     samagriDescription: "",
-    
   });
   const [imagePreview, setImagePreview] = useState(null);
+  const [categoryData, setCategoryData] = useState([]);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
- 
+
   // Handle form input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-
-    // Update the formData state
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
-      // Generate slug for pooja_name dynamically
       slug_url: name === 'pooja_name' ? generateSlug(value) : prevData.slug_url,
     }));
   };
 
   const generateSlug = (value) => {
     return value
-      .toLowerCase() // Convert to lowercase
-      .replace(/[^a-z0-9\s-]/g, '') // Remove invalid characters
-      .trim() // Trim whitespace
-      .replace(/\s+/g, '-'); // Replace spaces with hyphens
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '')
+      .trim()
+      .replace(/\s+/g, '-');
   };
+
   // Handle image file selection and preview
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -91,6 +88,8 @@ const PoojaForm = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+
     const data = new FormData();
     Object.keys(formData).forEach((key) => {
       if (key === "long_discription" || key === "short_discription") {
@@ -101,34 +100,20 @@ const PoojaForm = () => {
     });
 
     if (isSamagriChecked) {
-      // Convert dynamic samagri data to JSON string and append it
       data.append('samagriData', JSON.stringify(formData.samagridynamicFields));
     }
 
     try {
       await createPooja(data);
-       toast.success("Pooja created successfully!");
-                 
-                     // Delay the navigation for 3000ms (3 seconds)
-                     setTimeout(() => {
-                      navigate("/pooja/pooja-list");
-                  }, 1000);
-                  
-      setFormData({
-        pooja_name: "",
-        pooja_category: "",
-        pooja_Samegristatus: "0",
-        price_withSamagri: "",
-        price_withoutSamagri: "",
-        pooja_image: null,
-        short_discription: "",
-        long_discription: RichTextEditor.createEmptyValue(),
-        samagridynamicFields: []
-      });
-      setImagePreview(null);
+      toast.success("Pooja created successfully!");
+      setTimeout(() => {
+        navigate("/pooja/pooja-list");
+      }, 1000);
     } catch (error) {
       toast.error("Failed to create Pooja. Please try again.");
       console.error("Error creating Pooja:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -142,9 +127,8 @@ const PoojaForm = () => {
     }));
   };
 
-  const [categoryData, setCategoryData] = useState([]);
+  // Fetch categories on component mount
   const loadCategories = async () => {
-    
     try {
       const result = await fetchCategories();
       if (result.status === 1) {
@@ -152,15 +136,12 @@ const PoojaForm = () => {
       }
     } catch (error) {
       console.error("Error loading categories:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
   useEffect(() => {
     loadCategories();
   }, []);
-  console.log(formData.samagridynamicFields)
 
   return (
     <div className="card-body bg-light">
@@ -188,41 +169,35 @@ const PoojaForm = () => {
                   </div>
 
                   <div className="col-md-6 mb-3">
-        <label className="form-label">Pooja Slug</label>
-        <input
-          type="text"
-          className="form-control"
-          name="slug_url"
-          placeholder="Slug will be generated automatically"
-          value={formData.slug_url}
-          readOnly
-        />
-      </div>
+                    <label className="form-label">Pooja Slug</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="slug_url"
+                      placeholder="Slug will be generated automatically"
+                      value={formData.slug_url}
+                      readOnly
+                    />
+                  </div>
 
                   {/* Pooja Category */}
-                  {/* Pooja Category */}
-<div className="col-md-6 mb-3">
-  <label className="form-label">Choose Category</label>
-  <select
-    className="form-control form-select"
-    placeholder="Enter Pooja Category"
-    name="pooja_category"
-    value={formData.pooja_category}
-    onChange={(e) => setFormData((prevData) => ({
-      ...prevData,
-      pooja_category: e.target.value, // Update the pooja_category field
-    }))}
-    required
-  >
-    <option value="" disabled>Select Category</option>
-    {categoryData.map((category) => (
-      <option key={category._id} value={category._id}>
-        {category.category}
-      </option>
-    ))}
-  </select>
-</div>
-
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label">Choose Category</label>
+                    <select
+                      className="form-control form-select"
+                      name="pooja_category"
+                      value={formData.pooja_category}
+                      onChange={handleInputChange}
+                      required
+                    >
+                      <option value="" disabled>Select Category</option>
+                      {categoryData.map((category) => (
+                        <option key={category._id} value={category._id}>
+                          {category.category}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
 
                   {/* Price With Samagri */}
                   <div className="col-md-6 mb-3">
@@ -321,41 +296,6 @@ const PoojaForm = () => {
                     </div>
                   </div>
 
-
-                   {isSamagriChecked && (
-        <div className="row">
-          <div className="col-md-4">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Samagri Name"
-              name="samagriName"
-              value={formData.samagriName}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="col-md-4">
-            <input
-              type="number"
-              className="form-control"
-              placeholder="Price"
-              name="samagriPrice"
-              value={formData.samagriPrice}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="col-md-4">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Description"
-              name="samagriDescription"
-              value={formData.samagriDescription}
-              onChange={handleInputChange}
-            />
-          </div>
-        </div>
-      )}
                   {/* Dynamic Samagri Fields */}
                   {isSamagriChecked && formData.samagridynamicFields.map((field, index) => (
                     <div key={index} className="mb-3 row">
@@ -399,7 +339,9 @@ const PoojaForm = () => {
                   )}
 
                   <div className="text-end mb-3">
-                    <button type="submit" className="me-2 btn btn-dark btn-sm">Add Pooja</button>
+                    <button type="submit" className="me-2 btn btn-dark btn-sm" disabled={loading}>
+                      {loading ? "Submitting..." : "Add Pooja"}
+                    </button>
                   </div>
                 </div>
               </form>
@@ -407,28 +349,9 @@ const PoojaForm = () => {
           </div>
         </div>
       </div>
-      <ToastContainer />
+      <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
 };
 
 export default PoojaForm;
-
-
-
-{/* <div className="mb-3">
-              <label className="form-label">Choose Category</label>
-              <select
-                className="form-control form-select"
-                value={formData.category}
-                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                required
-              >
-                <option value="" disabled>Select Category</option>
-                {categories.map((category) => (
-                  <option key={category._id} value={category.name}>
-                    {category.name}
-                  </option>
-                ))}
-              </select>
-            </div> */}

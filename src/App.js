@@ -58,10 +58,15 @@
 
 import React, { Suspense, useEffect } from 'react';
 import { HashRouter, Route, Routes, Navigate } from 'react-router-dom';
+import { fetchCategories } from './views/Services/BhajanMandalApiService';
+import { fetchCategories as fetchCategoriesPooja } from './views/Services/poojaApiService';
 
-
+import { useContext } from 'react';
+import { AppContext } from './context/AppContext';
 import { CSpinner, useColorModes } from '@coreui/react';
+
 import './scss/style.scss';
+import { useState } from 'react';
 
 // Containers
 const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'));
@@ -82,6 +87,9 @@ const App = () => {
   const { isColorModeSet, setColorMode } = useColorModes('coreui-free-react-admin-template-theme');
 
 
+
+ const { setGlobalContextBhajanMandalCategoryData,setGlobalContextPoojaCategoryData } = useContext(AppContext);
+
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.href.split('?')[1]);
     const theme = urlParams.get('theme') && urlParams.get('theme').match(/^[A-Za-z0-9\s]+/)[0];
@@ -95,6 +103,40 @@ const App = () => {
 
     setColorMode(storedTheme);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+
+
+
+  const loadCategories = async () => {
+   
+
+      
+      try {
+        const result = await fetchCategories();
+        if (result.status === 1) {
+          setGlobalContextBhajanMandalCategoryData(result.data);
+          console.log(result.data)
+        }
+      } catch (error) {
+        console.error('Error loading categories:', error);
+      } 
+
+      try {
+        const result = await fetchCategoriesPooja();
+        if (result.status === 1) {
+          setGlobalContextPoojaCategoryData(result.data);
+          
+        }
+      } catch (error) {
+        console.error('Error loading categories:', error);
+      } 
+    };
+  
+    useEffect(() => {
+      loadCategories();
+    }, []);
+    console.log("home page load")
+   
 
   return (
     <HashRouter>
