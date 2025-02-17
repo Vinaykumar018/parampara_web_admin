@@ -11,11 +11,11 @@ import { MdCancel } from "react-icons/md";
 const BookingList = () => {
     const [orders, setOrders] = useState([]);
     const token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNoaXZhbnNodSIsImlhdCI6MTczMjE2NTMzOX0.YDu6P4alpQB5QL-74z1jO4LGfEwZA_n_Y29o512FrM8';
-
+    const BASE_URL = `${import.meta.env.VITE_BASE_URL}`
     useEffect(() => {  
         const fetchOrders = async () => { 
             try {
-                const response = await axios.get('http://localhost:3000/api/orders', { 
+                const response = await axios.get(`${BASE_URL }/orders`, { 
                     headers: { Authorization: token },
                 });
                 console.log("Fetched Orders:", response.data);  
@@ -34,7 +34,7 @@ const BookingList = () => {
         const updatedOrders = await Promise.all(
             ordersData.map(async (order) => {
                 try {
-                    const addressResponse = await axios.get(`http://localhost:3000/api/order/delivery-address/${order.bookingId}`, {
+                    const addressResponse = await axios.get(`${BASE_URL }/order/delivery-address/${order.bookingId}`, {
                         headers: {
                           "Content-Type": "application/json",
                           Authorization: token
@@ -52,73 +52,74 @@ const BookingList = () => {
     };
 
     const columns = [
-        { name: 'S.No', selector: (row, index) => index + 1, sortable: false },
-        { name: 'Booking ID', selector: (row) => row.bookingId, sortable: true },
-        { name: 'Username', selector: (row) => row.userDetails.username, sortable: true },
-        { name: 'Email', selector: (row) => row.userDetails.email, sortable: true },
-        { name: 'Mobile', selector: (row) => row.userDetails.contactNumber, sortable: true },
-        { name: 'Pooja Name', selector: (row) => row.poojaDetails.poojaName, sortable: true },
-        { name: 'Pooja Type', selector: (row) => row.poojaDetails.poojaType, sortable: true },
-        { name: 'Schedule Date', selector: (row) => row.schedule.date, sortable: true },
-        { name: 'Schedule Time', selector: (row) => row.schedule.time, sortable: true },
-        { name: 'Amount', selector: (row) => `₹${row.paymentDetails.amount}`, sortable: true },
-        { name: 'Quantity', selector: (row) => row.paymentDetails.quantity, sortable: true },
-        {
-            name: "Address",
-            selector: (row) => row.Address,
-            sortable: true,
-            width: "250px",
-            wrap: true, // This ensures the text wraps automatically
-          }
-          
-          , // Address column added
-          {
-            name: "Booking Status",
-            selector: (row) => (
-              <CBadge
-                color={
-                  row.bookingStatus === 0
-                    ? "warning"
-                    : row.bookingStatus === 2
-                    ? "danger"
-                    : "success"
-                }
-              >
-                {row.bookingStatus === 0
-                  ? "Pending"
-                  : row.bookingStatus === 2
-                  ? "Cancelled"
-                  : "Confirmed"}
-              </CBadge>
-            ),
-            sortable: true,
-          }
-          ,
-        {
-          name: 'Action',
-          selector: (row) => (
-            <div>
-              
-              <CBadge   
-            
-  onClick={() => handleAction(row)} 
-  color="danger" 
-  shape="rounded-pill" 
-  style={{ cursor: "pointer",marginRight:"10px" }} 
-  role="button"
-  tabIndex="0"
->
-  <MdCancel size={18} /> Cancel this Pooja Booking
-</CBadge>
-
-
-            </div>
-          ),
-          ignoreRowClick: true,
-          allowOverflow: true,
-          button: true,
-        },
+      { name: 'S.No', selector: (row, index) => index + 1, sortable: false, width: "80px" },
+      { name: 'Booking ID', selector: (row) => row.bookingId, sortable: true, width: "350px" },
+      { name: 'Name', selector: (row) => row.userDetails.username, sortable: true, width: "150px" },
+      { name: 'Email', selector: (row) => row.userDetails.email, sortable: true, width: "200px" },
+      { name: 'Mobile', selector: (row) => row.userDetails.contactNumber, sortable: true, width: "150px" },
+      { name: 'Pooja Name', selector: (row) => row.poojaDetails.poojaName, sortable: true, width: "180px" },
+      { name: 'Pooja Type', selector: (row) => row.poojaDetails.poojaType, sortable: true, width: "250px" },
+      { name: 'Book by Pandit ID', selector: (row) => row.panditId, sortable: true, width: "250px" },
+      { 
+        name: 'Schedule', 
+        selector: (row) => `${row.schedule.date} ${row.schedule.time}`, 
+        sortable: true, 
+        width: "200px" 
+      },
+      { name: 'Amount', selector: (row) => `₹${row.paymentDetails.amount}`, sortable: true, width: "100px" },
+      
+      {
+        name: "Address",
+        selector: (row) => row.Address,
+        sortable: true,
+        width: "250px",
+        wrap: true, // This ensures the text wraps automatically
+      },
+      {
+        name: "Booking Status",
+        selector: (row) => (
+          <CBadge
+            color={
+              row.bookingStatus === 0
+                ? "warning"
+                : row.bookingStatus === 2
+                ? "danger"
+                : "success"
+            }
+          >
+            {row.bookingStatus === 0
+              ? "Pending"
+              : row.bookingStatus === 2
+              ? "Cancelled"
+              : "Confirmed"}
+          </CBadge>
+        ),
+        sortable: true,
+        width: "150px",
+      },
+      {
+        name: 'Action',
+        selector: (row) => (
+          <div>
+            <CBadge   
+              onClick={() => handleAction(row)} 
+              color="danger" 
+              shape="rounded-pill" 
+              style={{ cursor: "pointer", marginRight: "10px" }} 
+              role="button"
+              tabIndex="0"
+            >
+              <MdCancel size={18} /> Cancel this Pooja Booking
+            </CBadge>
+          </div>
+        ),
+        ignoreRowClick: true,
+        allowOverflow: true,
+        button: true,
+        width: "200px",
+      },
     ];
+    
 
     const handleAction = async (data) => {
         // Define your action logic here

@@ -49,6 +49,11 @@ const bhajanList = React.lazy(
 const addBhajanMandal = React.lazy(
   () => import('./views/BhajanMandal/Bhajan-mandal-list/AddMandal'),
 );
+
+
+const PreviewMandal = React.lazy(
+  () => import('./views/BhajanMandal/Bhajan-mandal-list/PreviewMandal'),
+);
 const BookingListBhajanMandal = React.lazy(
   () => import('./views/BhajanMandal/BookingListBhajanMandal'),
 );
@@ -241,6 +246,11 @@ const routes = [
 
   //bhajan mandal
   { path: '/bhajan-list', name: 'Bhajan List', element: bhajanList },
+  {
+    path: '/preview/:id',
+    name: 'Preview Bhajan Mandal',
+    element: PreviewMandal,
+  },
   {
     path: '/add-bhajan-mandal',
     name: 'Add Bhajan Mandal',

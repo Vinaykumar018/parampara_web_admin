@@ -157,3 +157,53 @@ export const UpdateBhajanStatus = async ( bhajanStautusId , newStatus) => {
     throw error;
   }
 };
+
+
+
+
+export const addVideo = async (data) => {
+  try {
+    console.log(`${BASE_URL}/add-video`);
+    const response = await axios.post(`${BASE_URL}/add-video`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: AUTH_TOKEN,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error creating category:', error);
+    throw error;
+  }
+};
+
+
+
+export const fetchVideos = async (id) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/get-videos/${id}`, {
+      headers: {
+        Authorization: AUTH_TOKEN,
+      },
+    });
+    return response.data;
+  }
+     catch (error) {
+    console.error("Failed to fetch videos:", error);
+  }
+};
+
+
+export const getBhajanById = async (id) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/single_bhajan/${id}`, {
+      headers: {
+        Authorization: AUTH_TOKEN,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching Bhajan by ID:", error);
+    throw error;
+  }
+};

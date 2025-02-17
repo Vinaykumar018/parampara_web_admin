@@ -11,11 +11,12 @@ import { MdCancel } from "react-icons/md";
 const BookingListBhajanMandal = () => {
     const [orders, setOrders] = useState([]);
     const token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNoaXZhbnNodSIsImlhdCI6MTczMjE2NTMzOX0.YDu6P4alpQB5QL-74z1jO4LGfEwZA_n_Y29o512FrM8';
+     const BASE_URL = `${import.meta.env.VITE_BASE_URL}`
 
     useEffect(() => {  
         const fetchOrders = async () => { 
             try {
-                const response = await axios.get('http://localhost:3000/api/orders', { 
+                const response = await axios.get(`${BASE_URL}/orders`, { 
                     headers: { Authorization: token },
                 });
                 console.log("Fetched Orders:", response.data);  
@@ -34,7 +35,7 @@ const BookingListBhajanMandal = () => {
         const updatedOrders = await Promise.all(
             ordersData.map(async (order) => {
                 try {
-                    const addressResponse = await axios.get(`http://localhost:3000/api/order/delivery-address/${order.bookingId}`, {
+                    const addressResponse = await axios.get(`${BASE_URL}/order/delivery-address/${order.bookingId}`, {
                         headers: {
                           "Content-Type": "application/json",
                           Authorization: token

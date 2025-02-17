@@ -3,32 +3,27 @@ import PoojaForm from "./AddPoojaForm";
 import GetTable from "../../dashboard/GetTable";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
- import { fetchPoojaData, deletePooja } from '../../Services/poojaApiService';
- import axios from "axios";
-
-
-
-import { CSpinner} from '@coreui/react'
+import { fetchPoojaData, deletePooja } from '../../Services/poojaApiService';
+import { CSpinner } from '@coreui/react';
 import { useContext } from "react";
 import { AppContext } from "../../../context/AppContext";
-
 import { useNavigate } from 'react-router-dom';
+import ViewPoojaModal from './ViewPoojaModal'; // Import the new modal
+
 const PoojaList = () => {
-
-
-  const {contextPoojaData,setContextPoojaData} = useContext(AppContext);
- 
+  const { contextPoojaData, setContextPoojaData } = useContext(AppContext);
   const navigate = useNavigate();
 
   const navigateToAddPooja = () => {
-    
     navigate('/pooja/add-pooja');
   };
+
   const [poojaData, setPoojaData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [poojaToDelete, setPoojaToDelete] = useState(null);
-
+  const [viewModalVisible, setViewModalVisible] = useState(false); // State for view modal visibility
+  const [rowToView, setRowToView] = useState(null); // State to store the row data to view
 
   useEffect(() => {
     const getData = async () => {
@@ -36,7 +31,7 @@ const PoojaList = () => {
         const data = await fetchPoojaData();
         if (data.status === 1) {
           setPoojaData(data.data);
-          setContextPoojaData(data.data)
+          setContextPoojaData(data.data);
         } else {
           toast.error('Failed to fetch Pooja data');
         }
@@ -50,8 +45,12 @@ const PoojaList = () => {
   }, []);
 
   const handleEdit = (id) => {
-    
     navigate(`/pooja/pooja-update-list/${id}`);
+  };
+
+  const handleView = (row) => {
+    setRowToView(row); // Set the row data to view
+    setViewModalVisible(true); // Show the view modal
   };
 
   const handleDelete = (id) => {
@@ -82,7 +81,6 @@ const PoojaList = () => {
 
   const columns = [
     { name: "S No.", selector: (row, index) => index + 1, width: "80px" },
-    // { name: "ID", selector: (row) => row._id, width: "100px" },
     { name: "Pooja Name", selector: (row) => row.pooja_name, width: "150px" },
     { name: "Category", selector: (row) => row.pooja_category, width: "100px" },
     { name: "Price (With Samagri)", selector: (row) => row.price_withSamagri, width: "100px" },
@@ -110,14 +108,20 @@ const PoojaList = () => {
       selector: (row) => (
         <div>
           <button
+            onClick={() => handleView(row)}
+            className="btn btn-info btn-sm text-white me-2"
+          >
+            View
+          </button>
+          <button
             onClick={() => handleEdit(row._id)}
-            className="btn btn-primary btn-sm me-2"
+            className="btn btn-primary btn-sm text-white me-2"
           >
             Edit
           </button>
           <button
             onClick={() => handleDelete(row._id)}
-            className="btn btn-danger btn-sm"
+            className="btn btn-danger btn-sm text-white"
           >
             Delete
           </button>
@@ -129,44 +133,45 @@ const PoojaList = () => {
       width: "150px",
     },
   ];
-  
-  
 
   return (
     <section>
       <div className="container ">
-        {/* <PoojaForm /> */}
         <div className="card shadow-lg mb-4 border-0">
-        <div class="card-header bg-dark text-white">
-          <div className="d-flex align-items-center justify-content-between">
-            <h6 className="mb-0">Pooja List</h6>
-            {/* <div>
-              <a href="javascript:void(0)" className="btn btn-success text-light btn-sm">Add Pooja</a>
-            </div> */}
+          <div className="card-header bg-dark text-white">
+            <div className="d-flex align-items-center justify-content-between">
+              <h6 className="mb-0">Pooja List</h6>
               <div>
-      <a
-        href="javascript:void(0)"
-        className="btn btn-warning text-dark btn-sm"
-        onClick={navigateToAddPooja}
-      >
-        Add Pooja
-      </a>
-    </div>
-          </div> 
-        </div>
-        {loading ? (
-        <div className="justify-content-center d-flex p-5"> 
-            <CSpinner color="primary" />
+                <a
+                  href="javascript:void(0)"
+                  className="btn btn-warning text-dark btn-sm"
+                  onClick={navigateToAddPooja}
+                >
+                  Add Pooja
+                </a>
+              </div>
+            </div>
           </div>
-        ) : ( 
-          <GetTable columns={columns} data={poojaData} />
-        )}
+          {loading ? (
+            <div className="justify-content-center d-flex p-5">
+              <CSpinner color="primary" />
+            </div>
+          ) : (
+            <GetTable columns={columns} data={poojaData} />
+          )}
         </div>
       </div>
+      {/* Delete Modal */}
       <ConfirmDeleteModal
         show={showModal}
         onClose={handleCloseModal}
         onConfirm={handleConfirmDelete}
+      />
+      {/* View Modal */}
+      <ViewPoojaModal
+        show={viewModalVisible}
+        onClose={() => setViewModalVisible(false)}
+        rowData={rowToView}
       />
       <ToastContainer />
     </section>
@@ -221,45 +226,3 @@ const ConfirmDeleteModal = ({ show, onClose, onConfirm }) => {
 };
 
 export default PoojaList;
-
-// import React, { useState } from 'react';
-
-// const PoojaList = () => {
-//   // State to hold the array of input fields
-  // const [inputFields, setInputFields] = useState([]);
-
-//   // Function to handle adding a new input field
-  const handleAddInput = () => {
-    setInputFields([...inputFields, '']);
-  };
-
-//   // Function to handle input change
-  // const handleInputBTNadd = (index, value) => {
-  //   const newInputFields = [...inputFields];
-  //   newInputFields[index] = value;
-  //   setInputFields(newInputFields);
-  // };
-
-//   return (
-    // <div>
-    //   <h3>Dynamic Input Fields</h3>
-    //   {inputFields.map((inputValue, index) => (
-    //     <div key={index} className="mb-3">
-    //       <label className="form-label">Samgri {index + 1}</label>
-    //       <input
-    //         type="text"
-    //         className="form-control"
-    //         value={inputValue}
-    //         onChange={(e) => handleInputBTNadd(index, e.target.value)}
-    //       />
-    //     </div>
-    //   ))}
-    //   <button className="btn btn-primary mt-2" onClick={handleAddInput}>
-    //    add more
-    //   </button>
-    // </div>
-//   );
-// };
-
-// export default PoojaList;
-

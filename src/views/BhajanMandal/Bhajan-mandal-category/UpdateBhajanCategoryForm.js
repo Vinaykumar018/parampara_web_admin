@@ -13,6 +13,8 @@ const UpdateBhajanCategoryForm = ({ handleEditFormSubmit, initialData = {}, onCl
     long_discription: initialData.long_discription || "",
   });
 
+  console.log(initialData)
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 

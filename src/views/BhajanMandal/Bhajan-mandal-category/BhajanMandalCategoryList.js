@@ -9,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { useNavigate } from 'react-router-dom';
 import UpdateBhajanCategoryForm from './UpdateBhajanCategoryForm';
+import ViewBhajanMandalCategoryModal from './ViewBhajanMandalCategoryModal';
 
 const BhajanMandalCategory = () => {
   const [categoryData, setCategoryData] = useState([]);
@@ -127,36 +128,53 @@ const BhajanMandalCategory = () => {
       allowOverflow: true,
     },
     {
-      name: 'Action',
+      name: "Action",
       selector: (row) => (
-        <div>
+        <div
+          style={{
+            display: "flex",
+            gap: "8px", // Uniform spacing between buttons
+            justifyContent: "center", // Align buttons in the center
+            flexWrap: "nowrap", // Prevent overflow and wrap buttons when necessary
+          }}
+        >
           <button
             onClick={() =>
               handleEdit(
                 row._id,
-                row.name,
                 row.short_discription,
                 row.category,
                 row.bhajan_image,
+                row.long_discription
               )
             }
-            className="btn btn-primary btn-sm me-2"
+            className="btn btn-primary btn-sm"
+            
           >
             Edit
           </button>
           <button
             onClick={() => handleDelete(row._id)}
             className="btn btn-danger btn-sm text-white"
+           
           >
             Delete
+          </button>
+          <button
+            onClick={() => handleView(row)}
+            className="btn btn-info btn-sm text-white"
+          
+          >
+            View
           </button>
         </div>
       ),
       ignoreRowClick: true,
       allowOverflow: true,
       button: true,
-      grow: 0.8, // Keeps actions compact
-    }
+      width: "250px", // Fixed width for consistent layout
+    },
+    
   ];
   
   
@@ -174,13 +192,14 @@ const BhajanMandalCategory = () => {
 
     }
 }
-  const handleEdit = (id, name, short_discription, category, bhajan_image) => {
+  const handleEdit = (id,  short_discription, category, bhajan_image,long_discription) => {
     setCategoryToEdit({
       id,
-      name,
+      
       short_discription,
       category,
       bhajan_image,
+      long_discription
     });
     setEditModalVisible(true);
   };
@@ -210,6 +229,14 @@ const BhajanMandalCategory = () => {
       toast.error('Error deleting Bhajan. Please try again.');
       console.error('Error deleting Bhajan:', error);
     }
+  };
+
+  const [viewModalVisible, setViewModalVisible] = useState(false);
+const [rowToView, setRowToView] = useState(null);
+
+  const handleView = (row) => {
+    setRowToView(row);
+    setViewModalVisible(true);
   };
 
   return (
@@ -250,6 +277,14 @@ const BhajanMandalCategory = () => {
           onClose={handleCloseModal}
           onConfirm={handleConfirmDelete}
         />
+
+{viewModalVisible && (
+          <ViewBhajanMandalCategoryModal
+            show={viewModalVisible}
+            onClose={() => setViewModalVisible(false)}
+            rowData={rowToView}
+          />
+        )}
       </div>
     </section>
   );

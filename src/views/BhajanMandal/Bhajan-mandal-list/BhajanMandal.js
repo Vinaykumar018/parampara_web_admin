@@ -8,7 +8,7 @@ import { useContext } from "react";
 import { AppContext } from '../../../context/AppContext';
 import { useNavigate } from 'react-router-dom';
 import {UpdateBhajanStatus} from '../../Services/BhajanMandalApiService'
-
+import AddBhajanVideoModal from './AddVideoBhajanModal'
 const BhajanMandal = () => {
   const { contextBhajanMandalData, setContextBhajanMandalData } = useContext(AppContext);
   const navigate = useNavigate();
@@ -21,6 +21,8 @@ const BhajanMandal = () => {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [bhajanMandalToDelete, setBhajanMandalToDelete] = useState(null);
+
+  const [videoModal, setVideoModal] = useState(false);
 
 
     const getData = async () => {
@@ -122,45 +124,84 @@ const BhajanMandal = () => {
     { name: "Short Description", selector: (row) => row.short_discription, width: "200px" },
     { name: "Long Description", selector: (row) => row.long_discription, width: "400px" },
     {
-      name: 'Status',
+      name: "Status",
       selector: (row) => (
         <span
-          className={`badge ${row.status == 1 ? 'bg-success' : 'bg-danger'}`}
-          style={{ cursor: 'pointer' }}
+          className={`badge ${row.status == 1 ? "bg-success" : "bg-danger"}`}
+          style={{
+            cursor: "pointer",
+           
+          }}
           onClick={() => updateStatus(row._id, row.status)}
         >
-          {row.status == 1 ? 'Active' : 'Inactive'}
-
-        
+          {row.status == 1 ? "Active" : "Inactive"}
         </span>
       ),
       grow: 0.5,
       allowOverflow: true,
+      width: "120px", // Proper width for the status column
     },
+    
     {
       name: "Action",
       selector: (row) => (
-        <div>
+        <div
+          style={{
+            display: "flex",
+            gap: "8px", // Provides uniform spacing between buttons
+            flexWrap: "nowrap",
+            justifyContent: "center", // Aligns buttons properly
+          }}
+        >
+         
           <button
             onClick={() => handleEdit(row._id)}
-            className="btn btn-primary btn-sm me-2"
+            className="btn btn-primary btn-sm text-white"
+           
           >
             Edit
           </button>
           <button
             onClick={() => handleDelete(row._id)}
-            className="btn btn-danger btn-sm"
+            className="btn btn-danger btn-sm text-white"
+            
           >
             Delete
+          </button>
+          <button
+            onClick={() => handlePreview(row._id)}
+            className="btn btn-dark btn-sm text-white"
+            
+          >
+            View
+          </button>
+          <button
+            onClick={() => addVideo(row._id)}
+            className="btn btn-info btn-sm text-white"
+            
+          >
+            Add Video
           </button>
         </div>
       ),
       ignoreRowClick: true,
       allowOverflow: true,
       button: true,
-      width: "150px",
+      width: "300px", // Adjusted width for the action buttons column
     },
+    
   ];
+
+  const [selectedId, setSelectedId] = useState(null);
+  function addVideo(id){
+    setSelectedId(id);
+    setVideoModal(true);
+  }
+  function handlePreview(id){
+    navigate(`/preview/${id}`);
+    
+
+  }
 
   return (
     <section>
@@ -195,9 +236,14 @@ const BhajanMandal = () => {
         onConfirm={handleConfirmDelete}
       />
       <ToastContainer />
+      { videoModal && (
+        <AddBhajanVideoModal id={selectedId} onClose={() => setVideoModal(false)} />
+      )}
     </section>
   );
 };
+
+
 
 const ConfirmDeleteModal = ({ show, onClose, onConfirm }) => {
   if (!show) return null;
@@ -245,5 +291,6 @@ const ConfirmDeleteModal = ({ show, onClose, onConfirm }) => {
     </div>
   );
 };
+
 
 export default BhajanMandal;

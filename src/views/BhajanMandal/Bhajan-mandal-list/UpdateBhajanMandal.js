@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import RichTextEditor from "react-rte";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { fetchCategories } from '../../Services/BhajanMandalApiService'; // Ensure this import path is correct
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { useContext } from "react";
 import { AppContext } from "../../../context/AppContext";
 
 const UpdateBhajanMandal = () => {
-  const { contextBhajanMandalData, setContextBhajanMandalData } = useContext(AppContext);
+  const { contextBhajanMandalData } = useContext(AppContext);
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -22,6 +21,14 @@ const UpdateBhajanMandal = () => {
     bhajan_image: null,
     short_discription: "",
     long_discription: RichTextEditor.createEmptyValue(),
+    exp_year: "", // New field
+    address: "", // New field
+    city: "", // New field
+    location: "", // New field
+    state: "", // New field
+    country: "", // New field
+    pin_code: "", // New field
+    area: "", // New field
   });
 
   const [imagePreview, setImagePreview] = useState(null);
@@ -65,7 +72,7 @@ const UpdateBhajanMandal = () => {
   };
 
   // Handle form submission
-  const AUTH_TOKEN = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNoaXZhbnNodSIsImlhdCI6MTczMjE2NTMzOX0.YDu6P4alpQB5QL-74z1jO4LGfEwZA_n_Y29o512FrM8';
+  const AUTH_TOKEN = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNoaXZhbnNodSIsImlhdCI6MTczMjE2NTMzOX0.YDu6P4alpQB5QL-74z1jO4LGfEwZA_n_Y29o512FrM8'; // Replace with your actual token
   const BASE_URL = `${import.meta.env.VITE_BASE_URL}/bhajanMandal/update-bhajan`;
 
   const handleSubmit = async (e) => {
@@ -117,6 +124,7 @@ const UpdateBhajanMandal = () => {
   // Load Bhajan Mandal data for editing
   useEffect(() => {
     const bhajanMandal = contextBhajanMandalData.find((item) => item._id === id);
+    console.log(bhajanMandal)
     if (bhajanMandal) {
       setFormData({
         bhajan_name: bhajanMandal.bhajan_name,
@@ -127,6 +135,14 @@ const UpdateBhajanMandal = () => {
         bhajan_image: bhajanMandal.bhajan_image,
         short_discription: bhajanMandal.short_discription,
         long_discription: RichTextEditor.createValueFromString(bhajanMandal.long_discription, 'html'),
+        exp_year: bhajanMandal.exp_year || "", // New field
+        address: bhajanMandal.mandali_address.address || "", // New field
+        city: bhajanMandal.mandali_address.city || "", // New field
+        location: bhajanMandal.mandali_address.location || "", // New field
+        state: bhajanMandal.mandali_address.state || "", // New field
+        country: bhajanMandal.mandali_address.country || "", // New field
+        pin_code: bhajanMandal.mandali_address.pin_code || "", // New field
+        area: bhajanMandal.mandali_address.area || "", // New field
       });
       if (bhajanMandal.bhajan_image) {
         setImagePreview(bhajanMandal.bhajan_image);
@@ -219,6 +235,118 @@ const UpdateBhajanMandal = () => {
                       name="bhajan_member"
                       placeholder="Enter Total Members"
                       value={formData.bhajan_member}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+
+                  {/* Experience Year */}
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label">Experience Year</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="exp_year"
+                      placeholder="Enter Experience Year"
+                      value={formData.exp_year}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+
+                  {/* Address */}
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label">Address</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="address"
+                      placeholder="Enter Address"
+                      value={formData.address}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+
+                  {/* City */}
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label">City</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="city"
+                      placeholder="Enter City"
+                      value={formData.city}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+
+                  {/* Location */}
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label">Location</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="location"
+                      placeholder="Enter Location"
+                      value={formData.location}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+
+                  {/* State */}
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label">State</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="state"
+                      placeholder="Enter State"
+                      value={formData.state}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+
+                  {/* Country */}
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label">Country</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="country"
+                      placeholder="Enter Country"
+                      value={formData.country}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+
+                  {/* Pin Code */}
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label">Pin Code</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="pin_code"
+                      placeholder="Enter Pin Code"
+                      value={formData.pin_code}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+
+                  {/* Area */}
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label">Area</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="area"
+                      placeholder="Enter Area"
+                      value={formData.area}
                       onChange={handleInputChange}
                       required
                     />
