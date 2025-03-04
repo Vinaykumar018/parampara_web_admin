@@ -87,9 +87,11 @@ const SubscriptionDetails = React.lazy(
 const AddPandit = React.lazy(() => import('./views/pandit/AddPandit'));
 
 //ecommerce
-const proudct = React.lazy(() => import('./views/eCommerce/Product'));
+const proudct = React.lazy(() => import('./views/eCommerce/Product/Product'));
+const addProduct = React.lazy(() => import('./views/eCommerce/Product/ProductAdd'));
+const updateProduct = React.lazy(()=> import('./views/eCommerce/Product/ProductUpdate'));
 const ProductCategory = React.lazy(
-  () => import('./views/eCommerce/ProductCategory'),
+  () => import('./views/eCommerce/ProductCategory/ProductCategory'),
 );
 const Order = React.lazy(() => import('./views/eCommerce/Order'));
 
@@ -303,6 +305,16 @@ const routes = [
     path: '/product-category',
     name: 'Product Category',
     element: ProductCategory,
+  },
+  {
+    path:'/add-product',
+    name: 'Add Product',
+    element:addProduct, 
+  },
+  {
+    path:'/product/update-product/:id',
+    name:'Update Product',
+    element:updateProduct,
   },
   { path: '/order', name: 'Order', element: Order },
 

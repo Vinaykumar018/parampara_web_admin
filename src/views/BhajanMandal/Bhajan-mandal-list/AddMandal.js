@@ -7,6 +7,10 @@ import { useNavigate } from "react-router-dom";
 
 const AddBhajanMandal = () => {
   const [formData, setFormData] = useState({
+    owner_name:"",
+    owner_email:"",
+    owner_phone:"",
+    owner_password:"",
     bhajan_name: "",
     slug_url: '',
     bhajan_category: "",
@@ -86,6 +90,10 @@ const AddBhajanMandal = () => {
         navigate("/bhajan-list");
       }, 1000);
       setFormData({
+        owner_name:"",
+        owner_email:"",
+        owner_phone:"",
+        owner_password:"",
         bhajan_name: "",
         bhajan_category: "",
         bhajan_image: null,
@@ -137,6 +145,58 @@ const AddBhajanMandal = () => {
               <form onSubmit={handleSubmit}>
                 <div className="row">
                   {/* Bhajan Name */}
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label">Owner Name</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="owner_name"
+                      placeholder="Enter Mandali Owner Name"
+                      value={formData.owner_name}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label">Owner Email</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="owner_email"
+                      placeholder="Enter Owner Email"
+                      value={formData.owner_email}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label">Owner Phone</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="owner_phone"
+                      placeholder="Enter Owner Phone"
+                      value={formData.owner_phone}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label">Password</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="owner_password"
+                      placeholder="Enter Password"
+                      value={formData.owner_password}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+
                   <div className="col-md-6 mb-3">
                     <label className="form-label">Mandali Name</label>
                     <input
