@@ -2,6 +2,7 @@ import React from "react";
 
 const ViewProductCategory = ({ show, onClose, rowData }) => {
   if (!show || !rowData) return null;
+  console.log(show,rowData)
 
   return (
     <div

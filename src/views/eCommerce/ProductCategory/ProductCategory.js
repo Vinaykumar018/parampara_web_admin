@@ -170,10 +170,12 @@ const ProductCategory = () => {
   const updateStatus=async(id,status)=>{
     console.log(status=='active')
     if(status=='active'){
-      UpdateProductCategoryStatus(id,'inactive')
+      const response=await(UpdateProductCategoryStatus(id,{status:'inactive'}))
+     
       loadCategories()
     }else{
-      UpdateProductCategoryStatus(id,'active')
+      const response=await(UpdateProductCategoryStatus(id,{status:'active'}))
+    
       loadCategories()
 
     }

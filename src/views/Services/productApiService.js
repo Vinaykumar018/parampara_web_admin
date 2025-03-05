@@ -90,13 +90,16 @@ export const deleteProductCategory = async (id) => {
   }
 };
 
-export const UpdateProductCategoryStatus = async ( id ) => {
+export const UpdateProductCategoryStatus = async ( id ,data) => {
   try {
-    const response = axios.patch(`${BASE_URL}product/category/update-status/${id}`, {
+    const response = await(axios.patch(`${BASE_URL}/category/update-status/${id}`,data, {
       headers: {
-        Authorization: AUTH_TOKEN,
-      },
-    });
+        "Content-Type": "application/json",
+                Authorization: AUTH_TOKEN,
+          },
+    }));
+
+    
     return response.data;
   } catch (error) {
     console.error('Error updating Status:', error);
@@ -153,6 +156,74 @@ export const deleteProduct = async (id) => {
   } catch (error) {
     console.error('Error deleting Product:', error);
     throw error;
+  }
+};
+
+
+
+
+
+export const updateProduct = async (id, updatedData) => {
+  console.log("Updating Product:", id, updatedData);
+  try {
+    const response = await axios.put(
+      `${BASE_URL}/update-product/${id}`, 
+      updatedData,
+      {
+        headers: {
+"Content-Type": "multipart/form-data",
+        Authorization: AUTH_TOKEN,
+        },
+      }
+    );
+    return response.data; 
+  } catch (error) {
+    console.error("Error updating category:", error.response?.data || error);
+    throw error; 
+  }
+};
+
+
+export const updateFeaturedStatus = async (id, updatedData) => {
+  console.log("Updating Product:", id, updatedData);
+  try {
+    const response = await axios.put(
+      `${BASE_URL}/${id}/featured`, 
+      updatedData,
+      {
+        headers: {
+"Content-Type": "application/json",
+        Authorization: AUTH_TOKEN,
+        },
+      }
+    );
+    return response.data; 
+  } catch (error) {
+    console.error("Error updating category:", error.response?.data || error);
+    throw error; 
+  }
+};
+
+
+
+
+export const updateStatus = async (id, updatedData) => {
+  console.log("Updating Product:", id, updatedData);
+  try {
+    const response = await axios.patch(
+      `${BASE_URL}/update-status/${id}`, 
+      updatedData,
+      {
+        headers: {
+"Content-Type": "application/json",
+        Authorization: AUTH_TOKEN,
+        },
+      }
+    );
+    return response.data; 
+  } catch (error) {
+    console.error("Error updating category:", error.response?.data || error);
+    throw error; 
   }
 };
 

@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import RichTextEditor from "react-rte";
 import { ToastContainer, toast } from "react-toastify";
-import { fetchCategories, createProduct } from "../../Services/productApiService";
-import { useParams,useNavigate } from "react-router-dom";
+import { fetchCategories, updateProduct } from "../../Services/productApiService";
+import { useParams, useNavigate } from "react-router-dom";
+import { AppContext } from "../../../context/AppContext";
 
 const ProductUpdate = () => {
-  const params = useParams();
+  const { globalContextProductData } = useContext(AppContext);
+  const { id } = useParams();
   const navigate = useNavigate();
-  const productId = params.id;
   const [categoryData, setCategoryData] = useState([]);
   const [imagePreview, setImagePreview] = useState({ featuredImage: null, galleryImages: [] });
   const [formData, setFormData] = useState({
@@ -23,10 +24,16 @@ const ProductUpdate = () => {
     galleryImages: [],
     short_discription: "",
     long_discription: RichTextEditor.createEmptyValue(),
+    isFeatured: false,
+    offer: "no_offer",
   });
+
+  const [existingFeaturedImage, setExistingFeaturedImage] = useState(null);
+  const [existingGalleryImages, setExistingGalleryImages] = useState([]);
 
   useEffect(() => {
     loadCategories();
+    loadProductData();
   }, []);
 
   const loadCategories = async () => {
@@ -40,6 +47,50 @@ const ProductUpdate = () => {
     }
   };
 
+  const loadProductData = () => {
+    const product = globalContextProductData.find((item) => item._id === id);
+    if (product) {
+      setFormData({
+        name: product.name || "",
+        slug_url: product.slug || "",
+        category: product.category || "",
+        price: product.price || "",
+        sellingPrice: product.sellingPrice || "",
+        gst: product.gst || "",
+        local_delivery: product.local_delivery || "",
+        featuredImage: product.featuredImage || null,
+        stock: product.stock || "",
+        galleryImages: product.galleryImages || [],
+        short_discription: product.short_discription || "",
+        long_discription: product.long_discription
+          ? RichTextEditor.createValueFromString(product.long_discription, "html")
+          : RichTextEditor.createEmptyValue(),
+        isFeatured: product.isFeatured || false,
+        offer: product.offer || "no_offer",
+      });
+
+      // Set existing images
+      setExistingFeaturedImage(product.featuredImage);
+      setExistingGalleryImages(product.galleryImages);
+
+      // Set image previews
+      if (product.featuredImage) {
+        setImagePreview((prev) => ({
+          ...prev,
+          featuredImage: `http://34.131.70.24:3000/${product.featuredImage}`,
+        }));
+      }
+      if (product.galleryImages && product.galleryImages.length > 0) {
+        setImagePreview((prev) => ({
+          ...prev,
+          galleryImages: product.galleryImages.map(
+            (image) => `http://34.131.70.24:3000/${image}`
+          ),
+        }));
+      }
+    }
+  };
+
   const generateSlug = (value) => {
     return value
       .toLowerCase()
@@ -49,7 +100,7 @@ const ProductUpdate = () => {
   };
 
   const handleInputChange = (e) => {
-    const { name, value, type, files } = e.target;
+    const { name, value, type, files, checked } = e.target;
 
     if (type === "file") {
       if (name === "featuredImage") {
@@ -64,6 +115,11 @@ const ProductUpdate = () => {
           galleryImages: filesArray.map((file) => URL.createObjectURL(file)),
         }));
       }
+    } else if (type === "checkbox") {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: checked,
+      }));
     } else {
       setFormData((prevData) => ({
         ...prevData,
@@ -82,35 +138,45 @@ const ProductUpdate = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const productData = new FormData();
+
     Object.keys(formData).forEach((key) => {
       if (key === "galleryImages") {
-        formData[key].forEach((file) => productData.append("galleryImages", file));
+        // Append new gallery images if selected
+        formData.galleryImages.forEach((file) => productData.append("galleryImages", file));
+      } else if (key === "featuredImage") {
+        // Append new featured image if selected, otherwise append existing URL
+        if (formData.featuredImage) {
+          productData.append(key, formData.featuredImage);
+        } else {
+          productData.append(key, existingFeaturedImage); // Use the existing URL
+        }
       } else if (key === "long_discription") {
         productData.append(key, formData[key].toString("html"));
       } else {
         productData.append(key, formData[key]);
       }
     });
+
     try {
-      await createProduct(productData);
-      toast.success("Product added successfully!");
+      await updateProduct(id, productData);
+      toast.success("Product updated successfully!");
       navigate("/product");
     } catch (error) {
-      toast.error("Failed to add product.");
+      toast.error("Failed to update product.");
       console.error(error);
     }
   };
+
   return (
     <>
-    <ToastContainer position="top-right" autoClose={3000} />
+      <ToastContainer position="top-right" autoClose={3000} />
       <div className="card-body bg-light">
         <div className="row justify-content-center">
           <div className="col-12">
             <div className="card shadow-lg mb-4 border-0">
               <div className="card-header text-left bg-dark text-white">
-                <h6 className="text-capitalize">Add Product</h6>
+                <h6 className="text-capitalize">Update Product</h6>
               </div>
               <div className="card-body bg-light">
                 <form method="post" onSubmit={handleSubmit}>
@@ -128,7 +194,7 @@ const ProductUpdate = () => {
                         required
                       />
                     </div>
-                    
+
                     {/* Product Slug */}
                     <div className="col-md-6 mb-3">
                       <label className="form-label">Product Slug</label>
@@ -158,6 +224,22 @@ const ProductUpdate = () => {
                             {category.category_name}
                           </option>
                         ))}
+                      </select>
+                    </div>
+
+                    {/* Offer */}
+                    <div className="col-md-6 mb-3">
+                      <label className="form-label">Offer</label>
+                      <select
+                        className="form-select"
+                        name="offer"
+                        value={formData.offer}
+                        onChange={handleInputChange}
+                      >
+                        <option value="no_offer">No Offer</option>
+                        <option value="on_sale">On Sale</option>
+                        <option value="most_featured">Most Featured</option>
+                        <option value="discounted">Discounted</option>
                       </select>
                     </div>
 
@@ -196,7 +278,7 @@ const ProductUpdate = () => {
                         type="number"
                         className="form-control"
                         name="gst"
-                        placeholder="Enter GST"
+                        placeholder="Enter GST in Percentage"
                         value={formData.gst}
                         onChange={handleInputChange}
                         required
@@ -239,12 +321,19 @@ const ProductUpdate = () => {
                         className="form-control"
                         name="featuredImage"
                         onChange={handleInputChange}
-                        required
                       />
                       {imagePreview.featuredImage && (
                         <img
                           src={imagePreview.featuredImage}
                           alt="Featured Preview"
+                          className="mt-2"
+                          style={{ width: "100px", height: "100px", objectFit: "cover" }}
+                        />
+                      )}
+                      {existingFeaturedImage && !imagePreview.featuredImage && (
+                        <img
+                          src={`http://34.131.70.24:3000/${existingFeaturedImage}`}
+                          alt="Existing Featured"
                           className="mt-2"
                           style={{ width: "100px", height: "100px", objectFit: "cover" }}
                         />
@@ -260,7 +349,6 @@ const ProductUpdate = () => {
                         name="galleryImages"
                         onChange={handleInputChange}
                         multiple
-                        required
                       />
                       <div className="mt-2 d-flex flex-wrap">
                         {imagePreview.galleryImages.map((image, index) => (
@@ -271,9 +359,16 @@ const ProductUpdate = () => {
                             style={{ width: "100px", height: "100px", objectFit: "cover", margin: "5px" }}
                           />
                         ))}
+                        {existingGalleryImages.map((image, index) => (
+                          <img
+                            key={index}
+                            src={`http://34.131.70.24:3000/${image}`}
+                            alt={`Existing Gallery ${index + 1}`}
+                            style={{ width: "100px", height: "100px", objectFit: "cover", margin: "5px" }}
+                          />
+                        ))}
                       </div>
                     </div>
-
 
                     {/* Short Description */}
                     <div className="col-md-12 mb-3">
@@ -293,20 +388,43 @@ const ProductUpdate = () => {
                     <div className="mb-3">
                       <label className="form-label">Long Description</label>
                       <RichTextEditor
-                       editorStyle={{
-                        minHeight: "120px",
-                        backgroundColor: "#f4f4f4",
-                        border: "1px solid #ccc",
-                        color: "#333",
-                        padding: "10px",
-                        cursor: "pointer",
-                      }}
+                        editorStyle={{
+                          minHeight: "120px",
+                          backgroundColor: "#f4f4f4",
+                          border: "1px solid #ccc",
+                          color: "#333",
+                          padding: "10px",
+                          cursor: "pointer",
+                        }}
                         value={formData.long_discription}
                         onChange={handleEditorChange}
                       />
                     </div>
-                    <div className="text-end mb-3">
-                        <button type="submit" className="me-2 btn btn-success text-light btn-sm">Save</button>
+
+                    {/* isFeatured Checkbox */}
+                    <div className="col-md-12 ">
+                      <div className="form-check form-switch form-check-lg">
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          name="isFeatured"
+                          checked={formData.isFeatured}
+                          onChange={(e) =>
+                            setFormData({ ...formData, isFeatured: e.target.checked })
+                          }
+                          id="isFeatured"
+                        />
+                        <label className="form-check-label" htmlFor="isFeatured">
+                          Is Featured
+                        </label>
+                      </div>
+                    </div>
+
+                    {/* Submit Button */}
+                    <div className="col-md-12 text-end mb-3">
+                      <button type="submit" className="btn btn-success text-light btn-sm">
+                        Update
+                      </button>
                     </div>
                   </div>
                 </form>

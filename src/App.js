@@ -55,11 +55,11 @@
 
 // export default App
 
-
 import React, { Suspense, useEffect } from 'react';
 import { HashRouter, Route, Routes, Navigate } from 'react-router-dom';
 import { fetchCategories } from './views/Services/BhajanMandalApiService';
 import { fetchCategories as fetchCategoriesPooja } from './views/Services/poojaApiService';
+import { fetchCategories as fetchCategoriesProduct } from './views/Services/productApiService';
 
 import { useContext } from 'react';
 import { AppContext } from './context/AppContext';
@@ -84,15 +84,21 @@ const ProtectedRoute = ({ element }) => {
 };
 
 const App = () => {
-  const { isColorModeSet, setColorMode } = useColorModes('coreui-free-react-admin-template-theme');
+  const { isColorModeSet, setColorMode } = useColorModes(
+    'coreui-free-react-admin-template-theme',
+  );
 
-
-
- const { setGlobalContextBhajanMandalCategoryData,setGlobalContextPoojaCategoryData } = useContext(AppContext);
+  const {
+    setGlobalContextBhajanMandalCategoryData,
+    setGlobalContextPoojaCategoryData,
+    setGlobalContextProductCategoryData,
+  } = useContext(AppContext);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.href.split('?')[1]);
-    const theme = urlParams.get('theme') && urlParams.get('theme').match(/^[A-Za-z0-9\s]+/)[0];
+    const theme =
+      urlParams.get('theme') &&
+      urlParams.get('theme').match(/^[A-Za-z0-9\s]+/)[0];
     if (theme) {
       setColorMode(theme);
     }
@@ -104,39 +110,41 @@ const App = () => {
     setColorMode(storedTheme);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-
-
-
   const loadCategories = async () => {
-   
+    try {
+      const result = await fetchCategories();
+      if (result.status === 1) {
+        setGlobalContextBhajanMandalCategoryData(result.data);
+        console.log(result.data);
+      }
+    } catch (error) {
+      console.error('Error loading categories:', error);
+    }
 
-      
-      try {
-        const result = await fetchCategories();
-        if (result.status === 1) {
-          setGlobalContextBhajanMandalCategoryData(result.data);
-          console.log(result.data)
-        }
-      } catch (error) {
-        console.error('Error loading categories:', error);
-      } 
+    try {
+      const result = await fetchCategoriesPooja();
+      if (result.status === 1) {
+        setGlobalContextPoojaCategoryData(result.data);
+      }
+    } catch (error) {
+      console.error('Error loading categories:', error);
+    }
 
-      try {
-        const result = await fetchCategoriesPooja();
-        if (result.status === 1) {
-          setGlobalContextPoojaCategoryData(result.data);
-          
-        }
-      } catch (error) {
-        console.error('Error loading categories:', error);
-      } 
-    };
-  
-    useEffect(() => {
-      loadCategories();
-    }, []);
-    console.log("home page load")
-   
+    try {
+      const result = await fetchCategoriesProduct();
+      if (result.status === 1) {
+        setGlobalContextProductCategoryData(result.data);
+       
+      }
+    } catch (error) {
+      console.error('error loading categories', error);
+    }
+  };
+
+  useEffect(() => {
+    loadCategories();
+  }, []);
+  console.log('home page load');
 
   return (
     <HashRouter>
@@ -150,7 +158,12 @@ const App = () => {
         <Routes>
           {/* Public Routes */}
           <Route exact path="/login" name="Login Page" element={<Login />} />
-          <Route exact path="/register" name="Register Page" element={<Register />} />
+          <Route
+            exact
+            path="/register"
+            name="Register Page"
+            element={<Register />}
+          />
           <Route exact path="/404" name="Page 404" element={<Page404 />} />
           <Route exact path="/500" name="Page 500" element={<Page500 />} />
 
@@ -167,4 +180,3 @@ const App = () => {
 };
 
 export default App;
-
