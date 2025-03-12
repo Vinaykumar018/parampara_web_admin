@@ -116,7 +116,10 @@ const [sliderToDelete,setSliderToDelete]=useState()
     {
       name: "Action",
       selector: (row) => (
-        <div>
+        <div style={{ display: 'flex',
+          gap: '8px',
+          justifyContent: 'center',
+          flexWrap: 'nowrap',}}> 
           <CButton color="btn btn-danger btn-sm text-white"  onClick={() => handleDelete(row._id)}>Delete</CButton>
           <CButton color="btn btn-primary btn-sm me-2">Edit</CButton>
         </div>

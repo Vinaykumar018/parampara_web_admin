@@ -2,6 +2,7 @@ import { element } from 'prop-types';
 import React from 'react';
 import EnquiriesList from './views/enquries/EnquiriesList';
 
+
 // Parmpara Admin Routes
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'));
 const PoojaForm = React.lazy(
@@ -17,6 +18,7 @@ const AddUserForm = React.lazy(() => import('./views/users/AddUserForm'));
 // Pandit routes
 const Pandit = React.lazy(() => import('./views/pandit/Pandit'));
 const updatePandit = React.lazy(() => import('./views/pandit/UpdatePandit'));
+const PanditProfile=React.lazy(()=>import('./views/pandit/PanditProfileData'))
 // const updatePandit=React.lazy(()=>)
 //Pooja routes
 const PoojaList = React.lazy(() => import('./views/Pooja/PoojaList/PoojaList'));
@@ -192,6 +194,17 @@ const Terms = React.lazy(
   () => import('./views/pages/TermsAndConditonPage/TermsAndConditionsPage'),
 );
 
+
+
+//user page go to 
+const UserProfilePage = React.lazy(() => import('./views/users/userProfilePage'));
+
+
+
+const Story=React.lazy (() => import('./views/Story/Story'))
+
+const AddStory=React.lazy (() => import('./views/Story/AddStory'))
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
@@ -200,12 +213,14 @@ const routes = [
   { path: '/user', name: 'User', element: Users },
   { path: '/add-user', name: 'Add user', element: AddUserForm },
   { path: '/update-user/:id', name: 'Update user', element: UpdateUserForm },
+  { path: '/user/:id', name: 'User Profile', element: UserProfilePage },
 
   //pandit
 
   { path: '/pandit', name: 'Pandit', element: Pandit },
   { path: '/pandit/update-pandit/:id', name: 'Pandit', element: updatePandit },
   { path: '/add-pandit', name: 'Pandit', element: AddPandit },
+  { path: '/pandit/:id', name: 'Pandit Profile', element:PanditProfile},
 
   //only pooja
   {
@@ -333,6 +348,16 @@ const routes = [
 
   { path: '/privacy', name: 'Privacy Policy', element: PrivacyPolicy },
   { path: '/terms', name: 'Terms and Conditions', element: Terms },
+
+
+  //story
+
+  {
+    path: '/story', name: 'Story', element: Story
+  },
+  {
+    path: '/story/add-story', name: 'Add-Story', element: AddStory
+  },
 
   // Parampara End
   { path: '/theme', name: 'Theme', element: Colors, exact: true },

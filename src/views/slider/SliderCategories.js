@@ -98,9 +98,12 @@ const SliderCategoryList = () => {
     {
       name: "Action",
       selector: (row) => (
-        <div>
-          <CButton color="danger" onClick={() => handleDelete(row._id)}>Delete</CButton>
-          <CButton color="primary" onClick={() => handleEdit(row._id, row.name, row.image)}>Edit</CButton>
+        <div style={{ display: 'flex',
+          gap: '8px',
+          justifyContent: 'center',
+          flexWrap: 'nowrap',}}>
+          <CButton color="danger" className="btn-sm text-white" onClick={() => handleDelete(row._id)}>Delete</CButton>
+          <CButton color="primary" className="btn-sm text-white" onClick={() => handleEdit(row._id, row.name, row.image)}>Edit</CButton>
         </div>
       ),
       ignoreRowClick: true,
