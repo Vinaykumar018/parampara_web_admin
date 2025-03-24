@@ -87,7 +87,7 @@ const BhajanMandalCategory = () => {
       (
         <>
         <img
-            src={`http://34.131.70.24:3000/` + row.bhajan_image}
+            src={`http://34.131.10.8:3000/` + row.bhajan_image}
             alt={row.category}
             // width={100}
             height={100}

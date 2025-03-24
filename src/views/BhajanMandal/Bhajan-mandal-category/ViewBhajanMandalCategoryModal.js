@@ -131,7 +131,7 @@ const ViewBhajanMandalCategoryModal = ({ show, onClose, rowData }) => {
               {/* Image Section */}
               <div className="col-md-4 d-flex align-items-start justify-content-center">
                 <img
-                  src={`http://34.131.70.24:3000/${rowData.bhajan_image}`}
+                  src={`http://34.131.10.8:3000/${rowData.bhajan_image}`}
                   alt={rowData.category}
                   className="img-fluid rounded shadow-sm"
                   style={{ maxWidth: "100%", height: "auto", maxHeight: "250px" }}

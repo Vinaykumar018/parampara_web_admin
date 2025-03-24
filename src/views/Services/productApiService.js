@@ -119,6 +119,8 @@ export const createProduct = async (data) => {
     throw error;
   }
 };
+
+
 export const fetchProduct = async () => {
   try {
       const response = await fetch(`${BASE_URL}/get-all`, {
@@ -156,6 +158,46 @@ export const deleteProduct = async (id) => {
   }
 };
 
+export const updateFeaturedStatus = async (id, updatedData) => {
+  console.log("Updating Product:", id, updatedData);
+  try {
+    const response = await axios.put(
+      `${BASE_URL}/${id}/featured`, 
+      updatedData,
+      {
+        headers: {
+"Content-Type": "application/json",
+        Authorization: AUTH_TOKEN,
+        },
+      }
+    );
+    return response.data; 
+  } catch (error) {
+    console.error("Error updating category:", error.response?.data || error);
+    throw error; 
+  }
+};
+
+export const updateStatus = async (id, updatedData) => {
+  console.log("Updating Product:", id, updatedData);
+  try {
+    const response = await axios.patch(
+      `${BASE_URL}/update-status/${id}`, 
+      updatedData,
+      {
+        headers: {
+"Content-Type": "application/json",
+        Authorization: AUTH_TOKEN,
+        },
+      }
+    );
+    return response.data; 
+  } catch (error) {
+    console.error("Error updating category:", error.response?.data || error);
+    throw error; 
+  }
+};
+
 // export const fetchProductById = async(id)=>{
 //   try {
 //     const response = await axios.fetch(`${BASE_URL}/get-all, {
@@ -177,3 +219,23 @@ export const deleteProduct = async (id) => {
 //   }
 //   }
 // }    
+
+export const updateProduct = async (id, updatedData) => {
+  console.log("Updating Product:", id, updatedData);
+  try {
+    const response = await axios.put(
+      `${BASE_URL}/update-product/${id}`, 
+      updatedData,
+      {
+        headers: {
+"Content-Type": "multipart/form-data",
+        Authorization: AUTH_TOKEN,
+        },
+      }
+    );
+    return response.data; 
+  } catch (error) {
+    console.error("Error updating category:", error.response?.data || error);
+    throw error; 
+  }
+};

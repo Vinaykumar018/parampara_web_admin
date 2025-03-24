@@ -21,6 +21,8 @@ const ProductAdd = () => {
     galleryImages: [],
     short_discription: "",
     long_discription: RichTextEditor.createEmptyValue(),
+    isFeatured: false,
+            offer: false,
   });
 
   useEffect(() => {
@@ -80,8 +82,10 @@ const ProductAdd = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     const productData = new FormData();
+  
+    // Append all form data to FormData
     Object.keys(formData).forEach((key) => {
       if (key === "galleryImages") {
         formData[key].forEach((file) => productData.append("galleryImages", file));
@@ -91,13 +95,23 @@ const ProductAdd = () => {
         productData.append(key, formData[key]);
       }
     });
+  
+    // Debugging: Log FormData entries
+    for (let [key, value] of productData.entries()) {
+      console.log(key, value);
+    }
+  
     try {
-      await createProduct(productData);
-      toast.success("Product added successfully!");
-      navigate("/product");
+      const response = await createProduct(productData);
+      if (response.status === 1) {
+        toast.success("Product added successfully!");
+        navigate("/product");
+      } else {
+        toast.error("Failed to add product.");
+      }
     } catch (error) {
       toast.error("Failed to add product.");
-      console.error(error);
+      console.error("Error during form submission:", error);
     }
   };
   return (
@@ -159,6 +173,23 @@ const ProductAdd = () => {
                       </select>
                     </div>
 
+                    <div className="col-md-6 mb-3">
+                      <label className="form-label">Offer</label>
+                      <select
+                        className="form-select"
+                        name="offer"
+                        value={formData.offer}
+                        onChange={handleInputChange}
+                      >
+                        <option value="no_offer">No Offer</option>
+                        <option value="on_sale">On Sale</option>
+                        <option value="most_featured">Most Featured</option>
+                        <option value="discounted">Discounted</option>
+                      </select>
+                    </div>
+
+                   
+
                     {/* Price */}
                     <div className="col-md-6 mb-3">
                       <label className="form-label">Price</label>
@@ -187,14 +218,17 @@ const ProductAdd = () => {
                       />
                     </div>
 
+
+                    
+
                     {/* GST */}
                     <div className="col-md-6 mb-3">
                       <label className="form-label">GST</label>
                       <input
                         type="number"
                         className="form-control"
-                        name="gst"
-                        placeholder="Enter GST"
+                        name="gst"  
+                        placeholder="Enter GST in Percentage"
                         value={formData.gst}
                         onChange={handleInputChange}
                         required
@@ -248,6 +282,9 @@ const ProductAdd = () => {
                         />
                       )}
                     </div>
+
+
+
 
                     {/* Gallery Images */}
                     <div className="col-md-6 mb-3">
@@ -303,9 +340,35 @@ const ProductAdd = () => {
                         onChange={handleEditorChange}
                       />
                     </div>
-                    <div className="text-end mb-3">
+                   
+
+                    <div className="col-md-12 ">
+                    <div className="form-check form-switch form-check-lg">
+  <input
+    className="form-check-input"
+    type="checkbox"
+    name="isFeatured"
+    checked={formData.isFeatured}
+    onChange={(e) =>
+      setFormData({ ...formData, isFeatured: e.target.checked })
+    }
+    id="isFeatured"
+  />
+  <label className="form-check-label" htmlFor="isFeatured">
+    Is Featured
+  </label>
+</div>
+
+
+</div>
+
+<div className="col-md-12 mb-3">
+
+
+  <div className="text-end mb-3">
                         <button type="submit" className="me-2 btn btn-success text-light btn-sm">Save</button>
                     </div>
+</div>
                   </div>
                 </form>
               </div>

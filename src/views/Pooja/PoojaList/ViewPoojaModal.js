@@ -66,7 +66,7 @@ const ViewPoojaModal = ({ show, onClose, rowData }) => {
             >
               {rowData?.pooja_image ? (
                 <img
-                  src={`http://34.131.70.24:3000${rowData.pooja_image}`}
+                  src={`http://34.131.10.8:3000${rowData.pooja_image}`}
                   alt={rowData?.pooja_name}
                   style={{
                     width: "250px",

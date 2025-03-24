@@ -1,8 +1,8 @@
 import axios from "axios";
 
 // const apiUrl = "https://parampara-admin.vercel.app/api/slider";
-// const apiUrl = "http://localhost:3005/api/slider";
-const apiUrl = `${import.meta.env.VITE_BASE_URL}/slider`;
+const apiUrl = "http://34.131.10.8:3000/api/slider";
+// const apiUrl = `${import.meta.env.VITE_BASE_URL}/slider`;
 
 const token = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNoaXZhbnNodSIsImlhdCI6MTczMjE2NTMzOX0.YDu6P4alpQB5QL-74z1jO4LGfEwZA_n_Y29o512FrM8`;
 
@@ -10,8 +10,6 @@ const headers = {
   "Content-Type": "application/json",
   Authorization: token,
 };
-
-
 
 export const UpdateSliderCategory = async (id, updatedData) => {
   try {

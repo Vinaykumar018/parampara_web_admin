@@ -5,7 +5,15 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 // Reusable Input Component
-const InputField = ({ label, type, name, value, onChange, placeholder, required }) => (
+const InputField = ({
+  label,
+  type,
+  name,
+  value,
+  onChange,
+  placeholder,
+  required,
+}) => (
   <div className="col-md-6 mb-3">
     <label className="form-label">{label}</label>
     <input
@@ -48,14 +56,14 @@ const UpdateUserForm = () => {
     const { name, value, type, files } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: type === "file" ? files[0] : value, // Handle files for type="file"
+      [name]: type === 'file' ? files[0] : value, // Handle files for type="file"
     }));
   };
 
   // Load user data to update form
   useEffect(() => {
     if (contextUserData && id) {
-      const userData = contextUserData.find(user => user._id === id);
+      const userData = contextUserData.find((user) => user._id === id);
       if (userData) {
         setFormData(userData);
       }
@@ -84,27 +92,31 @@ const UpdateUserForm = () => {
         pincode: formData.pincode,
         landmark: formData.landmark,
         latitude: formData.latitude,
-        longitude: formData.longitude
+        longitude: formData.longitude,
       };
 
       for (const key in fieldsToSend) {
         formDataObj.append(key, fieldsToSend[key]);
       }
 
-      const response = await fetch(`http://localhost:3000/api/user/update-user/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNoaXZhbnNodSIsImlhdCI6MTczMjE2NTMzOX0.YDu6P4alpQB5QL-74z1jO4LGfEwZA_n_Y29o512FrM8'
+      const response = await fetch(
+        `http://34.131.10.8:3000/api/user/update-user/${id}`,
+        {
+          method: 'PUT',
+          headers: {
+            Authorization:
+              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNoaXZhbnNodSIsImlhdCI6MTczMjE2NTMzOX0.YDu6P4alpQB5QL-74z1jO4LGfEwZA_n_Y29o512FrM8',
+          },
+          body: formDataObj,
         },
-        body: formDataObj,
-      });
+      );
 
       const result = await response.json();
 
       if (response.ok) {
-        toast.success("User updated successfully!");
+        toast.success('User updated successfully!');
         setTimeout(() => {
-          navigate("/user");
+          navigate('/user');
         }, 1000);
         resetForm();
       } else {
@@ -325,7 +337,9 @@ const UpdateUserForm = () => {
                   </div>
                 </div>
                 <div className="text-end mb-3">
-                  <button type="submit" className="me-2 btn btn-dark btn-sm">Update User</button>
+                  <button type="submit" className="me-2 btn btn-dark btn-sm">
+                    Update User
+                  </button>
                 </div>
               </form>
             </div>

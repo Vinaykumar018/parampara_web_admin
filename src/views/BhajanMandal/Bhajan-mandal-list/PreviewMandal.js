@@ -203,7 +203,7 @@ const PreviewMandal = () => {
             {/* Image Section */}
             <div className="col-md-4 d-flex align-items-start justify-content-center">
               <img
-                src={`http://34.131.70.24:3000${bhajanData.bhajan_image}`}
+                src={`http://34.131.10.8:3000${bhajanData.bhajan_image}`}
                 alt={bhajanData.bhajan_name}
                 className="img-fluid rounded shadow-sm"
               />

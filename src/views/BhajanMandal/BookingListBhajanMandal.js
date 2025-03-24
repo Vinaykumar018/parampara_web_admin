@@ -52,14 +52,15 @@ const BookingListBhajanMandal = () => {
         return updatedOrders;
     };
 
+    
+
      const columns = [
           { name: 'S.No', selector: (row, index) => index + 1, sortable: false, width: "80px" },
           { name: 'Booking ID', selector: (row) => row.bookingId, sortable: true, width: "350px" },
           { name: 'Name', selector: (row) => row.userDetails.username, sortable: true, width: "150px" },
           { name: 'Email', selector: (row) => row.userDetails.email, sortable: true, width: "200px" },
           { name: 'Mobile', selector: (row) => row.userDetails.contactNumber, sortable: true, width: "150px" },
-          { name: 'Pooja Name', selector: (row) => row.poojaDetails.poojaName, sortable: true, width: "180px" },
-          { name: 'Pooja Type', selector: (row) => row.poojaDetails.poojaType, sortable: true, width: "250px" },
+          { name: 'Pooja Name', selector: (row) => row.poojaDetails?.poojaName, sortable: true, width: "180px" },
           { name: 'Book by Pandit ID', selector: (row) => row.panditId, sortable: true, width: "250px" },
           { 
             name: 'Schedule', 

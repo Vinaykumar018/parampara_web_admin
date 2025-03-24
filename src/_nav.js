@@ -64,24 +64,24 @@ const _nav = [
       },
     ],
   },
-  {
-    component: CNavGroup,
-    name: 'Pooja Archana',
-    to: '/',
-    icon: <CIcon icon={cilSitemap} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'Pooja Archana Category',
-        to: '/pooja-archana-category',
-      },
-      {
-        component: CNavItem,
-        name: 'Pooja Archana',
-        to: '/pooja-archana',
-      },
-    ],
-  },
+  // {
+  //   component: CNavGroup,
+  //   name: 'Pooja Archana',
+  //   to: '/',
+  //   icon: <CIcon icon={cilSitemap} customClassName="nav-icon" />,
+  //   items: [
+  //     {
+  //       component: CNavItem,
+  //       name: 'Pooja Archana Category',
+  //       to: '/pooja-archana-category',
+  //     },
+  //     {
+  //       component: CNavItem,
+  //       name: 'Pooja Archana',
+  //       to: '/pooja-archana',
+  //     },
+  //   ],
+  // },
   {
     component: CNavGroup,
     name: 'Bhavya Ayojan',
@@ -130,45 +130,58 @@ const _nav = [
   },
   {
     component: CNavGroup,
-    name: 'Virtual Service',
+    name: 'Brahman Bhoj',
     to: '/',
     icon: <CIcon icon={cilSitemap} customClassName="nav-icon" />,
     items: [
       {
-        component: CNavItem,
-        name: 'Virtual Service',
-        to: '/virtual-services',
-      },
-      {
-        component: CNavItem,
-        name: 'Virtual Service Request',
-        to: '/virtual-services-request',
+        component:CNavItem,
+        name:'Brahman Bhoj',
+        to:"/brahman-bhoj"
       },
     ],
   },
-  {
-    component: CNavGroup,
-    name: 'Daily Pandit',
-    to: '/',
-    icon: <CIcon icon={cilSitemap} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'Add Pandit',
-        to: '/add-daily-pandit',
-      },
-      {
-        component: CNavItem,
-        name: 'Subscription Details',
-        to: '/subscription-details',
-      },
-      {
-        component: CNavItem,
-        name: 'Daily Pandit Booking',
-        to: '/daily-pandit',
-      },
-    ],
-  },
+  // {
+  //   component: CNavGroup,
+  //   name: 'Virtual Service',
+  //   to: '/',
+  //   icon: <CIcon icon={cilSitemap} customClassName="nav-icon" />,
+  //   items: [
+  //     {
+  //       component: CNavItem,
+  //       name: 'Virtual Service',
+  //       to: '/virtual-services',
+  //     },
+  //     {
+  //       component: CNavItem,
+  //       name: 'Virtual Service Request',
+  //       to: '/virtual-services-request',
+  //     },
+  //   ],
+  // },
+  // {
+  //   component: CNavGroup,
+  //   name: 'Daily Pandit',
+  //   to: '/',
+  //   icon: <CIcon icon={cilSitemap} customClassName="nav-icon" />,
+  //   items: [
+  //     {
+  //       component: CNavItem,
+  //       name: 'Add Pandit',
+  //       to: '/add-daily-pandit',
+  //     },
+  //     {
+  //       component: CNavItem,
+  //       name: 'Subscription Details',
+  //       to: '/subscription-details',
+  //     },
+  //     {
+  //       component: CNavItem,
+  //       name: 'Daily Pandit Booking',
+  //       to: '/daily-pandit',
+  //     },
+  //   ],
+  // },
   {
     component: CNavGroup,
     name: 'E-Commerce',

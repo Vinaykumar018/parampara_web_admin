@@ -53,12 +53,24 @@ const BookingList = () => {
 
     const columns = [
       { name: 'S.No', selector: (row, index) => index + 1, sortable: false, width: "80px" },
-      { name: 'Booking ID', selector: (row) => row.bookingId, sortable: true, width: "350px" },
-      { name: 'Name', selector: (row) => row.userDetails.username, sortable: true, width: "150px" },
-      { name: 'Email', selector: (row) => row.userDetails.email, sortable: true, width: "200px" },
-      { name: 'Mobile', selector: (row) => row.userDetails.contactNumber, sortable: true, width: "150px" },
-      { name: 'Pooja Name', selector: (row) => row.poojaDetails.poojaName, sortable: true, width: "180px" },
-      { name: 'Pooja Type', selector: (row) => row.poojaDetails.poojaType, sortable: true, width: "250px" },
+      { name: 'Booking ID', selector: (row) => row.bookingId, sortable: true, width: "150px" },
+      { name: 'Pooja Name', selector: (row) => row.bookingDetails.poojaName, sortable: true, width: "180px" },
+      { name: 'User Details', selector: (row) => (<>
+      <b>Name : </b>{row.userDetails.username}<br/>
+      <b>Email : </b>{row.userDetails.email}<br/>
+      <b>Mobile  : </b>{row.userDetails.contactNumber}<br/>
+      </>
+      ), sortable: true, width: "250px" },
+      {
+        name: "Address",
+        selector: (row) => row.Address,
+        sortable: true,
+        width: "250px",
+        wrap: true, // This ensures the text wraps automatically
+      },
+      // { name: 'Email', selector: (row) => row.userDetails.email, sortable: true, width: "200px" },
+      // { name: 'Mobile', selector: (row) => row.userDetails.contactNumber, sortable: true, width: "150px" },
+      // { name: 'Pooja Type', selector: (row) => row.bookingDetails.Type, sortable: true, width: "250px" },
       { name: 'Book by Pandit ID', selector: (row) => row.panditId, sortable: true, width: "250px" },
       { 
         name: 'Schedule', 
@@ -68,13 +80,7 @@ const BookingList = () => {
       },
       { name: 'Amount', selector: (row) => `₹${row.paymentDetails.amount}`, sortable: true, width: "100px" },
       
-      {
-        name: "Address",
-        selector: (row) => row.Address,
-        sortable: true,
-        width: "250px",
-        wrap: true, // This ensures the text wraps automatically
-      },
+     
       {
         name: "Booking Status",
         selector: (row) => (

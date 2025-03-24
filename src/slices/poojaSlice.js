@@ -6,7 +6,7 @@ export const fetchPoojaData = createAsyncThunk(
   'pooja/fetchPoojaData',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get("http://34.131.70.24:3000/api/pooja/all-pooja", {
+      const response = await axios.get("http://34.131.10.8:3000/api/pooja/all-pooja", {
         headers: {
           Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNoaXZhbnNodSIsImlhdCI6MTczMjE2NTMzOX0.YDu6P4alpQB5QL-74z1jO4LGfEwZA_n_Y29o512FrM8`,
         },

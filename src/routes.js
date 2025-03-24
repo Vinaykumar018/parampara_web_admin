@@ -88,13 +88,16 @@ const AddPandit = React.lazy(() => import('./views/pandit/AddPandit'));
 
 //ecommerce
 const proudct = React.lazy(() => import('./views/eCommerce/Product/Product'));
+const brahmanBhoj = React.lazy(()=>import('./views/BrahmanBhoj/BrahmanBhoj'));
+// const addProduct = React.lazy(() => import('./views/eCommerce/Product/ProductAdd'));
 const addProduct = React.lazy(() => import('./views/eCommerce/Product/ProductAdd'));
+
 const updateProduct = React.lazy(()=> import('./views/eCommerce/Product/ProductUpdate'));
 const ProductCategory = React.lazy(
   () => import('./views/eCommerce/ProductCategory/ProductCategory'),
 );
 const Order = React.lazy(() => import('./views/eCommerce/Order'));
-
+const singleOrder = React.lazy(()=>import('./views/eCommerce/SingleOderDetails'));
 //enquires
 const Enqueries = React.lazy(() => import('./views/enquries/EnquiriesList'));
 
@@ -182,6 +185,7 @@ const Modals = React.lazy(() => import('./views/notifications/modals/Modals'));
 const Toasts = React.lazy(() => import('./views/notifications/toasts/Toasts'));
 
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'));
+const PanditProfile=React.lazy(()=>import('./views/pandit/PanditProfileData'))
 
 //terms and conditions
 
@@ -191,6 +195,7 @@ const PrivacyPolicy = React.lazy(
 const Terms = React.lazy(
   () => import('./views/pages/TermsAndConditonPage/TermsAndConditionsPage'),
 );
+const UserProfilePage = React.lazy(() => import('./views/users/userProfilePage'));
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -200,12 +205,14 @@ const routes = [
   { path: '/user', name: 'User', element: Users },
   { path: '/add-user', name: 'Add user', element: AddUserForm },
   { path: '/update-user/:id', name: 'Update user', element: UpdateUserForm },
+  { path: '/user/:id', name: 'User Profile', element: UserProfilePage },
 
   //pandit
 
   { path: '/pandit', name: 'Pandit', element: Pandit },
   { path: '/pandit/update-pandit/:id', name: 'Pandit', element: updatePandit },
   { path: '/add-pandit', name: 'Pandit', element: AddPandit },
+  { path: '/pandit/:id', name: 'Pandit Profile', element:PanditProfile},
 
   //only pooja
   {
@@ -298,7 +305,7 @@ const routes = [
     name: 'Subscription Details',
     element: SubscriptionDetails,
   },
-
+  { path: '/brahman-bhoj', name: 'Brahman Bhoj', element:brahmanBhoj},
   //ecommerce
   { path: '/product', name: 'Product', element: proudct },
   {
@@ -317,6 +324,7 @@ const routes = [
     element:updateProduct,
   },
   { path: '/order', name: 'Order', element: Order },
+  { path: '/order-details/:orderId',naem:"Order Details", element:singleOrder},
 
   //enquires
 

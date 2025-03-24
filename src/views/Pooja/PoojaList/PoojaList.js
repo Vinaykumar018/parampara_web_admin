@@ -101,7 +101,7 @@ const PoojaList = () => {
       selector: (row) =>
         row.pooja_image ? (
           <img
-            src={`http://34.131.70.24:3000${row.pooja_image}`}
+            src={`http://34.131.10.8:3000${row.pooja_image}`}
             alt={row.pooja_name}
             className="img-thumbnail"
             width={50}

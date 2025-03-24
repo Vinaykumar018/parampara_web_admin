@@ -1,7 +1,11 @@
 import React from "react";
+import { useContext } from "react";
+import { AppContext } from "../../../context/AppContext";
 
-const ViewPoojaCategoryModal = ({ show, onClose, rowData }) => {
-  if (!show) return null;
+const ViewProductData = ({ show, onClose, rowData }) => {
+  if (!show || !rowData) return null;
+
+   const { globalContextProductCategoryData } = useContext(AppContext);
 
   return (
     <div
@@ -26,6 +30,7 @@ const ViewPoojaCategoryModal = ({ show, onClose, rowData }) => {
             padding: "20px",
           }}
         >
+          {/* Modal Header */}
           <div
             className="modal-header"
             style={{
@@ -39,18 +44,18 @@ const ViewPoojaCategoryModal = ({ show, onClose, rowData }) => {
               className="modal-title fw-bold"
               style={{ fontSize: "1.2rem", color: "#333" }}
             >
-              View Pooja Category Details
+              View Product Details
             </h5>
             <button
               type="button"
               className="btn-close"
               onClick={onClose}
               aria-label="Close"
-              style={{
-                filter: "invert(50%)",
-              }}
+              style={{ filter: "invert(50%)" }}
             ></button>
           </div>
+
+          {/* Modal Body */}
           <div className="modal-body" style={{ padding: "15px 25px" }}>
             {/* Image Section */}
             <div
@@ -61,10 +66,10 @@ const ViewPoojaCategoryModal = ({ show, onClose, rowData }) => {
                 marginBottom: "20px",
               }}
             >
-              {rowData?.pooja_image ? (
+              {rowData?.featuredImage ? (
                 <img
-                  src={`http://34.131.10.8:3000${rowData.pooja_image}`}
-                  alt={rowData?.category}
+                  src={`http://34.131.70.24:3000/${rowData.featuredImage}`}
+                  alt={rowData?.name}
                   style={{
                     width: "250px",
                     height: "150px",
@@ -81,8 +86,33 @@ const ViewPoojaCategoryModal = ({ show, onClose, rowData }) => {
 
             {/* Details Section */}
             {[
-              { label: "Category", value: rowData?.category },
+              { label: "Product Name", value: rowData?.name },
+              {
+                label: "Category",
+                value: (() => {
+                  const category = globalContextProductCategoryData.find(
+                    (item) =>{
+                
+                    return(
+                     item._id === rowData?.category
+                   ) }
+                  
+                  );
+                  return category ? category.category_name : "-";
+                })(),
+              },
+            
+              { label: "Price", value: rowData?.price },
+              { label: "Selling Price", value: rowData?.sellingPrice },
+              { label: "GST", value: rowData?.gst },
+              { label: "Local Delivery", value: rowData?.local_delivery },
               { label: "Short Description", value: rowData?.short_discription },
+              { label: "Stock", value: rowData?.stock },
+              {
+                label: "Status",
+                value: rowData?.status,
+                isBadge: true,
+              },
             ].map((item, index) => (
               <div
                 key={index}
@@ -97,23 +127,40 @@ const ViewPoojaCategoryModal = ({ show, onClose, rowData }) => {
                 <span
                   style={{
                     fontWeight: "bold",
-                    fontSize: "0.85rem", // Reduced font size
+                    fontSize: "0.85rem",
                     color: "#555",
                   }}
                 >
                   {item.label}:
                 </span>
-                <span
-                  style={{
-                    fontSize: "0.8rem", // Reduced font size
-                    color: "#777",
-                  }}
-                >
-                  {item.value || "-"}
-                </span>
+                {item.isBadge ? (
+                  <span
+                    className={`badge ${
+                      item.value === "active" ? "bg-success" : "bg-danger"
+                    }`}
+                    style={{
+                      fontSize: "0.75rem",
+                      padding: "0.2rem 0.5rem",
+                      color: "#fff",
+                    }}
+                  >
+                    {item.value === "active" ? "Active" : "Inactive"}
+                  </span>
+                ) : (
+                  <span
+                    style={{
+                      fontSize: "0.8rem",
+                      color: "#777",
+                    }}
+                  >
+                    {item.value || "-"}
+                  </span>
+                )}
               </div>
             ))}
           </div>
+
+          {/* Modal Footer */}
           <div
             className="modal-footer"
             style={{
@@ -136,7 +183,7 @@ const ViewPoojaCategoryModal = ({ show, onClose, rowData }) => {
                 color: "#fff",
                 borderRadius: "5px",
                 border: "none",
-                fontSize: "0.9rem", // Reduced font size
+                fontSize: "0.9rem",
                 transition: "0.3s",
               }}
             >
@@ -149,4 +196,4 @@ const ViewPoojaCategoryModal = ({ show, onClose, rowData }) => {
   );
 };
 
-export default ViewPoojaCategoryModal;
+export default ViewProductData;
