@@ -2,6 +2,7 @@ import { element } from 'prop-types';
 import React from 'react';
 import EnquiriesList from './views/enquries/EnquiriesList';
 
+
 // Parmpara Admin Routes
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'));
 const PoojaForm = React.lazy(
@@ -16,6 +17,7 @@ const Users = React.lazy(() => import('./views/users/Users'));
 const AddUserForm = React.lazy(() => import('./views/users/AddUserForm'));
 // Pandit routes
 const Pandit = React.lazy(() => import('./views/pandit/Pandit'));
+const PanditBookings= React.lazy(() => import('./views/pandit/PanditBookings'));
 const updatePandit = React.lazy(() => import('./views/pandit/UpdatePandit'));
 // const updatePandit=React.lazy(()=>)
 //Pooja routes
@@ -50,6 +52,10 @@ const addBhajanMandal = React.lazy(
   () => import('./views/BhajanMandal/Bhajan-mandal-list/AddMandal'),
 );
 
+
+const UserBookingList=React.lazy(
+  () => import('./views/users/UserBookingList'),
+);
 
 const PreviewMandal = React.lazy(
   () => import('./views/BhajanMandal/Bhajan-mandal-list/PreviewMandal'),
@@ -137,6 +143,8 @@ const Tabs = React.lazy(() => import('./views/base/tabs/Tabs'));
 const Tables = React.lazy(() => import('./views/base/tables/Tables'));
 const Tooltips = React.lazy(() => import('./views/base/tooltips/Tooltips'));
 
+
+const BrahmanBhojBookingData=React.lazy(()=>import('./views/BrahmanBhoj/BrahmanBhojBookingData'))
 // Buttons
 const Buttons = React.lazy(() => import('./views/buttons/buttons/Buttons'));
 const ButtonGroups = React.lazy(
@@ -206,6 +214,7 @@ const routes = [
   { path: '/add-user', name: 'Add user', element: AddUserForm },
   { path: '/update-user/:id', name: 'Update user', element: UpdateUserForm },
   { path: '/user/:id', name: 'User Profile', element: UserProfilePage },
+  { path: '/user/bookings/:id', name: 'User Booking List', element: UserBookingList },
 
   //pandit
 
@@ -213,6 +222,11 @@ const routes = [
   { path: '/pandit/update-pandit/:id', name: 'Pandit', element: updatePandit },
   { path: '/add-pandit', name: 'Pandit', element: AddPandit },
   { path: '/pandit/:id', name: 'Pandit Profile', element:PanditProfile},
+ 
+  { path: '/bhoj/:id', name: 'Brahman Bhoj Booking Data', element:BrahmanBhojBookingData},
+  { path: '/pandit/bookings/:id', name: 'Pandit Booking Data', element:PanditBookings},
+ 
+  
 
   //only pooja
   {

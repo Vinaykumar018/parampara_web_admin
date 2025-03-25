@@ -73,7 +73,7 @@ const UsersData = () => {
             className="btn btn-primary btn-sm me-2">
             Edit
           </button>
-          <Link hres="javascript:void(0)" className="btn btn-success btn-sm text-white">
+          <Link to={`/user/bookings/${row._id}`} className="btn btn-success btn-sm text-white">
             Booking
           </Link>
           <Link
