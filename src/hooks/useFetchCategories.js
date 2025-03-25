@@ -23,16 +23,21 @@ const useFetchCategories = (panditIds) => {
               headers: { Authorization: token },
                // Pass individual ID
             });
+
+
             return { id, data: res.data.data };
           })
         );
 
         // Transform the response into a map by pandit_id
         const categoriesMap = responses.reduce((acc, { id, data }) => {
-          acc[id] = data.map((cat) => cat.pooja_name || 'N/A');
+          acc[id] = data.map((cat) => ({
+            pooja_name: cat.pooja_name || 'N/A',
+            status: cat.status || 'N/A' // Include status
+          }));
           return acc;
         }, {});
-
+       
         setCategories(categoriesMap);
       } catch (err) {
         console.error('Error fetching categories:', err);
@@ -49,3 +54,7 @@ const useFetchCategories = (panditIds) => {
 };
 
 export default useFetchCategories;
+
+
+
+
