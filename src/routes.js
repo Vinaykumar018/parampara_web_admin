@@ -136,6 +136,10 @@ const Paginations = React.lazy(
 const Placeholders = React.lazy(
   () => import('./views/base/placeholders/Placeholders'),
 );
+
+const Settings= React.lazy(
+  () => import('./views/settings/settings'),
+);
 const Popovers = React.lazy(() => import('./views/base/popovers/Popovers'));
 const Progress = React.lazy(() => import('./views/base/progress/Progress'));
 const Spinners = React.lazy(() => import('./views/base/spinners/Spinners'));
@@ -344,6 +348,11 @@ const routes = [
 
   { path: '/enquiries', name: 'Enquiries List', element: Enqueries },
 
+
+
+  //settings
+
+  { path: '/settings', name: 'Settings', element:Settings },
   //slider
 
   { path: '/slider', name: 'Slider', element: Slider },

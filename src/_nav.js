@@ -2,7 +2,7 @@ import React from 'react'
 import CIcon from '@coreui/icons-react'
 import { FaUsers,FaStore } from "react-icons/fa6";
 import { TfiLayoutSliderAlt } from "react-icons/tfi";
-import { MdMessage,MdPrivacyTip } from "react-icons/md";
+import { MdMessage,MdPrivacyTip, MdSettings } from "react-icons/md";
 import { FaFileAlt } from "react-icons/fa";
 
 import {
@@ -248,6 +248,12 @@ const _nav = [
     name:'Enqueries',
     to:'/',
     icon: <MdMessage className="nav-icon"/>,
+  },
+  {
+    component:CNavItem,
+    name:'Settings',
+    to:'/settings',
+    icon: <MdSettings className="nav-icon"/>,
   },
   {
     component:CNavItem,

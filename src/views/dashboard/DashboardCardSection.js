@@ -1,7 +1,9 @@
 import React from 'react';
 import { FaShoppingCart, FaUsers, FaTicketAlt, FaDollarSign, FaClipboardList, FaMapMarkerAlt, FaCalendarCheck, FaExclamationTriangle } from 'react-icons/fa'; // React icons
-
-const WidgetsDropdown = () => {
+import PanditRequestRange from '../dashboardCards/PanditRequestRange'; // Dashboard card section component
+import CommissionList from './ComissionList';
+import ComissionRange from '../dashboardCards/ComissionCard';
+const DashboardCardSection = () => {
   const data = [
     {
       id: 1,
@@ -120,9 +122,11 @@ const WidgetsDropdown = () => {
             </div>
           </div>
         ))}
+        <PanditRequestRange></PanditRequestRange>
+       <ComissionRange></ComissionRange>
       </div>
     </div>
   );
 };
 
-export default WidgetsDropdown;
+export default DashboardCardSection;

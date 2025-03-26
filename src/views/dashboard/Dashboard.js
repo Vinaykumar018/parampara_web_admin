@@ -51,8 +51,8 @@ import avatar4 from 'src/assets/images/avatars/4.jpg'
 import avatar5 from 'src/assets/images/avatars/5.jpg'
 import avatar6 from 'src/assets/images/avatars/6.jpg'
 
-import WidgetsBrand from '../widgets/WidgetsBrand'
-import WidgetsDropdown from '../widgets/WidgetsDropdown'
+
+import DashboardCardSection from './DashboardCardSection'
 import MainChart from './MainChart'
 // import CountriesTables from './CountriesTables'
 import axios from 'axios'
@@ -60,6 +60,7 @@ import UsersData from './UsersData'
 import VendorsData from './VendorsData'
 import CommissionList from './ComissionList'
 import UsersForm from './UsersForm'
+import PanditRequestRangeSettings from './PanditRequestRangeSettings'
 
 const Dashboard = () => {
  
@@ -217,7 +218,7 @@ const Dashboard = () => {
       {/* Row 1 - Widgets Section */}
       <div className="row mb-4">
         <div className="col-12">
-          <WidgetsDropdown className="mb-4" />
+        <DashboardCardSection className="mb-4" />
         </div>
       </div>
       <div className="row mb-4">

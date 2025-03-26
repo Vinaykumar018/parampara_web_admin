@@ -205,7 +205,7 @@ const token =
           <div>{categoryList.map((item, index) => (
             <span key={item.pooja_id} className='badge bg-dark mx-1 p-3'>
               {item.pooja_name}
-              {index < categoryList.length - 1 && ', '} {/* Add comma except for the last item */}
+              {index < categoryList.length - 1 && ' '} {/* Add comma except for the last item */}
             </span>
           ))}</div>
         ) : (
@@ -248,7 +248,7 @@ const token =
           </Link>
 
           <button
-            className="btn btn-warning btn-sm me-2"
+            className="btn btn-warning text-white btn-sm me-2"
             onClick={() => {
               setSelectedPandit(row._id);
               setShowCategoryModal(true);
@@ -266,7 +266,7 @@ const token =
 
           <button
             onClick={() => handleDelete(row._id)}
-            className="btn btn-danger btn-sm me-2"
+            className="btn btn-danger btn-sm me-2 text-white"
           >
             Delete
           </button>
@@ -404,7 +404,7 @@ const AssignCategoryModal = ({
           </div>
           <div className="modal-body">
             <div className="mb-3">
-              <label className="form-label">Select Poojas (Multiple)</label>
+              <label className="form-label">Select Poojas </label>
               <div
                 className="pooja-checkboxes"
                 style={{ maxHeight: '300px', overflowY: 'auto' }}
