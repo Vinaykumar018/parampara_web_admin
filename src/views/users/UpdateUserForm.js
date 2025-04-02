@@ -100,7 +100,7 @@ const UpdateUserForm = () => {
       }
 
       const response = await fetch(
-        `http://34.131.10.8:3000/api/user/update-user/${id}`,
+        `http://34.131.41.101:3000/api/user/update-user/${id}`,
         {
           method: 'PUT',
           headers: {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
 import { FaBell } from 'react-icons/fa';
 
-const socket = io('http://34.131.10.8:3000'); // Connect to backend WebSocket server
+const socket = io('http://34.131.41.101:3000'); // Connect to backend WebSocket server
 
 const PrivacyAndPolicy = () => {
     const [notifications, setNotifications] = useState([]);

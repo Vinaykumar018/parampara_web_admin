@@ -146,7 +146,7 @@ console.log(globalContextBhajanMandalCategoryData)
       selector: (row) =>
         row.bhajan_image ? (
           <img
-            src={`http://34.131.10.8:3000${row.bhajan_image}`}
+            src={`http://34.131.41.101:3000${row.bhajan_image}`}
             alt={row.bhajan_name}
             className="img-thumbnail"
             width={50}

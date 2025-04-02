@@ -74,7 +74,7 @@ const UpdatePandit = () => {
     }
 
     // Call API to create pandit
-    fetch(`http://34.131.10.8:3000/api/pandit/update-pandit/${id}`, {
+    fetch(`http://34.131.41.101:3000/api/pandit/update-pandit/${id}`, {
       method: 'POST',
       headers: {
         Authorization: token,

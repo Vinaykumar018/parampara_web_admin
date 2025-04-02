@@ -2,7 +2,7 @@ import React from 'react'
 import CIcon from '@coreui/icons-react'
 import { FaUsers,FaStore } from "react-icons/fa6";
 import { TfiLayoutSliderAlt } from "react-icons/tfi";
-import { MdMessage,MdPrivacyTip } from "react-icons/md";
+import { MdMessage,MdPrivacyTip, MdSettings } from "react-icons/md";
 import { FaFileAlt } from "react-icons/fa";
 
 import {
@@ -64,24 +64,6 @@ const _nav = [
       },
     ],
   },
-  // {
-  //   component: CNavGroup,
-  //   name: 'Pooja Archana',
-  //   to: '/',
-  //   icon: <CIcon icon={cilSitemap} customClassName="nav-icon" />,
-  //   items: [
-  //     {
-  //       component: CNavItem,
-  //       name: 'Pooja Archana Category',
-  //       to: '/pooja-archana-category',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Pooja Archana',
-  //       to: '/pooja-archana',
-  //     },
-  //   ],
-  // },
   {
     component: CNavGroup,
     name: 'Bhavya Ayojan',
@@ -141,47 +123,6 @@ const _nav = [
       },
     ],
   },
-  // {
-  //   component: CNavGroup,
-  //   name: 'Virtual Service',
-  //   to: '/',
-  //   icon: <CIcon icon={cilSitemap} customClassName="nav-icon" />,
-  //   items: [
-  //     {
-  //       component: CNavItem,
-  //       name: 'Virtual Service',
-  //       to: '/virtual-services',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Virtual Service Request',
-  //       to: '/virtual-services-request',
-  //     },
-  //   ],
-  // },
-  // {
-  //   component: CNavGroup,
-  //   name: 'Daily Pandit',
-  //   to: '/',
-  //   icon: <CIcon icon={cilSitemap} customClassName="nav-icon" />,
-  //   items: [
-  //     {
-  //       component: CNavItem,
-  //       name: 'Add Pandit',
-  //       to: '/add-daily-pandit',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Subscription Details',
-  //       to: '/subscription-details',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Daily Pandit Booking',
-  //       to: '/daily-pandit',
-  //     },
-  //   ],
-  // },
   {
     component: CNavGroup,
     name: 'E-Commerce',
@@ -241,13 +182,30 @@ const _nav = [
       component: CNavItem,
       name: 'Add Story ',
       to: '/story/add-story',
-    }],
+    },
+    {
+      component: CNavItem,
+      name: 'Sub Story ',
+      to: '/story/sub-story',
+    },
+    {
+      component: CNavItem,
+      name: 'Add Sub Story ',
+      to: '/story/add-sub-story',
+    }
+  ],
   },
   {
     component:CNavItem,
     name:'Enqueries',
     to:'/',
     icon: <MdMessage className="nav-icon"/>,
+  },
+  {
+    component:CNavItem,
+    name:'Settings',
+    to:'/settings',
+    icon: <MdSettings className="nav-icon"/>,
   },
   {
     component:CNavItem,

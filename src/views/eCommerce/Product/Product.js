@@ -122,7 +122,7 @@ const Product = () => {
       name: 'Featured Image',
       selector: (row) => (
         <img
-          src={`http://34.131.10.8:3000/${row.featuredImage}`}
+          src={`http://34.131.41.101:3000/${row.featuredImage}`}
           alt={row.name}
           width={80}
           height={80}

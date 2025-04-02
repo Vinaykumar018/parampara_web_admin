@@ -22,3 +22,12 @@ export const getPanditByID =async(id)=>{
     console.error("Error fetching user data:", error.response ? error.response.data : error.message);
   }
 }
+
+
+
+// {categoryList.map((item, index) => (
+//   <span key={item.pooja_id} className='badge bg-dark mx-1'>
+//     {item.pooja_name}
+//     {index < categoryList.length - 1 && ', '} {/* Add comma except for the last item */}
+//   </span>
+// ))}

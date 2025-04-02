@@ -78,7 +78,7 @@ const PoojaCategory = () => {
       name: "Pooja Category Image",
       selector: (row) =>
         row.pooja_image ? (
-          <img src={`http://34.131.10.8:3000${row.pooja_image}`} alt={row.category} width={50} height={30} />
+          <img src={`http://34.131.41.101:3000${row.pooja_image}`} alt={row.category} width={50} height={30} />
         ) : (
           "N/A"
         ),

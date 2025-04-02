@@ -83,7 +83,7 @@ const ProductCategory = () => {
       (
         <>
         <img
-            src={`http://34.131.10.8:3000/` + row.category_image}
+            src={`http://34.131.41.101:3000/` + row.category_image}
             alt={row.category_name}
             // width={100}
             height={100}

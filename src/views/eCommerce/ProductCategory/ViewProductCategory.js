@@ -93,7 +93,7 @@ const ViewProductCategory = ({ show, onClose, rowData }) => {
                 <img
                   src={
                     rowData?.bhajan_image
-                      ? `http://34.131.10.8:3000/${rowData.category_image}`
+                      ? `http://34.131.41.101:3000/${rowData.category_image}`
                       : "https://via.placeholder.com/250" // Placeholder if image is missing
                   }
                   alt={rowData?.category || "Product Image"}

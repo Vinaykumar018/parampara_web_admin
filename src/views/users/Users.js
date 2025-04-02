@@ -73,7 +73,7 @@ const UsersData = () => {
             className="btn btn-primary btn-sm me-2">
             Edit
           </button>
-          <Link hres="javascript:void(0)" className="btn btn-success btn-sm text-white">
+          <Link to={`/user/bookings/${row._id}`} className="btn btn-success btn-sm text-white">
             Booking
           </Link>
           <Link
@@ -99,7 +99,7 @@ const UsersData = () => {
 
     try {
       const response = await axios.put(
-        'http://34.131.10.8:3000/api/user/update-status',
+        'http://34.131.41.101:3000/api/user/update-status',
         {
           userId: userId,
           status: newStatus,
