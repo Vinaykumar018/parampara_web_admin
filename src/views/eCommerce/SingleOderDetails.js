@@ -9,6 +9,8 @@ const SingleOderDetails = () => {
   const { orderId } = useParams()
   const [order, setOrder] = useState(null)
   const [delivery, setDelivery] = useState(null)
+
+  const [selectedStatus, setSelectedStatus] = useState('') // Track selected status
   const token =
     "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNoaXZhbnNodSIsImlhdCI6MTczMjE2NTMzOX0.YDu6P4alpQB5QL-74z1jO4LGfEwZA_n_Y29o512FrM8"
   const BASE_URL = import.meta.env.VITE_BASE_URL
@@ -24,6 +26,8 @@ const SingleOderDetails = () => {
         headers: { Authorization: token },
       })
       setOrder(response.data.order)
+      
+      setSelectedStatus(response.data.order.orderStatus)
     } catch (error) {
       toast.error("Error fetching order details")
     }
@@ -50,6 +54,43 @@ const SingleOderDetails = () => {
       ? "timeline-dot in-progress"
       : "timeline-dot pending";
   };
+
+
+
+  
+  function handleUpdate(status){
+    console.log(status)
+    console.log(orderId)
+
+  }
+
+
+  const handleStatusUpdate = async () => {
+    console.log("hello")
+    console.log(orderId,selectedStatus)
+    if (!selectedStatus) {
+      toast.warning("Please select a status")
+      return
+    }
+
+    
+
+    try {
+      await axios.put(
+        `${BASE_URL}/e-store/update-order-status/${orderId}`,
+        { orderStatus: selectedStatus },
+        { headers: { Authorization: token } }
+      )
+      
+      toast.success("Order status updated successfully!")
+      fetchOrder() // Refresh the order data
+    } catch (error) {
+      toast.error("Failed to update order status!")
+      console.error("Error updating status:", error)
+    }
+  }
+
+
   return (
     <section>
       <ToastContainer />
@@ -85,14 +126,19 @@ const SingleOderDetails = () => {
                           </div>
                           <div class="col-4">
                             <div className="btn-group">
-                                <select className="form-control" style={{ marginRight: "10px", width: "150px" }}>
-                                  <option value="pending">Pending</option>
-                                  <option value="processing">Processing</option>
-                                  <option value="shipped">Shipped</option>
-                                  <option value="delivered">Delivered</option>
-                                </select>
-                                <button className="btn btn-warning">
-                                  <i className="fa fa-edit"></i> Update
+                            <select 
+                                className="form-control" 
+                                style={{ marginRight: "10px", width: "150px" }} 
+                                value={selectedStatus}
+                                onChange={(e) => setSelectedStatus(e.target.value)}
+                              >
+                                <option value="pending">Pending</option>
+                                <option value="processing">Processing</option>
+                                <option value="shipped">Shipped</option>
+                                <option value="delivered">Delivered</option>
+                              </select>
+                                <button className="btn btn-warning" onClick={handleStatusUpdate}>
+                                  <i className="fa fa-edit" ></i> Update
                               </button>
                             </div>
                           </div>

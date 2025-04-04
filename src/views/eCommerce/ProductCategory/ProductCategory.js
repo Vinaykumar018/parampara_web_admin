@@ -246,6 +246,7 @@ const [rowToView, setRowToView] = useState(null);
                 data={categoryData}
                 columns={columns}
                 title="Category List"
+
               />
             )}
           </div>

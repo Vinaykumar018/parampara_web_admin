@@ -125,42 +125,24 @@ console.log(globalContextBhajanMandalCategoryData)
   };
 
   const columns = [
-    { name: "S No.", selector: (row, index) => index + 1, width: "80px" },
-    { name: "Bhajan Name", selector: (row) => row.bhajan_name, width: "200px" },
-    {
-      name: "Category",
-      selector: (row) => {
-        const category = globalContextBhajanMandalCategoryData.find(
-          (item) => item._id === row.bhajan_category
-        );
-        console.log(category ,"from bm")
-        return category ? category.category : "-"; // If a match is found, return the category name; else return "-"
-      },
-      width: "200px",
-    }
-    ,
-    { name: "Price", selector: (row) => row.bhajan_price, width: "100px" },
-    { name: "Members", selector: (row) => row.bhajan_member, width: "100px" },
-    {
-      name: "Image",
-      selector: (row) =>
-        row.bhajan_image ? (
-          <img
-            src={`http://34.131.41.101:3000${row.bhajan_image}`}
-            alt={row.bhajan_name}
-            className="img-thumbnail"
-            width={50}
-          />
-        ) : (
-          "N/A"
-        ),
-      width: "100px",
-    },
-    { name: "Short Description", selector: (row) => (
-    <>
-    <ReadMoreText text={row.short_discription}/>
-    </>), width: "300px", wrap: true, // Prevents overflow
-      grow: 1.5 },
+    { name: "Bhajan Name", selector: row => row.bhajan_name, sortable: true },
+    { name: "Category", selector: row => row.bhajan_category, sortable: true },
+    { name: "Price", selector: row => row.bhajan_price, sortable: true },
+    { name: "Members", selector: row => row.bhajan_member ?? "N/A" },
+    { name: "Experience (Years)", selector: row => row.exp_year ?? "N/A" },
+    { name: "Short Description", selector: row => row.short_discription },
+    { name: "Owner Name", selector: row => row.bhajan_owner.owner_name },
+    { name: "Owner Email", selector: row => row.bhajan_owner.owner_email },
+    { name: "Owner Phone", selector: row => row.bhajan_owner.owner_phone },
+    { name: "Address", selector: row => row.mandali_address.address || "N/A" },
+    { name: "City", selector: row => row.mandali_address.city || "N/A" },
+    { name: "State", selector: row => row.mandali_address.state || "N/A" },
+    { name: "Country", selector: row => row.mandali_address.country || "N/A" },
+    { name: "Pin Code", selector: row => row.mandali_address.pin_code || "N/A" },
+    { name: "Status", selector: row => (row.status === "1" ? "Active" : "Inactive") },
+    { name: "Profile Status", selector: row => (row.profile_status === "1" ? "Complete" : "Incomplete") },
+    { name: "Created At", selector: row => new Date(row.created_at).toLocaleString() },
+    { name: "Updated At", selector: row => new Date(row.updated_at).toLocaleString() },
     {
       name: "Status",
       selector: (row) => (
@@ -227,8 +209,8 @@ console.log(globalContextBhajanMandalCategoryData)
       button: true,
       width: "300px", // Adjusted width for the action buttons column
     },
-    
   ];
+  
 
   const [selectedId, setSelectedId] = useState(null);
   function addVideo(id){
@@ -264,6 +246,8 @@ console.log(globalContextBhajanMandalCategoryData)
               <CSpinner color="primary" />
             </div>
           ) : (
+
+           
             <GetTable columns={columns} data={bhajanMandalData} />
           )}
         </div>

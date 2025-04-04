@@ -149,27 +149,34 @@ const Order = () => {
         {
             name: 'Action',
             selector: (row) => (
-                row.orderStatus === "cancelled" ? (
-                    <CBadge color="danger">
-                        {row.orderStatus}
-                    </CBadge>
-                ) : (
-                    <CBadge
-                        onClick={() => handleCancelOrder(row)}
-                        color="danger"
-                        shape="rounded-pill"
-                        style={{ cursor: "pointer", marginRight: "10px" }}
-                        role="button"
-                        tabIndex="0"
-                    >
-                        <MdCancel size={18} /> Cancel Order
-                    </CBadge>
-                )
+                <div style={{ display: "flex", gap: "10px" }}>
+                    <Link to={'/order-details/' + row.orderId}>
+                        <CBadge color="primary" className='py-2 px-4' style={{ cursor: "pointer", }}>
+                            View
+                        </CBadge>
+                    </Link>
+                    {row.orderStatus === "cancelled" ? (
+                        <CBadge color="danger">
+                            {row.orderStatus}
+                        </CBadge>
+                    ) : (
+                        <CBadge
+                            onClick={() => handleCancelOrder(row)}
+                            color="danger"
+                            shape="rounded-pill"
+                            style={{ cursor: "pointer" }}
+                            role="button"
+                            tabIndex="0"
+                        >
+                            <MdCancel size={18} /> Cancel Order
+                        </CBadge>
+                    )}
+                </div>
             ),
             ignoreRowClick: true,
             allowOverflow: true,
             button: true,
-            width: "200px",
+            width: "250px",
         }
     ];
 

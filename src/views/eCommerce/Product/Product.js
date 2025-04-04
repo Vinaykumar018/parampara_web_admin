@@ -13,6 +13,7 @@ import {
   updateFeaturedStatus,
   updateStatus,
 } from '../../Services/productApiService';
+import GetProductListTable from '../../dashboard/GetProductListTable';
 
 const Product = () => {
   const { globalContextProductData, setGlobalContextProductData } =
@@ -265,10 +266,11 @@ const Product = () => {
                     <CSpinner color="primary" />
                   </div>
                 ) : (
-                  <GetTable
+                  <GetProductListTable
                     data={products}
                     columns={columns}
                     title="Product List"
+                    code="proudct-list-filter"
                   />
                 )}
               </div>

@@ -4,6 +4,7 @@ import GetTable from '../dashboard/GetTable';
 import { CBadge } from '@coreui/react';
 import { MdCancel } from 'react-icons/md';
 import { Link } from 'react-router-dom';
+import BrahmanBhojGetTable from '../dashboard/BrahmanBhojGetTable';
 
 const BrahmanBhoj = () => {
   const [orders, setOrders] = useState([]);
@@ -73,7 +74,19 @@ const BrahmanBhoj = () => {
       sortable: true,
       width: '300px',
     },
-
+    {
+      name: 'Address',
+      selector: (row) => row.address,
+      sortable: true,
+      width: '300px',
+    },
+    {
+      name: 'Date',
+      selector: (row) => row.date,
+      sortable: true,
+      width: '300px',
+    }
+,
     {
       name: 'Action',
       selector: (row) => (
@@ -154,7 +167,7 @@ const BrahmanBhoj = () => {
             <h6 className="mb-0">Brahman Bhoj Request</h6>
           </div>
         </div>
-        <GetTable
+        <BrahmanBhojGetTable
           columns={columns}
           data={transformedOrders}
           pagination

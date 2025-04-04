@@ -8,30 +8,18 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './GetTable.css';
+import BrahmanBhojFilter from './filters/BrahmanBhojFilter';
 
-
-const GetTable = ({ data, columns, title }) => {
-
-  console.log(data,columns)
+const BrahmanBhojGetTable = ({ data, columns, title }) => {
   const [searchedData, setSearchedData] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
+   const [filteredData, setFilteredData] = useState(data);
 
   const notify = () => toast("Data copied to clipboard!");
 
-  // Extract unique locations and categories from the data
-  const locations = [...new Set(data.map((item) => item.location))];
-  const categories = [...new Set(data.map((item) => item.category))];
-
-  // Filter data based on search, location, and category
-  const filteredData = data.filter((item) => {
-    const matchesSearch = Object.values(item).some((value) =>
-      value?.toString().toLowerCase().includes(searchedData.toLowerCase())
-    );
-    const matchesLocation = selectedLocation ? item.location === selectedLocation : true;
-    const matchesCategory = selectedCategory ? item.category === selectedCategory : true;
-    return matchesSearch && matchesLocation && matchesCategory;
-  });
+ 
+ 
 
   const csvData = filteredData.map((item) => {
     const newObj = {};
@@ -113,53 +101,10 @@ const GetTable = ({ data, columns, title }) => {
           </div>
 
           {/* Filters Column */}
-          <div className="col-12 col-md-6 col-lg-8">
-            <div className="row">
-              <div class="col-12 col-md-4 col-lg-4 col-xs-4">
-                <select
-                  className="form-select"
-                  value={selectedLocation}
-                  onChange={(e) => setSelectedLocation(e.target.value)}
-                >
-                  <option value="">All Locations</option>
-                  {locations.map((location, index) => (
-                    <option key={index} value={location}>
-                      {location}
-                    </option>
-                  ))}
-                </select>  
-              </div>
-              <div class="col-12 col-md-4 col-lg-4 col-xs-4">
-                <select
-                  className="form-select"
-                  value={selectedCategory}
-                  onChange={(e) => setSelectedCategory(e.target.value)}
-                >
-                  <option value="">All Categories</option>
-                  {categories.map((category, index) => (
-                    <option key={index} value={category}>
-                      {category}
-                    </option>
-                  ))}
-                </select>
-                
-              </div>
-              <div class="col-12 col-md-4 col-lg-4 col-xs-4">
-                <input
-                  type="text"
-                  placeholder="Search here"
-                  className="form-control"
-                  value={searchedData}
-                  onChange={(e) => setSearchedData(e.target.value)}
-                />
-              </div>
-            </div>
-          </div>
+          <BrahmanBhojFilter  data={data} onFilter={setFilteredData}></BrahmanBhojFilter>
         </div>
 
-        {console.log(columns,filteredData)}
-
-        
+        {/* DataTable */}
         <DataTable
           columns={columns}
           data={filteredData}
@@ -176,4 +121,4 @@ const GetTable = ({ data, columns, title }) => {
   );
 };
 
-export default GetTable;
+export default BrahmanBhojGetTable;
