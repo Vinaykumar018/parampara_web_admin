@@ -8,14 +8,13 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './GetTable.css';
+import BhajanMandaliCategoryFilter from '../dashboard/filters/BhajanMandaliCategoryFilter'; // Make sure to import the filter component
 
-
-const GetTable = ({ data, columns, title }) => {
-
-  console.log(data,columns)
+const BhajanMandaliCategoryGetTable = ({ data, columns, title }) => {
   const [searchedData, setSearchedData] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [filteredData, setFilteredData] = useState(data); // Add state for filtered data
 
   const notify = () => toast("Data copied to clipboard!");
 
@@ -24,7 +23,7 @@ const GetTable = ({ data, columns, title }) => {
   const categories = [...new Set(data.map((item) => item.category))];
 
   // Filter data based on search, location, and category
-  const filteredData = data.filter((item) => {
+  const filteredDataLocal = data.filter((item) => {
     const matchesSearch = Object.values(item).some((value) =>
       value?.toString().toLowerCase().includes(searchedData.toLowerCase())
     );
@@ -113,12 +112,14 @@ const GetTable = ({ data, columns, title }) => {
           </div>
 
           {/* Filters Column */}
-         
+          <div className="col-12 col-md-6 col-lg-8">
+            <BhajanMandaliCategoryFilter 
+              data={data} 
+              onFilter={setFilteredData}
+            />
+          </div>
         </div>
 
-        {console.log(columns,filteredData)}
-
-        
         <DataTable
           columns={columns}
           data={filteredData}
@@ -135,4 +136,4 @@ const GetTable = ({ data, columns, title }) => {
   );
 };
 
-export default GetTable;
+export default BhajanMandaliCategoryGetTable;

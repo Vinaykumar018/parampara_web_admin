@@ -8,43 +8,39 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './GetTable.css';
+import BhajanMandaliFilter from './filters/BhajanMandaliFilter';
 
-
-const GetTable = ({ data, columns, title }) => {
-
-  console.log(data,columns)
-  const [searchedData, setSearchedData] = useState("");
-  const [selectedLocation, setSelectedLocation] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
+const BhajanMandaliGetTable = ({ 
+  data, 
+  columns, 
+  title, 
+  onEdit, 
+  onDelete, 
+  onAddVideo, 
+  onPreview 
+}) => {
+  const [filteredData, setFilteredData] = useState(data);
 
   const notify = () => toast("Data copied to clipboard!");
 
-  // Extract unique locations and categories from the data
-  const locations = [...new Set(data.map((item) => item.location))];
-  const categories = [...new Set(data.map((item) => item.category))];
-
-  // Filter data based on search, location, and category
-  const filteredData = data.filter((item) => {
-    const matchesSearch = Object.values(item).some((value) =>
-      value?.toString().toLowerCase().includes(searchedData.toLowerCase())
-    );
-    const matchesLocation = selectedLocation ? item.location === selectedLocation : true;
-    const matchesCategory = selectedCategory ? item.category === selectedCategory : true;
-    return matchesSearch && matchesLocation && matchesCategory;
-  });
-
-  const csvData = filteredData.map((item) => {
-    const newObj = {};
-    columns.forEach(({ name, selector }) => {
-      newObj[name] = selector(item);
+  const transformData = (data) => {
+    return data.map(item => {
+      const transformedItem = {};
+      columns.forEach(column => {
+        if (typeof column.selector === 'function') {
+          transformedItem[column.name] = column.selector(item);
+        }
+      });
+      return transformedItem;
     });
-    return newObj;
-  });
+  };
+
+  const csvData = transformData(filteredData);
 
   const printToPDF = () => {
     const doc = new jsPDF();
-    const tableContent = filteredData.map((item) =>
-      columns.map(({ selector }) => selector(item) || "N/A")
+    const tableContent = transformData(filteredData).map(item =>
+      columns.map(({ name }) => item[name] || "N/A")
     );
 
     doc.autoTable({
@@ -62,7 +58,6 @@ const GetTable = ({ data, columns, title }) => {
     XLSX.writeFile(wb, `${title.replace(/\s+/g, '_').toLowerCase()}.xlsx`);
   };
 
-  // Custom Bootstrap styling for the DataTable
   const customStyles = {
     headRow: {
       style: {
@@ -89,12 +84,51 @@ const GetTable = ({ data, columns, title }) => {
     },
   };
 
+  const preparedColumns = [
+    ...columns,
+    {
+      name: 'Actions',
+      cell: (row) => (
+        <div className="d-flex align-items-center gap-2">
+  <span className="me-2">{row.title}</span> {/* or whatever text you want in the same row */}
+  <button 
+    className="btn btn-sm btn-primary"
+    onClick={() => onEdit(row._id)}
+  >
+    Edit
+  </button>
+  <button 
+    className="btn btn-sm btn-danger"
+    onClick={() => onDelete(row._id)}
+  >
+    Delete
+  </button>
+  <button 
+    className="btn btn-sm btn-info"
+    onClick={() => onAddVideo(row._id)}
+  >
+    Add Video
+  </button>
+  <button 
+    className="btn btn-sm btn-secondary"
+    onClick={() => onPreview(row._id)}
+  >
+    View
+  </button>
+</div>
+
+      ),
+      ignoreRowClick: true,
+      allowOverflow: true,
+      button: true,
+      width:"300px"
+    }
+  ];
+
   return (
     <div className="card shadow-sm">
       <div className="card-body">
-        {/* Responsive Row for Buttons and Filters */}
         <div className="row g-2 mb-3">
-          {/* Buttons Column */}
           <div className="col-12 col-md-6 col-lg-4">
             <div className="d-flex flex-wrap gap-2">
               <CSVLink data={csvData} filename={`${title}.csv`} className="btn btn-info btn-sm">
@@ -112,15 +146,16 @@ const GetTable = ({ data, columns, title }) => {
             </div>
           </div>
 
-          {/* Filters Column */}
-         
+          <div className="col-12 col-md-6 col-lg-8">
+            <BhajanMandaliFilter 
+              data={data} 
+              onFilter={setFilteredData}
+            />
+          </div>
         </div>
 
-        {console.log(columns,filteredData)}
-
-        
         <DataTable
-          columns={columns}
+          columns={preparedColumns}
           data={filteredData}
           pagination
           fixedHeader
@@ -135,4 +170,4 @@ const GetTable = ({ data, columns, title }) => {
   );
 };
 
-export default GetTable;
+export default BhajanMandaliGetTable;

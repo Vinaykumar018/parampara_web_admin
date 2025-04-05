@@ -8,30 +8,11 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './GetTable.css';
+import PoojaListFilter from './filters/PoojaListFilter';
 
-
-const GetTable = ({ data, columns, title }) => {
-
-  console.log(data,columns)
-  const [searchedData, setSearchedData] = useState("");
-  const [selectedLocation, setSelectedLocation] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
-
+const PoojaListGetTable = ({ data, columns, title }) => {
+  const [filteredData, setFilteredData] = useState(data);
   const notify = () => toast("Data copied to clipboard!");
-
-  // Extract unique locations and categories from the data
-  const locations = [...new Set(data.map((item) => item.location))];
-  const categories = [...new Set(data.map((item) => item.category))];
-
-  // Filter data based on search, location, and category
-  const filteredData = data.filter((item) => {
-    const matchesSearch = Object.values(item).some((value) =>
-      value?.toString().toLowerCase().includes(searchedData.toLowerCase())
-    );
-    const matchesLocation = selectedLocation ? item.location === selectedLocation : true;
-    const matchesCategory = selectedCategory ? item.category === selectedCategory : true;
-    return matchesSearch && matchesLocation && matchesCategory;
-  });
 
   const csvData = filteredData.map((item) => {
     const newObj = {};
@@ -62,7 +43,6 @@ const GetTable = ({ data, columns, title }) => {
     XLSX.writeFile(wb, `${title.replace(/\s+/g, '_').toLowerCase()}.xlsx`);
   };
 
-  // Custom Bootstrap styling for the DataTable
   const customStyles = {
     headRow: {
       style: {
@@ -92,9 +72,7 @@ const GetTable = ({ data, columns, title }) => {
   return (
     <div className="card shadow-sm">
       <div className="card-body">
-        {/* Responsive Row for Buttons and Filters */}
         <div className="row g-2 mb-3">
-          {/* Buttons Column */}
           <div className="col-12 col-md-6 col-lg-4">
             <div className="d-flex flex-wrap gap-2">
               <CSVLink data={csvData} filename={`${title}.csv`} className="btn btn-info btn-sm">
@@ -112,13 +90,14 @@ const GetTable = ({ data, columns, title }) => {
             </div>
           </div>
 
-          {/* Filters Column */}
-         
+          <div className="col-12 col-md-6 col-lg-8">
+            <PoojaListFilter 
+              data={data} 
+              onFilter={setFilteredData} 
+            />
+          </div>
         </div>
 
-        {console.log(columns,filteredData)}
-
-        
         <DataTable
           columns={columns}
           data={filteredData}
@@ -135,4 +114,4 @@ const GetTable = ({ data, columns, title }) => {
   );
 };
 
-export default GetTable;
+export default PoojaListGetTable;

@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import UpdateBhajanCategoryForm from './UpdateBhajanCategoryForm';
 import ViewBhajanMandalCategoryModal from './ViewBhajanMandalCategoryModal';
 import ReadMoreText from '../../../components/ReadMoreText';
+import BhajanMandaliCategoryGetTable from '../../dashboard/BhajanMandaliCategoryGetTable';
 
 const BhajanMandalCategory = () => {
   const [categoryData, setCategoryData] = useState([]);
@@ -261,7 +262,7 @@ const [rowToView, setRowToView] = useState(null);
                 <CSpinner color="primary" />
               </div>
             ) : (
-              <GetTable
+              < BhajanMandaliCategoryGetTable
                 data={categoryData}
                 columns={columns}
                 title="Category List"

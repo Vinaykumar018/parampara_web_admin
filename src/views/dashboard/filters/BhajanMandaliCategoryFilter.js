@@ -1,18 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
-const BhajanMandaliFilter = ({ data, onFilter }) => {
+const BhajanMandaliCategoryFilter = ({ data, onFilter }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [dateRange, setDateRange] = useState('');
   const [customStartDate, setCustomStartDate] = useState('');
   const [customEndDate, setCustomEndDate] = useState('');
-  const [cityFilter, setCityFilter] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState('');
   const [showCustomRange, setShowCustomRange] = useState(false);
-
-  // Extract unique categories, cities, etc. from the data
-  const categories = [...new Set(data.map(item => item.bhajan_category))].filter(Boolean);
-  const cities = [...new Set(data.map(item => item.mandali_address?.city).filter(Boolean))];
-
+  const [statusFilter, setStatusFilter] = useState('');
+console.log(statusFilter)
   // Apply filters whenever any filter criteria changes
   useEffect(() => {
     let startDateFilter, endDateFilter;
@@ -78,36 +73,42 @@ const BhajanMandaliFilter = ({ data, onFilter }) => {
       const matchesStartDate = !startDateFilter || itemDate >= new Date(startDateFilter.setHours(0, 0, 0, 0));
       const matchesEndDate = !endDateFilter || itemDate <= new Date(endDateFilter.setHours(23, 59, 59, 999));
 
-      // City filtering
-      const matchesCity = cityFilter === '' || 
-        (item.mandali_address && item.mandali_address.city === cityFilter);
+      // Status filtering
+      
+      const matchesStatus = statusFilter === '' || 
+        (statusFilter === 'active' && item.status === 'active' ) || 
+        (statusFilter === 'inactive' && item.status === 'inactive');
 
-      // Category filtering
-      const matchesCategory = categoryFilter === '' || item.bhajan_category === categoryFilter;
-
-      return matchesSearch && matchesStartDate && matchesEndDate && matchesCity && matchesCategory;
+      return matchesSearch && matchesStartDate && matchesEndDate && matchesStatus;
     });
     
     onFilter(filteredData);
-  }, [data, searchTerm, dateRange, customStartDate, customEndDate, cityFilter, categoryFilter, onFilter]);
+  }, [data, searchTerm, dateRange, customStartDate, customEndDate, statusFilter, onFilter]);
 
   const handleClearFilters = () => {
     setSearchTerm('');
     setDateRange('');
     setCustomStartDate('');
     setCustomEndDate('');
-    setCityFilter('');
-    setCategoryFilter('');
+    setStatusFilter('');
     setShowCustomRange(false);
   };
 
   return (
     <div className="row mb-3">
       {/* Search Input */}
-      
+      <div className="col-md-3 mb-2">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Search..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
 
       {/* Date Range Filter */}
-      <div className="col-md-3 ">
+      <div className="col-md-3 mb-2">
         <select
           className="form-select"
           value={dateRange}
@@ -149,45 +150,32 @@ const BhajanMandaliFilter = ({ data, onFilter }) => {
         )}
       </div>
 
-      {/* Category Filter */}
+      {/* Status Filter */}
       <div className="col-md-3 mb-2">
         <select
           className="form-select"
-          value={categoryFilter}
-          onChange={(e) => setCategoryFilter(e.target.value)}
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value) 
+           
+          }
         >
-          <option value="">All Categories</option>
-          {categories.map(category => (
-            <option key={category} value={category}>{category}</option>
-          ))}
-        </select>
-      </div>
-
-      {/* City Filter */}
-      <div className="col-md-3 mb-2">
-        <select
-          className="form-select"
-          value={cityFilter}
-          onChange={(e) => setCityFilter(e.target.value)}
-        >
-          <option value="">All Cities</option>
-          {cities.map(city => (
-            <option key={city} value={city}>{city}</option>
-          ))}
+          <option value="">All Statuses</option>
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
         </select>
       </div>
 
       {/* Clear Filters Button */}
-      <div className="col-md-3">
+      <div className="col-md-3 mb-2">
         <button 
           className="btn btn-secondary w-100"
           onClick={handleClearFilters}
         >
-          Clear All Filters
+          Clear
         </button>
       </div>
     </div>
   );
 };
 
-export default BhajanMandaliFilter;
+export default BhajanMandaliCategoryFilter;

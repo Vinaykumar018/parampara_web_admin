@@ -1,19 +1,47 @@
 import React, { useState, useEffect } from 'react';
+import { useContext } from "react";
+import { AppContext } from '../../../context/AppContext';
+const PoojaListFilter = ({ data, onFilter }) => {
 
-const BhajanMandaliFilter = ({ data, onFilter }) => {
+
+
+
+
+
+   const { globalContextPoojaCategoryData} = useContext(AppContext);
+
+   const categoryMap = globalContextPoojaCategoryData.reduce((acc, item) => {
+    acc[item._id] = item.category;
+    return acc;
+  }, {});
+  
+  
+  ///replace the pooja_category of data prop if the _id is matching or equalt to it then set the categry to the category of globalcontextdata 
+
+
   const [searchTerm, setSearchTerm] = useState('');
   const [dateRange, setDateRange] = useState('');
   const [customStartDate, setCustomStartDate] = useState('');
   const [customEndDate, setCustomEndDate] = useState('');
-  const [cityFilter, setCityFilter] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
   const [showCustomRange, setShowCustomRange] = useState(false);
 
-  // Extract unique categories, cities, etc. from the data
-  const categories = [...new Set(data.map(item => item.bhajan_category))].filter(Boolean);
-  const cities = [...new Set(data.map(item => item.mandali_address?.city).filter(Boolean))];
+  // Extract unique categories and statuses from the data
 
-  // Apply filters whenever any filter criteria changes
+  
+  const categories = [...new Set(data.map(item => item.pooja_category))].filter(Boolean);
+
+  const statuses = [...new Set(data.map(item => item.status))].filter(Boolean);
+
+
+
+  const categoryNames = categories.map(catId => {
+    const match = globalContextPoojaCategoryData.find(item => item._id === catId);
+    return match ? match.category : null;
+  }).filter(Boolean);
+  
+  
   useEffect(() => {
     let startDateFilter, endDateFilter;
     
@@ -61,53 +89,47 @@ const BhajanMandaliFilter = ({ data, onFilter }) => {
       const matchesSearch = searchTerm === '' || 
         Object.values(item).some(val => 
           val?.toString().toLowerCase().includes(searchTerm.toLowerCase())
-        ) ||
-        (item.bhajan_owner && (
-          item.bhajan_owner.owner_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          item.bhajan_owner.owner_email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          item.bhajan_owner.owner_phone?.toLowerCase().includes(searchTerm.toLowerCase())
-        )) ||
-        (item.mandali_address && (
-          item.mandali_address.address?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          item.mandali_address.city?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          item.mandali_address.state?.toLowerCase().includes(searchTerm.toLowerCase())
-        ));
+        );
 
-      // Date filtering (assuming there's a created_at or similar date field)
-      const itemDate = new Date(item.created_at || item.updated_at);
-      const matchesStartDate = !startDateFilter || itemDate >= new Date(startDateFilter.setHours(0, 0, 0, 0));
-      const matchesEndDate = !endDateFilter || itemDate <= new Date(endDateFilter.setHours(23, 59, 59, 999));
-
-      // City filtering
-      const matchesCity = cityFilter === '' || 
-        (item.mandali_address && item.mandali_address.city === cityFilter);
+      // Date filtering using created_at or updated_at
+      const itemDate = item.created_at ? new Date(item.created_at) : new Date(item.updated_at);
+      const matchesDate = (
+        (!startDateFilter || itemDate >= new Date(startDateFilter.setHours(0, 0, 0, 0))) &&
+        (!endDateFilter || itemDate <= new Date(endDateFilter.setHours(23, 59, 59, 999)))
+      );
 
       // Category filtering
-      const matchesCategory = categoryFilter === '' || item.bhajan_category === categoryFilter;
 
-      return matchesSearch && matchesStartDate && matchesEndDate && matchesCity && matchesCategory;
+     
+      const matchesCategory = categoryFilter === '' || categoryMap[item.pooja_category]=== categoryFilter;
+
+      // Status filtering
+      const matchesStatus = statusFilter === '' || item.status === statusFilter;
+
+      return matchesSearch && matchesDate && matchesCategory && matchesStatus;
     });
     
     onFilter(filteredData);
-  }, [data, searchTerm, dateRange, customStartDate, customEndDate, cityFilter, categoryFilter, onFilter]);
+  }, [data, searchTerm, dateRange, customStartDate, customEndDate, categoryFilter, statusFilter, onFilter]);
 
   const handleClearFilters = () => {
     setSearchTerm('');
     setDateRange('');
     setCustomStartDate('');
     setCustomEndDate('');
-    setCityFilter('');
     setCategoryFilter('');
+    setStatusFilter('');
     setShowCustomRange(false);
+    onFilter(data); // Reset to original data
   };
 
   return (
-    <div className="row mb-3">
+    <div className="row g-2">
       {/* Search Input */}
       
 
       {/* Date Range Filter */}
-      <div className="col-md-3 ">
+      <div className="col-md-3">
         <select
           className="form-select"
           value={dateRange}
@@ -150,29 +172,29 @@ const BhajanMandaliFilter = ({ data, onFilter }) => {
       </div>
 
       {/* Category Filter */}
-      <div className="col-md-3 mb-2">
+      <div className="col-md-3">
         <select
           className="form-select"
           value={categoryFilter}
           onChange={(e) => setCategoryFilter(e.target.value)}
         >
           <option value="">All Categories</option>
-          {categories.map(category => (
+          {categoryNames.map(category => (
             <option key={category} value={category}>{category}</option>
           ))}
         </select>
       </div>
 
-      {/* City Filter */}
-      <div className="col-md-3 mb-2">
+      {/* Status Filter */}
+      <div className="col-md-3">
         <select
           className="form-select"
-          value={cityFilter}
-          onChange={(e) => setCityFilter(e.target.value)}
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
         >
-          <option value="">All Cities</option>
-          {cities.map(city => (
-            <option key={city} value={city}>{city}</option>
+          <option value="">All Statuses</option>
+          {statuses.map(status => (
+            <option key={status} value={status}>{status}</option>
           ))}
         </select>
       </div>
@@ -183,11 +205,11 @@ const BhajanMandaliFilter = ({ data, onFilter }) => {
           className="btn btn-secondary w-100"
           onClick={handleClearFilters}
         >
-          Clear All Filters
+          Clear
         </button>
       </div>
     </div>
   );
 };
 
-export default BhajanMandaliFilter;
+export default PoojaListFilter;

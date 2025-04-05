@@ -9,6 +9,7 @@ import { useContext } from "react";
 import { AppContext } from "../../../context/AppContext";
 import { useNavigate } from 'react-router-dom';
 import ViewPoojaModal from './ViewPoojaModal'; // Import the new modal
+import PoojaListGetTable from "../../dashboard/PoojaListGetTable";
 
 const PoojaList = () => {
   const { contextPoojaData, setContextPoojaData,globalContextPoojaCategoryData } = useContext(AppContext);
@@ -127,23 +128,23 @@ const PoojaList = () => {
       width: "250px",
       wrap: true,
     },
-    {
-      name: "Long Description",
-      selector: (row) => (
-        <div
-          dangerouslySetInnerHTML={{ __html: row.long_discription }}
-          style={{
-            maxHeight: "300px",
-            overflow: "auto", // Enables scrolling
-            scrollbarWidth: "none", // Hides scrollbar for Firefox
-            msOverflowStyle: "none", // Hides scrollbar for IE/Edge
-          }}
-          className="no-scrollbar"
-        ></div>
-      ),
-      width: "400px",
-      wrap: true,
-    },
+    // {
+    //   name: "Long Description",
+    //   selector: (row) => (
+    //     <div
+    //       dangerouslySetInnerHTML={{ __html: row.long_discription }}
+    //       style={{
+    //         maxHeight: "300px",
+    //         overflow: "auto", // Enables scrolling
+    //         scrollbarWidth: "none", // Hides scrollbar for Firefox
+    //         msOverflowStyle: "none", // Hides scrollbar for IE/Edge
+    //       }}
+    //       className="no-scrollbar"
+    //     ></div>
+    //   ),
+    //   width: "400px",
+    //   wrap: true,
+    // },
     {
       name: "Status",
       selector: (row) => (
@@ -218,7 +219,7 @@ const PoojaList = () => {
               <CSpinner color="primary" />
             </div>
           ) : (
-            <GetTable columns={columns} data={poojaData} />
+            <PoojaListGetTable columns={columns} data={poojaData} />
           )}
         </div>
       </div>

@@ -133,9 +133,10 @@ const SingleOderDetails = () => {
                                 onChange={(e) => setSelectedStatus(e.target.value)}
                               >
                                 <option value="pending">Pending</option>
-                                <option value="processing">Processing</option>
+                             
                                 <option value="shipped">Shipped</option>
                                 <option value="delivered">Delivered</option>
+                                <option value="cancelled">Cancelled</option>
                               </select>
                                 <button className="btn btn-warning" onClick={handleStatusUpdate}>
                                   <i className="fa fa-edit" ></i> Update

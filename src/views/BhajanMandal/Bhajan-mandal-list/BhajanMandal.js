@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import GetTable from "../../dashboard/GetTable";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { deleteBhajanMandal, fetchBhajanMandalData } from '../../Services/BhajanMandalApiService';
@@ -7,13 +6,12 @@ import { CSpinner } from '@coreui/react';
 import { useContext } from "react";
 import { AppContext } from '../../../context/AppContext';
 import { useNavigate } from 'react-router-dom';
-import {UpdateBhajanStatus} from '../../Services/BhajanMandalApiService'
-import AddBhajanVideoModal from './AddVideoBhajanModal'
-import ReadMoreText from "../../../components/ReadMoreText";
-const BhajanMandal = () => {
+import { UpdateBhajanStatus } from '../../Services/BhajanMandalApiService';
+import AddBhajanVideoModal from './AddVideoBhajanModal';
+import BhajanMandaliGetTable from "../../dashboard/BhajanMandaliGetTable";
 
-   
-  const { contextBhajanMandalData, setContextBhajanMandalData,globalContextBhajanMandalCategoryData } = useContext(AppContext);
+const BhajanMandal = () => {
+  const { contextBhajanMandalData, setContextBhajanMandalData, globalContextBhajanMandalCategoryData } = useContext(AppContext);
   const navigate = useNavigate();
 
   const navigateToAddBhajanMandal = () => {
@@ -24,49 +22,26 @@ const BhajanMandal = () => {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [bhajanMandalToDelete, setBhajanMandalToDelete] = useState(null);
-
   const [videoModal, setVideoModal] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
 
-
-
-   const loadCategories = async () => {
-      setLoading(true);
-      try {
-        const result = await fetchCategories();
-        if (result.status === 1) {
-          setCategoryData(result.data);
-        }
-      } catch (error) {
-        console.error('Error loading categories:', error);
-      } finally {
-        setLoading(false);
+  const getData = async () => {
+    try {
+      const data = await fetchBhajanMandalData();
+      if (data.status === 1) {
+        setBhajanMandalData(data.data);
+        setContextBhajanMandalData(data.data);
+      } else {
+        toast.error('Failed to fetch Bhajan Mandal data');
       }
-    };
-     const [categoryData, setCategoryData] = useState([]);
-  
-    useEffect(() => {
-      loadCategories();
-    }, []);
-console.log(globalContextBhajanMandalCategoryData)
+    } catch (error) {
+      toast.error('Error fetching Bhajan Mandal data');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    const getData = async () => {
-      try {
-        const data = await fetchBhajanMandalData();
-        if (data.status === 1) {
-          setBhajanMandalData(data.data);
-          setContextBhajanMandalData(data.data);
-        } else {
-          toast.error('Failed to fetch Bhajan Mandal data');
-        }
-      } catch (error) {
-        toast.error('Error fetching Bhajan Mandal data');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-
-    useEffect(() => {
+  useEffect(() => {
     getData();
   }, []);
 
@@ -100,23 +75,10 @@ console.log(globalContextBhajanMandalCategoryData)
     setShowModal(false);
   };
 
-
-
   const updateStatus = async (id, status) => {
-    // Determine the new status using a ternary operator
     const newStatus = status == 0 ? 1 : 0;
-    console.log('Current Status:', status);
-    console.log('New Status:', newStatus);
-  
     try {
-      // Call the API function to update the status
       await UpdateBhajanStatus(id, newStatus);
-  
-      console.log(
-        `Status successfully updated to ${newStatus == 1 ? 'Active' : 'Inactive'}`,
-      );
-  
-      // Refresh the data to reflect the status change
       getData();
     } catch (error) {
       console.error('Error updating status:', error);
@@ -145,13 +107,10 @@ console.log(globalContextBhajanMandalCategoryData)
     { name: "Updated At", selector: row => new Date(row.updated_at).toLocaleString() },
     {
       name: "Status",
-      selector: (row) => (
+      selector: row => (
         <span
           className={`badge ${row.status == 1 ? "bg-success" : "bg-danger"}`}
-          style={{
-            cursor: "pointer",
-           
-          }}
+          style={{ cursor: "pointer" }}
           onClick={() => updateStatus(row._id, row.status)}
         >
           {row.status == 1 ? "Active" : "Inactive"}
@@ -159,68 +118,17 @@ console.log(globalContextBhajanMandalCategoryData)
       ),
       grow: 0.5,
       allowOverflow: true,
-      width: "120px", // Proper width for the status column
-    },
-    
-    {
-      name: "Action",
-      selector: (row) => (
-        <div
-          style={{
-            display: "flex",
-            gap: "8px", // Provides uniform spacing between buttons
-            flexWrap: "nowrap",
-            justifyContent: "center", // Aligns buttons properly
-          }}
-        >
-         
-          <button
-            onClick={() => handleEdit(row._id)}
-            className="btn btn-primary btn-sm text-white"
-           
-          >
-            Edit
-          </button>
-          <button
-            onClick={() => handleDelete(row._id)}
-            className="btn btn-danger btn-sm text-white"
-            
-          >
-            Delete
-          </button>
-          <button
-            onClick={() => handlePreview(row._id)}
-            className="btn btn-dark btn-sm text-white"
-            
-          >
-            View
-          </button>
-          <button
-            onClick={() => addVideo(row._id)}
-            className="btn btn-info btn-sm text-white"
-            
-          >
-            Add Video
-          </button>
-        </div>
-      ),
-      ignoreRowClick: true,
-      allowOverflow: true,
-      button: true,
-      width: "300px", // Adjusted width for the action buttons column
+      width: "120px",
     },
   ];
-  
 
-  const [selectedId, setSelectedId] = useState(null);
-  function addVideo(id){
+  function addVideo(id) {
     setSelectedId(id);
     setVideoModal(true);
   }
-  function handlePreview(id){
-    navigate(`/preview/${id}`);
-    
 
+  function handlePreview(id) {
+    navigate(`/preview/${id}`);
   }
 
   return (
@@ -246,9 +154,15 @@ console.log(globalContextBhajanMandalCategoryData)
               <CSpinner color="primary" />
             </div>
           ) : (
-
-           
-            <GetTable columns={columns} data={bhajanMandalData} />
+            <BhajanMandaliGetTable 
+              columns={columns} 
+              data={bhajanMandalData} 
+              title={"Bhajan Mandali"} 
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+              onAddVideo={addVideo}
+              onPreview={handlePreview}
+            />
           )}
         </div>
       </div>
@@ -258,14 +172,12 @@ console.log(globalContextBhajanMandalCategoryData)
         onConfirm={handleConfirmDelete}
       />
       <ToastContainer />
-      { videoModal && (
+      {videoModal && (
         <AddBhajanVideoModal id={selectedId} onClose={() => setVideoModal(false)} />
       )}
     </section>
   );
 };
-
-
 
 const ConfirmDeleteModal = ({ show, onClose, onConfirm }) => {
   if (!show) return null;
@@ -313,6 +225,5 @@ const ConfirmDeleteModal = ({ show, onClose, onConfirm }) => {
     </div>
   );
 };
-
 
 export default BhajanMandal;
