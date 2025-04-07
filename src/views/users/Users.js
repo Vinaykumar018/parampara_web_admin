@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { fetchUsers, createUser } from '../Services/userApiService';
-import GetTable from '../dashboard/GetTable';
+import UserGetTable from '../dashboard/tables/UserGetTable';
 import AddUserForm from './AddUserForm';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -49,14 +49,20 @@ const UsersData = () => {
     { name: 'Email', selector: (row) => row.email, sortable: true },
     { name: 'Mobile', selector: (row) => row.mobile, sortable: true },
     { name: 'City', selector: (row) => row.city, sortable: true },
-    { name: 'Status', selector: (row) => (
-      <>
-        <button
+    {
+      name: 'Status',
+      selector: (row) => (
+        <>
+          <button
             onClick={() => handleStatus(row._id, row.status)}
-            className={`btn btn-sm ${row.status === 'active' ? 'btn-success' : 'btn-danger'}`}>{row.status}
-        </button>
-      </>
-    ), sortable: true },
+            className={`btn btn-sm ${row.status === 'active' ? 'btn-success' : 'btn-danger'}`}
+          >
+            {row.status}
+          </button>
+        </>
+      ),
+      sortable: true,
+    },
     {
       name: 'Action',
       selector: (row) => (
@@ -70,15 +76,20 @@ const UsersData = () => {
         >
           <button
             onClick={() => handleEdit(row._id)}
-            className="btn btn-primary btn-sm me-2">
+            className="btn btn-primary btn-sm me-2"
+          >
             Edit
           </button>
-          <Link to={`/user/bookings/${row._id}`} className="btn btn-success btn-sm text-white">
+          <Link
+            to={`/user/bookings/${row._id}`}
+            className="btn btn-success btn-sm text-white"
+          >
             Booking
           </Link>
           <Link
             to={`/user/${row._id}`}
-            className="btn btn-info btn-sm text-white">
+            className="btn btn-info btn-sm text-white"
+          >
             View
           </Link>
         </div>
@@ -151,7 +162,7 @@ const UsersData = () => {
           </div>
         </div>
 
-        <GetTable columns={userColumns} data={users} />
+        <UserGetTable columns={userColumns} data={users} />
       </div>
     </div>
   );

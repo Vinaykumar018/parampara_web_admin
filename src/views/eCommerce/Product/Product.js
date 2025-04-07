@@ -13,7 +13,7 @@ import {
   updateFeaturedStatus,
   updateStatus,
 } from '../../Services/productApiService';
-import GetProductListTable from '../../dashboard/GetProductListTable';
+import GetProductListTable from '../../dashboard/tables/GetProductListTable';
 
 const Product = () => {
   const { globalContextProductData, setGlobalContextProductData } =

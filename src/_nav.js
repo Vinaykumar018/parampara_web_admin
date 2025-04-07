@@ -72,14 +72,12 @@ const _nav = [
     items: [
       {
         component: CNavItem,
-        name: 'Add Ayojan',
-        to: '/add-bhavya-ayojan',
+        name: 'Bhavya Ayojan',
+        to: '/bhavya-ayojan',
       },
-      {
-        component: CNavItem,
-        name: 'Booking',
-        to: '/booking-list-bhavya-ayojan',
-      },
+
+      
+     
     ],
   },
   {

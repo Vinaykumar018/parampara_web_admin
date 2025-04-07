@@ -8,18 +8,11 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './GetTable.css';
-import BrahmanBhojFilter from './filters/BrahmanBhojFilter';
+import UserGetTableFilter from '../filters/UserGetTableFilter';
 
-const BrahmanBhojGetTable = ({ data, columns, title }) => {
-  const [searchedData, setSearchedData] = useState("");
-  const [selectedLocation, setSelectedLocation] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
-   const [filteredData, setFilteredData] = useState(data);
-
-  const notify = () => toast("Data copied to clipboard!");
-
- 
- 
+const UserGetTable = ({ data, columns, title }) => {
+  const [filteredData, setFilteredData] = useState(data);
+  const notify = () => toast('Data copied to clipboard!');
 
   const csvData = filteredData.map((item) => {
     const newObj = {};
@@ -32,7 +25,7 @@ const BrahmanBhojGetTable = ({ data, columns, title }) => {
   const printToPDF = () => {
     const doc = new jsPDF();
     const tableContent = filteredData.map((item) =>
-      columns.map(({ selector }) => selector(item) || "N/A")
+      columns.map(({ selector }) => selector(item) || 'N/A'),
     );
 
     doc.autoTable({
@@ -85,26 +78,37 @@ const BrahmanBhojGetTable = ({ data, columns, title }) => {
           {/* Buttons Column */}
           <div className="col-12 col-md-6 col-lg-4">
             <div className="d-flex flex-wrap gap-2">
-              <CSVLink data={csvData} filename={`${title}.csv`} className="btn btn-info btn-sm">
+              <CSVLink
+                data={csvData}
+                filename={`${title}.csv`}
+                className="btn btn-info btn-sm"
+              >
                 CSV
               </CSVLink>
               <button className="btn btn-primary btn-sm" onClick={printToPDF}>
                 PDF
               </button>
-              <button className="btn btn-success btn-sm" onClick={exportToExcel}>
+              <button
+                className="btn btn-success btn-sm"
+                onClick={exportToExcel}
+              >
                 Excel
               </button>
-              <CopyToClipboard text={JSON.stringify(filteredData, null, 2)} onCopy={notify}>
+              <CopyToClipboard
+                text={JSON.stringify(filteredData, null, 2)}
+                onCopy={notify}
+              >
                 <button className="btn btn-warning btn-sm">Copy</button>
               </CopyToClipboard>
             </div>
           </div>
 
           {/* Filters Column */}
-          <BrahmanBhojFilter  data={data} onFilter={setFilteredData}></BrahmanBhojFilter>
+          <div className="col-12 col-md-6 col-lg-8">
+            <UserGetTableFilter data={data} onFilter={setFilteredData} />
+          </div>
         </div>
 
-        {/* DataTable */}
         <DataTable
           columns={columns}
           data={filteredData}
@@ -113,7 +117,7 @@ const BrahmanBhojGetTable = ({ data, columns, title }) => {
           fixedHeaderScrollHeight="400px"
           highlightOnHover
           customStyles={customStyles}
-          className='border'
+          className="border"
         />
         <ToastContainer />
       </div>
@@ -121,4 +125,4 @@ const BrahmanBhojGetTable = ({ data, columns, title }) => {
   );
 };
 
-export default BrahmanBhojGetTable;
+export default UserGetTable;

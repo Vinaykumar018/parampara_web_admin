@@ -37,8 +37,8 @@ const PoojaArchanaCategory = React.lazy(
 
 //bHAVYA AYOJAN
 
-const addBhavyaAyojan = React.lazy(
-  () => import('./views/BhavyAyojan/AddAyojan'),
+const BhavyaAyojan = React.lazy(
+  () => import('./views/BhavyAyojan/BhavyaAyojan'),
 );
 const BookingListBhavyaAyojan = React.lazy(
   () => import('./views/BhavyAyojan/BookingListBhavyaAyojan'),
@@ -265,15 +265,16 @@ const routes = [
 
   //bhavya ayojan
   {
-    path: '/add-bhavya-ayojan',
-    name: 'Add Bhavya Ayojan',
-    element: addBhavyaAyojan,
+    path: '/bhavya-ayojan',
+    name: 'Bhavya Ayojan',
+    element: BhavyaAyojan,
   },
   {
-    path: '/booking-list-bhavya-ayojan',
+    path: '/bhavya-ayojan/:id',
     name: 'Booking List Bhavya Ayojan',
-    element: BookingListBhavyaAyojan,
+    element:BookingListBhavyaAyojan,
   },
+  
 
   //bhajan mandal
   { path: '/bhajan-list', name: 'Bhajan List', element: bhajanList },

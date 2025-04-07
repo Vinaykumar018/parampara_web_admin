@@ -7,6 +7,7 @@ import { AppContext } from '../../context/AppContext';
 import { useContext } from 'react';
 import { usePooja } from '../../hooks/poojaHooks';
 import useFetchCategories from '../../hooks/useFetchCategories';
+import PanditGetTable from '../dashboard/tables/PanditGetTable';
 
 const PanditPage = () => {
   const [panditData, setPanditData] = useState([]);
@@ -20,12 +21,7 @@ const PanditPage = () => {
   const [panditIds, setPanditIds] = useState([]);
 
   const navigate = useNavigate();
-  const {
-    poojaData,
-    loading,
-fetchPoojaData,
-    isEmpty,
-  } = usePooja();
+  const { poojaData, loading, fetchPoojaData, isEmpty } = usePooja();
 
   // Fetch categories using custom hook
   const {
@@ -33,11 +29,10 @@ fetchPoojaData,
     loading: categoriesLoading,
     error: categoriesError,
   } = useFetchCategories(panditIds);
-const IMGURL = 'http://34.131.41.101:3000/uploads/panditImages/';
-const token =
+  const IMGURL = 'http://34.131.41.101:3000/uploads/panditImages/';
+  const token =
     'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNoaXZhbnNodSIsImlhdCI6MTczMjE2NTMzOX0.YDu6P4alpQB5QL-74z1jO4LGfEwZA_n_Y29o512FrM8';
 
-    
   useEffect(() => {
     fetchPandits();
   }, []);
@@ -67,8 +62,6 @@ const token =
 
   const handleAssignCategory = async (panditId, poojaIds) => {
     try {
-     
-
       const pandit = panditData.find((p) => p._id === panditId);
 
       // Map over all poojas to send checked as `1` and unchecked as `0`
@@ -202,12 +195,15 @@ const token =
 
         // Properly map and render pooja names with a comma separator
         return categoryList.length > 0 ? (
-          <div>{categoryList.map((item, index) => (
-            <span key={item.pooja_id} className='badge bg-dark mx-1 p-3'>
-              {item.pooja_name}
-              {index < categoryList.length - 1 && ' '} {/* Add comma except for the last item */}
-            </span>
-          ))}</div>
+          <div>
+            {categoryList.map((item, index) => (
+              <span key={item.pooja_id} className="badge bg-dark mx-1 p-3">
+                {item.pooja_name}
+                {index < categoryList.length - 1 && ' '}{' '}
+                {/* Add comma except for the last item */}
+              </span>
+            ))}
+          </div>
         ) : (
           <span>No Categories</span>
         );
@@ -279,8 +275,6 @@ const token =
     },
   ];
 
- 
-
   // Extract pandit IDs from panditData
 
   return (
@@ -301,7 +295,7 @@ const token =
             </div>
           </div>
 
-          <GetTable
+          <PanditGetTable
             data={panditData}
             columns={columns}
             title="Pandit Information"
@@ -345,8 +339,6 @@ const AssignCategoryModal = ({
 }) => {
   const [selectedPoojas, setSelectedPoojas] = useState([]);
   const [loading, setLoading] = useState(false);
-
-  
 
   // Pre-select poojas with status "1"
   useEffect(() => {

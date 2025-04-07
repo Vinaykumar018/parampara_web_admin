@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import UpdateBhajanCategoryForm from './UpdateBhajanCategoryForm';
 import ViewBhajanMandalCategoryModal from './ViewBhajanMandalCategoryModal';
 import ReadMoreText from '../../../components/ReadMoreText';
-import BhajanMandaliCategoryGetTable from '../../dashboard/BhajanMandaliCategoryGetTable';
+import BhajanMandaliCategoryGetTable from '../../dashboard/tables/BhajanMandaliCategoryGetTable';
 
 const BhajanMandalCategory = () => {
   const [categoryData, setCategoryData] = useState([]);

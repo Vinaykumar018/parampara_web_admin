@@ -8,7 +8,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './GetTable.css';
-import PoojaListFilter from './filters/PoojaListFilter';
+import PoojaListFilter from '../filters/PoojaListFilter';
 
 const PoojaListGetTable = ({ data, columns, title }) => {
   const [filteredData, setFilteredData] = useState(data);

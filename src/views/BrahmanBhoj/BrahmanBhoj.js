@@ -4,7 +4,7 @@ import GetTable from '../dashboard/GetTable';
 import { CBadge } from '@coreui/react';
 import { MdCancel } from 'react-icons/md';
 import { Link } from 'react-router-dom';
-import BrahmanBhojGetTable from '../dashboard/BrahmanBhojGetTable';
+import BrahmanBhojGetTable from '../dashboard/tables/BrahmanBhojGetTable';
 
 const BrahmanBhoj = () => {
   const [orders, setOrders] = useState([]);

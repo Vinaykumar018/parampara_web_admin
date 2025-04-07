@@ -9,7 +9,7 @@ import { useContext } from "react";
 import { AppContext } from "../../../context/AppContext";
 import { useNavigate } from 'react-router-dom';
 import ViewPoojaModal from './ViewPoojaModal'; // Import the new modal
-import PoojaListGetTable from "../../dashboard/PoojaListGetTable";
+import PoojaListGetTable from '../../dashboard/tables/PoojaListGetTable'
 
 const PoojaList = () => {
   const { contextPoojaData, setContextPoojaData,globalContextPoojaCategoryData } = useContext(AppContext);

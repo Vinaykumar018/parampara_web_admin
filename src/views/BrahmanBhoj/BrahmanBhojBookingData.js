@@ -14,7 +14,7 @@ const BrahmanBhojBookingData = () => {
   useEffect(() => {
     const fetchBhojBookingData = async () => {
       try {
-        const response = await axios.get(`http://192.168.1.35:3000/api/brahman-bhoj/get-details/${id}`, {
+        const response = await axios.get(`http://192.168.1.36:3000/api/brahman-bhoj/get-details/${id}`, {
           headers: { Authorization: `Bearer ${TOKEN}` }
         });
         

@@ -8,7 +8,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './GetTable.css';
-import BhajanMandaliCategoryFilter from '../dashboard/filters/BhajanMandaliCategoryFilter'; // Make sure to import the filter component
+import BhajanMandaliCategoryFilter from '../filters/BhajanMandaliCategoryFilter'; // Make sure to import the filter component
 
 const BhajanMandaliCategoryGetTable = ({ data, columns, title }) => {
   const [searchedData, setSearchedData] = useState("");

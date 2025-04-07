@@ -8,7 +8,7 @@ import { AppContext } from '../../../context/AppContext';
 import { useNavigate } from 'react-router-dom';
 import { UpdateBhajanStatus } from '../../Services/BhajanMandalApiService';
 import AddBhajanVideoModal from './AddVideoBhajanModal';
-import BhajanMandaliGetTable from "../../dashboard/BhajanMandaliGetTable";
+import BhajanMandaliGetTable from "../../dashboard/tables/BhajanMandaliGetTable";
 
 const BhajanMandal = () => {
   const { contextBhajanMandalData, setContextBhajanMandalData, globalContextBhajanMandalCategoryData } = useContext(AppContext);
